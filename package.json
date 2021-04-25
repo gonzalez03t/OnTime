@@ -1,0 +1,30 @@
+{
+  "name": "tbd",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "contributors": [
+    "Aaron Leopold <aaronleopold1221@gmail.com> (https://www.aaronbleopold.com)",
+    "Jesus Gonzalez <TODO> (https://jgonzalez.dev/)",
+    "Rodrigo Lobo <TODO> (TODO)"
+  ],
+  "scripts": {
+    "dev:web": "yarn workspace @tbd/web run start",
+    "dev:mobile": "yarn workspace @tbd/frontend run start",
+    "dev:server": "yarn workspace @tbd/backend run dev",
+    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\"",
+    "web:start": "yarn workspace @tbd/backend run start"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "concurrently": "^6.0.2"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./packages/backend/mikro-orm.config.ts"
+    ]
+  }
+}
