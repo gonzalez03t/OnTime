@@ -8,6 +8,7 @@ import { redactReminders } from '../../util/redacting';
  * This will return all of the reminders that belong to a given user
  */
 export default async function getUserReminders(req: Request, res: Response) {
+  // @ts-ignore: bug but promise it works
   const { userId } = req.session;
 
   await em

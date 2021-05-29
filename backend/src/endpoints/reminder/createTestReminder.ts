@@ -8,6 +8,7 @@ export default async function createTestReminder(_req: Request, res: Response) {
   const now = new Date();
   //  // 61  min from now, this will schedule the reminder for 1 min from now
   const testAptDate = new Date(now.getTime() + 61 * 60000);
+  testAptDate.setHours(testAptDate.getHours(), testAptDate.getMinutes(), 0, 0);
 
   const patient = await em.findOneOrFail(User, {
     email: 'stimky@gmail.com',

@@ -58,16 +58,16 @@ export class User extends BaseEntity {
    * This function will validate a given password, comparing it to the hash and
    * determining if it matches.
    */
-  async validatePassword(password: string) {
-    return await bcrypt.compare(password, this.password);
+  validatePassword(password: string) {
+    return bcrypt.compare(password, this.password);
   }
 
   /**
    * This function will hash a plain-text password. Keep in mind it is static, since
    * password is a non-nullable field this has to be hashed prior to insertion.
    */
-  static async generateHash(password: string) {
-    return await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT!));
+  static generateHash(password: string) {
+    return bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT!));
   }
 
   /**

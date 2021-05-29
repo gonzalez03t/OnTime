@@ -11,6 +11,7 @@ export default function validateSession(
   res: Response,
   next: NextFunction
 ) {
+  // @ts-ignore: bug but promise this works
   if (!req.session || req.session.userId === undefined) {
     res.status(401).send('The session has expired');
   } else {

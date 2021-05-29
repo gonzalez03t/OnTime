@@ -8,6 +8,7 @@ import { User, UserRole } from '../../entities/User';
  * This function will attempt to create an appointment for the logged in user
  */
 export default async function createAppointment(req: Request, res: Response) {
+  // @ts-ignore: bug but promise it works
   const { userId } = req.session;
   const { startsAt, doctorEmail, wantsReminder } = req.body;
 

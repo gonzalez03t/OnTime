@@ -5,7 +5,7 @@ import { MongoHighlighter } from '@mikro-orm/mongo-highlighter';
 import path from 'path';
 import { Reminder } from './entities/Reminder';
 
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const options: Options = {
   entities: [User, Appointment, Reminder],

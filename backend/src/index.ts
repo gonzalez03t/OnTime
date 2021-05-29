@@ -15,7 +15,7 @@ import mongoStoreConfig from './config/store';
 import MongoDBStore from 'connect-mongodb-session';
 import scheduler from './util/schedule';
 
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const PORT = process.env.PORT || 5000;
 

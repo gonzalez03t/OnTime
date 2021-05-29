@@ -7,6 +7,7 @@ import { User } from '../../entities/User';
  * currently logged in)
  */
 export default async function getViewer(req: Request, res: Response) {
+  // @ts-ignore: bug but promise it works
   const { userId } = req.session;
 
   await em

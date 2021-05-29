@@ -1,5 +1,5 @@
 {
-  "name": "tbd",
+  "name": "medapt",
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
@@ -9,15 +9,16 @@
     "Rodrigo Lobo <TODO> (TODO)"
   ],
   "scripts": {
-    "dev:web": "yarn workspace @tbd/web run start",
-    "dev:mobile": "yarn workspace @tbd/frontend run start",
-    "dev:server": "yarn workspace @tbd/backend run dev",
-    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\"",
-    "web:start": "yarn workspace @tbd/backend run start"
+    "install:backend": "cd backend && yarn",
+    "install:mobile": "cd mobile && yarn && yarn init",
+    "install:web": "cd web && yarn",
+    "install": "yarn install:web && yarn install:backend && yarn install:mobile",
+    "dev:web": "cd web && yarn dev",
+    "dev:ios": "cd mobile && yarn ios",
+    "dev:android": "cd mobile && yarn android",
+    "dev:server": "cd backend && yarn dev",
+    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\""
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "concurrently": "^6.0.2"
   },
