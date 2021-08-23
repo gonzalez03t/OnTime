@@ -14,7 +14,7 @@ export default async function getReadyReminders() {
   // 1 ahead
   offset.setHours(now.getHours(), now.getMinutes() + 1, 0, 0);
 
-  return await em
+  return em
     .find(Reminder, {
       remindAt: { $gte: now, $lte: offset },
     })
