@@ -4,7 +4,7 @@ This is the backend for the TBD app. Written in TypeScript, using Express, Twili
 
 ## Configuration
 
-Please follow the [Configuration]('https://github.com/medapt/medapt#Configuration') steps outlined at the root project readme.
+Please follow the [Configuration](https://github.com/medapt/medapt#Configuration) steps outlined at the root project readme.
 
 ## Testing
 
