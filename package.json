@@ -20,7 +20,9 @@
     "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\""
   },
   "dependencies": {
-    "concurrently": "^6.0.2"
+    "concurrently": "^6.0.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3"
   },
   "mikro-orm": {
     "useTsNode": true,
