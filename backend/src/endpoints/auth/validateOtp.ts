@@ -10,10 +10,12 @@ export default async function validateOtp(req: Request, res: Response) {
 
   const otp = await em.findOne(Otp, { user: userId });
 
-  if (!otp || (otp && otp.code !== code)) {
+  if (!otp) {
     res.status(500).send('Could not verify OTP');
   } else if (otp.isExpired()) {
     res.status(500).send('OTP has expired. Please try logging on again.');
+  } else if (otp.code !== code) {
+    res.status(401).send({ valid: false });
   } else {
     await saveSession(userId, 'validated', req)
       .then(() =>
