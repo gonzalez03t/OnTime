@@ -10,11 +10,12 @@ import twilioConfig from '../config/twilio';
  */
 export default async function sendSms(message: string, to: string) {
   const { accountSid, authToken, phoneNumber } = twilioConfig;
+
   const client = Twilio(accountSid, authToken);
 
   const options = {
     to: `+1 ${to}`,
-    from: phoneNumber,
+    from: `+1 ${phoneNumber}`,
     body: message,
   };
 
@@ -30,4 +31,10 @@ export default async function sendSms(message: string, to: string) {
       console.log(`Message sent to ${masked}`);
     }
   });
+}
+
+export async function sendOtpSms(code: string, to: string) {
+  const message = `Your MedApt verification PIN is ${code}`;
+
+  sendSms(message, to);
 }

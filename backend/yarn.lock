@@ -286,6 +286,11 @@
   resolved "https://registry.yarnpkg.com/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
   integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
 
+"@types/totp-generator@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@types/totp-generator/-/totp-generator-0.0.2.tgz#f517d64d3248c43fa299f7f5ceca638ec301d7bc"
+  integrity sha512-2BaZbcYqJ8jQZoIYChf/sVSdKvQOw1pqesmdUKGgwb+TBfVbFFx5mBdfL6SRPs8FBa64xep9Yp5CQDHas5b/4Q==
+
 "@types/umzug@2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@types/umzug/-/umzug-2.3.0.tgz#74ede18cf837ed8daa257c2bcf5a54e351c2a551"
@@ -2390,6 +2395,11 @@ jsonwebtoken@^8.5.1:
     ms "^2.1.1"
     semver "^5.6.0"
 
+jssha@^3.1.2:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/jssha/-/jssha-3.2.0.tgz#88ec50b866dd1411deaddbe6b3e3692e4c710f16"
+  integrity sha512-QuruyBENDWdN4tZwJbQq7/eAK85FqrI4oDbXjy5IBhYD+2pTJyBUWZe8ctWaCkrV0gy6AaelgOZZBMeswEa/6Q==
+
 jwa@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.4.1.tgz#743c32985cb9e98655530d53641b66c8645b039a"
@@ -4059,6 +4069,13 @@ toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+
+totp-generator@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/totp-generator/-/totp-generator-0.0.9.tgz#44318c67d0b163d3c4f2f6de6d8fa23bc77df3a9"
+  integrity sha512-ZrUn747mg6+FabOeUKP4neX2oUm69HjV1484kDYvtLfcGlO4XAq5xFwet/KJW7+zc2b09puTKCKMeTxzxfaKjw==
+  dependencies:
+    jssha "^3.1.2"
 
 tree-kill@^1.2.2:
   version "1.2.2"
