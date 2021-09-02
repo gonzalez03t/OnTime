@@ -13,16 +13,15 @@
     "install:mobile": "cd mobile && yarn && yarn init",
     "install:web": "cd web && yarn",
     "install": "yarn install:web && yarn install:backend && yarn install:mobile",
-    "dev:web": "cd web && yarn dev",
+    "build:frontend": "cd web && yarn build",
+    "dev:web": "cd web && yarn start",
     "dev:ios": "cd mobile && yarn ios",
     "dev:android": "cd mobile && yarn android",
     "dev:server": "cd backend && yarn dev",
     "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\""
   },
   "dependencies": {
-    "concurrently": "^6.0.2",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.3"
+    "concurrently": "^6.0.2"
   },
   "mikro-orm": {
     "useTsNode": true,

@@ -7,10 +7,12 @@ import { Reminder } from '../entities/Reminder';
  */
 export default async function getReadyReminders() {
   let now = new Date();
+
   // 30s behind schedule
   now.setHours(now.getHours(), now.getMinutes() - 1, 30, 0);
 
   let offset = new Date();
+
   // 1 ahead
   offset.setHours(now.getHours(), now.getMinutes() + 1, 0, 0);
 
