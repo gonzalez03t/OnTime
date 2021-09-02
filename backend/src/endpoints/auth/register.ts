@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
 import { User } from '../../entities/User';
-import { saveSession } from '../../util/session';
-
-// TODO: otp for 2fa
 
 /**
  * This route will attempt to register a new user. If the user does not already
- * exist in the system, they will be added to the DB.
+ * exist in the system, they will be added to the DB. They are not yet authenticated,
+ * the user must then log in to their new account to enter that flow.
  */
 export default async function register(req: Request, res: Response) {
   const { firstName, lastName, email, password, phone } = req.body;
@@ -32,9 +30,7 @@ export default async function register(req: Request, res: Response) {
     await em
       .persistAndFlush(newUser)
       .then(async () => {
-        await saveSession(newUser.id, req)
-          .then(() => res.status(200).json({ user: newUser.getDetails() }))
-          .catch((err) => res.status(500).send(err));
+        res.status(201).send('User created.');
       })
       .catch((err) => res.status(500).send(err));
   }

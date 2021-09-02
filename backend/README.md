@@ -142,6 +142,41 @@ Base URL: `/api/auth`
 | `500`                                       | Server Error                                          |
 
 <br />
+<br />
+
+| Path                   | `/otp/validate`                                       |
+| :--------------------- | :---------------------------------------------------- |
+| <b>Description</b>     | Validates an OTP code                                 |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                    |
+| <b>Body Parameters</b> |                                                       |
+| `code`                 | Required: yes                                         |
+|                        | Type: string                                          |
+|                        | Description: The OTP code the user typed in           |
+| <b>Response object</b> |                                                       |
+| `{valid}`              | Success Type: JSON                                    |
+|                        | Failure Type: JSON (Mikro Error) OR plain-text string |
+| <b>Response Status</b> |                                                       |
+| `200`                  | Sucessful validity of OTP code                        |
+| `400`                  | Missing body parameters                               |
+| `401`                  | Invalid OTP code OR Expired OTP                       |
+| `500`                  | Server Error OR Unauthorized                          |
+
+<br/>
+<br/>
+
+| Path                   | `/otp/new`                                            |
+| :--------------------- | :---------------------------------------------------- |
+| <b>Description</b>     | Creates a new OTP for a user                          |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                    |
+| <b>Response object</b> |                                                       |
+| `{valid}`              | Success Type: JSON                                    |
+|                        | Failure Type: JSON (Mikro Error) OR plain-text string |
+| <b>Response Status</b> |                                                       |
+| `201`                  | Sucessful created new OTP                             |
+| `400`                  | Missing body parameters                               |
+| `500`                  | Server Error OR Unauthorized                          |
+
+<br/>
 
 ### AppointmentController
 

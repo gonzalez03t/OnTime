@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "install:backend": "cd backend && yarn",
-    "install:mobile": "cd mobile && yarn && yarn init",
+    "install:mobile": "cd mobile && yarn",
     "install:web": "cd web && yarn",
     "install": "yarn install:web && yarn install:backend && yarn install:mobile",
     "build:frontend": "cd web && yarn build",
