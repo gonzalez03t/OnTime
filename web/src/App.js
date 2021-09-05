@@ -1,7 +1,14 @@
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import Layout from './components/Layout/Layout';
+import Routes from './Routes/Routes.js';
+
 export default function App() {
   return (
-    <div className="App">
-      <p>Testing App Function</p>
-    </div>
+    <Router>
+      <Layout>
+        <Routes />
+      </Layout>
+    </Router>
   );
 }

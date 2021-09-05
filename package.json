@@ -12,21 +12,33 @@
     "install:backend": "cd backend && yarn",
     "install:mobile": "cd mobile && yarn",
     "install:web": "cd web && yarn",
-    "install": "yarn install:web && yarn install:backend && yarn install:mobile",
+    "install:all": "yarn install:web && yarn install:backend && yarn install:mobile",
     "build:frontend": "cd web && yarn build",
     "dev:web": "cd web && yarn start",
     "dev:ios": "cd mobile && yarn ios",
     "dev:android": "cd mobile && yarn android",
     "dev:server": "cd backend && yarn dev",
-    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\""
+    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\"",
+    "pretty:web": "npx prettier --write web/**/*.{js,css}",
+    "pretty:backend": "npx prettier --write backend/**/*.{ts}",
+    "pretty:all": "yarn pretty:web && yarn pretty:backend"
   },
   "dependencies": {
     "concurrently": "^6.0.2"
   },
+  "devDependencies": {
+    "husky": "^7.0.2",
+    "prettier": "^2.3.2"
+  },
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./packages/backend/mikro-orm.config.ts"
+      "./backend/mikro-orm.config.ts"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn pretty:all"
+    }
   }
 }
