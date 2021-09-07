@@ -17,16 +17,34 @@ You will need to write an `.env` file in the format of the `.env.example` provid
 - CORS Configuration
 - Security Constants (i.e. bcryptjs configs)
 
-## Startup
+## Installation and Startup
 
-Only the `backend` is runnable at this time, so run the following to install dependencies and start the development server:
+Use Yarn to install the project dependencies:
 
 ```bash
 $ yarn
+$ yarn install:all
+```
+
+To run the server and react application at once, run the following:
+
+```bash
+$ yarn dev
+```
+
+If you would like to run the frontend and backend separately:
+
+To run the backend:
+
+```bash
 $ yarn dev:server
 ```
 
-This will run the server with hot-reloading
+To run the frontend:
+
+```bash
+$ yarn start:web
+```
 
 ## Overview of Functional Features
 
