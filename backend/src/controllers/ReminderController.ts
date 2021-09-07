@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import getUserReminders from '../endpoints/reminder/getUserReminders';
 import createTestReminder from '../endpoints/reminder/createTestReminder';
-import validateSession from '../middleware/validateSession';
+import authenticatedRoute from '../middleware/authenticatedRoute';
 
 const router = Router();
 
 // TODO: list reminders
-router.get('/', validateSession, getUserReminders);
+router.get('/', authenticatedRoute, getUserReminders);
 
 router.post('/test', createTestReminder);
 

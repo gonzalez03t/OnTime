@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import adminRoute from '../middleware/adminRoute';
-import validateSession from '../middleware/validateSession';
+import authenticatedRoute from '../middleware/authenticatedRoute';
 import { AdminController } from './AdminController';
 import { AppointmentController } from './AppointmentController';
 import { AuthController } from './AuthController';
@@ -13,11 +13,11 @@ import { UserController } from './UserController';
  */
 const router = Router();
 
-router.use('/appointments', validateSession, AppointmentController);
+router.use('/appointments', authenticatedRoute, AppointmentController);
 router.use('/auth', AuthController);
-router.use('/reminders', validateSession, ReminderController);
-router.use('/users', validateSession, UserController);
-router.use('/admin', validateSession, adminRoute, AdminController);
-// router.use('/doctors', validateSession, doctorRoute, DoctorController);
+router.use('/reminders', authenticatedRoute, ReminderController);
+router.use('/users', authenticatedRoute, UserController);
+router.use('/admin', authenticatedRoute, adminRoute, AdminController);
+// router.use('/doctors', authenticatedRoute, doctorRoute, DoctorController);
 
 export const ApiController = router;
