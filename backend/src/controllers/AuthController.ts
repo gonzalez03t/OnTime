@@ -6,6 +6,7 @@ import register from '../endpoints/auth/register';
 import validateOtp from '../endpoints/auth/validateOtp';
 import requireBody from '../middleware/requireBody';
 import authenticatedRoute from '../middleware/authenticatedRoute';
+import requireSession from '../middleware/requireSession';
 
 /**
  * This controller handles all authentication functions.
@@ -17,11 +18,10 @@ router.post('/login', requireBody, login);
 router.post('/logout', authenticatedRoute, logout);
 router.post('/register', requireBody, register);
 
-router.post('/otp/validate', authenticatedRoute, requireBody, validateOtp);
-router.post('/otp/new', authenticatedRoute, createOtp);
+router.post('/otp/validate', requireSession, requireBody, validateOtp);
+router.post('/otp/new', requireSession, createOtp);
 
 // TODO: forgot password --> look into how to handle this
 // router.post('/password/forgot', requireBody, forgotPassword);
-// router.post('/password/reset', requireBody, forgotPassword);
 
 export const AuthController = router;

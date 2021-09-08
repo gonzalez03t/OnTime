@@ -23,7 +23,8 @@
     "start": "concurrently \"yarn start:server\" \"yarn start:web\"",
     "pretty:web": "npx prettier --write web/**/*.{js,css}",
     "pretty:backend": "npx prettier --write backend/**/*.{ts}",
-    "pretty:all": "yarn pretty:web && yarn pretty:backend"
+    "pretty:all": "yarn pretty:web && yarn pretty:backend",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "concurrently": "^6.0.2"

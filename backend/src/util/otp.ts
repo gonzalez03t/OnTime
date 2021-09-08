@@ -41,12 +41,12 @@ export async function startOtpAuthFlow(user: User): Promise<OtpAuthFlowReturn> {
 
   // if an otp already exists for the user, use new fields
   if (existing) {
-    existing.code = code;
+    existing.code = await Token.hashCode(code);
     existing.expiresAt = expiresAt;
 
     otp = existing;
   } else {
-    otp = Token.createOtpToken(user);
+    otp = await Token.createOtpToken(code, expiresAt, user);
   }
 
   return em

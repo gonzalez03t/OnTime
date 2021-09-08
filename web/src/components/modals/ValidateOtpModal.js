@@ -31,6 +31,7 @@ export default function ValidateOtpModal({ open, onValidMatch, onCancel }) {
       alert('SENT NEW OTP');
     } else {
       // TODO: notify user there was a problem trying to complete request
+      console.log(res);
     }
     loadingNewCodeToggles.off();
   }
