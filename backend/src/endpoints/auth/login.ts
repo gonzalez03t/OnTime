@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
 import { User } from '../../entities/User';
-import { startOptAuthFlow } from '../../util/otp';
+import { startOtpAuthFlow } from '../../util/otp';
 import { sendOtpSms } from '../../util/sendSms';
 import { saveSession } from '../../util/session';
 
@@ -22,7 +22,7 @@ export default async function login(req: Request, res: Response) {
     const user = await em.findOne(User, { email });
 
     if (user && (await user.validatePassword(password))) {
-      const { code, err } = await startOptAuthFlow(user);
+      const { code, err } = await startOtpAuthFlow(user);
 
       if (!code) {
         res.status(500).send(err);

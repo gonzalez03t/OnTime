@@ -1,6 +1,6 @@
 import totp from 'totp-generator';
 import { em } from '..';
-import { Otp } from '../entities/Otp';
+import { Token, TokenType } from '../entities/Token';
 import { User } from '../entities/User';
 
 const OTP_SECRET = process.env.OTP_SECRET;
@@ -32,25 +32,21 @@ interface OtpAuthFlowReturn {
   err?: any;
 }
 
-export async function startOptAuthFlow(user: User): Promise<OtpAuthFlowReturn> {
+export async function startOtpAuthFlow(user: User): Promise<OtpAuthFlowReturn> {
   const { code, expiresAt } = generateOtp();
 
-  let otp;
+  let otp: Token;
 
-  const existing = await em.findOne(Otp, { user });
+  const existing = await em.findOne(Token, { user, type: TokenType.OTP });
 
   // if an otp already exists for the user, use new fields
   if (existing) {
-    existing.code = code;
+    existing.code = await Token.hashCode(code);
     existing.expiresAt = expiresAt;
 
     otp = existing;
   } else {
-    otp = em.create(Otp, {
-      code,
-      expiresAt,
-      user,
-    });
+    otp = await Token.createOtpToken(code, expiresAt, user);
   }
 
   return em

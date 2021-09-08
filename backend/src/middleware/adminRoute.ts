@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../entities/User';
-import { em } from '..';
+import { getSessionUser } from '../util/session';
 
 /**
  * This middleware function enforces an admin session.
@@ -11,19 +10,13 @@ export default async function adminRoute(
   res: Response,
   next: NextFunction
 ) {
-  // @ts-ignore: bug but promise it works
-  const { userId } = req.session;
+  const user = await getSessionUser(req);
 
-  await em
-    .findOneOrFail(User, { id: userId })
-    .then((user) => {
-      if (user && user.isAdmin()) {
-        next();
-      } else if (user) {
-        res.sendStatus(403);
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((err) => res.status(500).send(err));
+  if (user?.isAdmin()) {
+    next();
+  } else if (user) {
+    res.sendStatus(403);
+  } else {
+    res.sendStatus(401);
+  }
 }

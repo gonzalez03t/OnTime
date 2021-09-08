@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
-import { Otp } from '../../entities/Otp';
-import { saveSession } from '../../util/session';
+import { Token, TokenType } from '../../entities/Token';
+import { getSessionUser, saveSession } from '../../util/session';
 
 export default async function validateOtp(req: Request, res: Response) {
   const { code } = req.body;
   // @ts-ignore
   const { userId } = req.session;
 
-  const otp = await em.findOne(Otp, { user: userId });
+  const user = await getSessionUser(req);
+
+  const otp = await em.findOne(Token, { user, type: TokenType.OTP });
 
   if (!code) {
     res.status(400).send('The code is required.');
@@ -16,14 +18,19 @@ export default async function validateOtp(req: Request, res: Response) {
     res.status(500).send('Could not verify OTP');
   } else if (otp.isExpired()) {
     res.status(401).send('OTP has expired. Please try logging on again.');
-  } else if (otp.code !== code) {
+  } else if (!(await otp.compare(code))) {
+    console.log(await otp.compare(code));
     res.status(401).send({ valid: false });
   } else {
-    await saveSession(userId, 'validated', req)
+    em.removeAndFlush(otp)
       .then(() =>
-        res.status(200).json({
-          valid: true,
-        })
+        saveSession(userId, 'authenticated', req)
+          .then(() =>
+            res.status(200).json({
+              valid: true,
+            })
+          )
+          .catch((err) => res.status(500).send(err))
       )
       .catch((err) => res.status(500).send(err));
   }

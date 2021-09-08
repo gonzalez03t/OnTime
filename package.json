@@ -14,14 +14,15 @@
     "install:web": "cd web && yarn",
     "install:all": "yarn install:web && yarn install:backend && yarn install:mobile",
     "build:frontend": "cd web && yarn build",
-    "dev:web": "cd web && yarn start",
+    "start:web": "cd web && yarn start",
     "dev:ios": "cd mobile && yarn ios",
     "dev:android": "cd mobile && yarn android",
     "dev:server": "cd backend && yarn dev",
-    "web:dev": "concurrently \"yarn dev:server\" \"yarn dev:web\"",
-    "pretty:web": "npx prettier --write web/**/*.{js,css}",
-    "pretty:backend": "npx prettier --write backend/**/*.{ts}",
-    "pretty:all": "yarn pretty:web && yarn pretty:backend"
+    "start:server": "cd backend && yarn start",
+    "dev": "concurrently \"yarn dev:server\" \"yarn start:web\"",
+    "start": "concurrently \"yarn start:server\" \"yarn start:web\"",
+    "pretty:all": "npx prettier --write **/*.{js,css,ts}",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "concurrently": "^6.0.2"

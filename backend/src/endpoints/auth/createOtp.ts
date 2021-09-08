@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { startOptAuthFlow } from '../../util/otp';
+import { startOtpAuthFlow } from '../../util/otp';
 import { sendOtpSms } from '../../util/sendSms';
 import { getSessionUser } from '../../util/session';
 
@@ -13,7 +13,7 @@ export default async function createOtp(req: Request, res: Response) {
   const user = await getSessionUser(req);
 
   if (user) {
-    const { code, err } = await startOptAuthFlow(user);
+    const { code, err } = await startOtpAuthFlow(user);
 
     if (!code) {
       res.status(500).send(err);
