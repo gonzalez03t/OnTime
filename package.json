@@ -21,9 +21,7 @@
     "start:server": "cd backend && yarn start",
     "dev": "concurrently \"yarn dev:server\" \"yarn start:web\"",
     "start": "concurrently \"yarn start:server\" \"yarn start:web\"",
-    "pretty:web": "npx prettier --write web/**/*.{js,css}",
-    "pretty:backend": "npx prettier --write backend/**/*.{ts}",
-    "pretty:all": "yarn pretty:web && yarn pretty:backend",
+    "pretty:all": "npx prettier --write **/*.{js,css,ts}",
     "postinstall": "husky install"
   },
   "dependencies": {
