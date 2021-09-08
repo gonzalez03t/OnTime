@@ -1,21 +1,21 @@
 import { Route, Switch } from 'react-router-dom';
 
 // Pages
-import HomePage from '../pages/HomePage/HomePage';
-import SignUpPage from '../pages/SignUpPage/SignUpPage';
-import LoginPage from '../pages/LoginPage/LoginPage';
-import ContactUsPage from '../pages/ContactUsPage/ContactUsPage';
-import FourOhFourPage from '../pages/FourOhFourPage/FourOhFourPage';
-import FindUsPage from '../pages/FindUsPage/FindUsPage';
-import AccountInformationPage from '../pages/AccountInformationPage/AccountInformationPage';
-import GeneralInformationPage from '../pages/GeneralInformationPage/GeneralInformationPage';
-import NavigateToParkingPage from '../pages/NavigateToParkingPage/NavigateToParking';
-import NavigateToHospitalPage from '../pages/NavigateToHospitalPage/NavigateToHospitalPage';
-import PatientAppointmentPage from '../pages/PatientAppointmentsPage/PatientAppointmentsPage';
-import ManageAppointmentsPage from '../pages/ManageAppointmentsPage/ManageAppointmentsPage';
-import ManageRemindersPage from '../pages/ManageRemindersPage/ManageRemindersPage';
-import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
-import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
+import HomePage from '../Pages/HomePage/HomePage';
+import SignUpPage from '../Pages/SignUpPage/SignUpPage';
+import LoginPage from '../Pages/LoginPage/LoginPage';
+import ContactUsPage from '../Pages/ContactUsPage/ContactUsPage';
+import FourOhFourPage from '../Pages/FourOhFourPage/FourOhFourPage';
+import FindUsPage from '../Pages/FindUsPage/FindUsPage';
+import AccountInformationPage from '../Pages/AccountInformationPage/AccountInformationPage';
+import GeneralInformationPage from '../Pages/GeneralInformationPage/GeneralInformationPage';
+import NavigateToParkingPage from '../Pages/NavigateToParkingPage/NavigateToParking';
+import NavigateToHospitalPage from '../Pages/NavigateToHospitalPage/NavigateToHospitalPage';
+import PatientAppointmentPage from '../Pages/PatientAppointmentsPage/PatientAppointmentsPage';
+import ManageAppointmentsPage from '../Pages/ManageAppointmentsPage/ManageAppointmentsPage';
+import ManageRemindersPage from '../Pages/ManageRemindersPage/ManageRemindersPage';
+import ManageAdminsPage from '../Pages/ManageAdminsPage/ManageAdminsPage';
+import ManageNonAdminsPage from '../Pages/ManageNonAdminsPage/ManageNonAdminsPage';
 
 export default function Routes() {
   return (
