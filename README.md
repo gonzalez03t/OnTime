@@ -8,7 +8,7 @@ TODO
 
 ## Configuration
 
-You will need to write an `.env` file in the format of the `.env.example` provided at the project root. This will include:
+You will need to write an `.env` file in the format of the `.env.example` provided at the project root, as well as `web/.env`. This will include:
 
 - Mongo Connection Credentials
   - https://docs.atlas.mongodb.com/getting-started/

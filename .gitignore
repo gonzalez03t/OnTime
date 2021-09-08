@@ -231,3 +231,4 @@ node_modules
 .svelte
 /build
 /functions
+package-lock.json
