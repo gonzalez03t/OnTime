@@ -17,7 +17,7 @@ export default async function adminRoute(
   await em
     .findOneOrFail(User, { id: userId })
     .then((user) => {
-      if (user && (user.isAdmin() || user.isDoctor())) {
+      if (user && (user.isAdmin() || user.isEmployee())) {
         next();
       } else if (user) {
         res.sendStatus(403);

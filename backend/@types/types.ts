@@ -6,6 +6,6 @@ export type ReminderReturn = {
     startsAt: Date;
     endsAt: Date;
     duration: number;
-    doctor: Partial<User>;
+    employee: Partial<User>;
   };
 };

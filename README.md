@@ -52,7 +52,7 @@ For individual milestones, be sure to check out the README files in each of the 
 
 - Session-based authentication for secure user interactions with the software
 - Role-based access control to restrict users of varying privleges
-  - Base, Doctor and Admin roles
+  - Base, Employee and Admin roles
 - Automated SMS appointment reminders
 
 ## Known Issues

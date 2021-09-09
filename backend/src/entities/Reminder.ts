@@ -12,7 +12,7 @@ export class Reminder extends BaseEntity {
   appointment!: Appointment;
 
   async sendNotification() {
-    const { patient, startsAt, doctor } = this.appointment;
+    const { client, startsAt, employee } = this.appointment;
 
     // this will convert the start time to a human readable time string
     // like 4:20 PM
@@ -22,10 +22,14 @@ export class Reminder extends BaseEntity {
       hour12: true,
     });
 
-    const message = `Hello ${patient.fullName()},
+    const message = `Hello ${client.fullName()},
     
-You have an appointment with Dr. ${doctor.fullName()} scheduled for ${timeString}.`;
+You have an appointment with ${employee.fullName()} scheduled for ${timeString}.`;
 
-    sendSms(message, patient.phone);
+    sendSms(message, client.phone);
+  }
+
+  reschedule(diffInMilliSeconds: number) {
+    this.remindAt = new Date(this.remindAt.getTime() + diffInMilliSeconds);
   }
 }
