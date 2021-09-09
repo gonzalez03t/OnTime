@@ -74,7 +74,7 @@ export class Appointment extends BaseEntity {
 
   // I have defined some shortcuts below to update the status of an appointment
   // this is so I do not have to import AppointmentStatus everywhere
-  async cancel() {
+  cancel() {
     this.status = AppointmentStatus.CANCELLED;
     this.reminders.removeAll();
   }
