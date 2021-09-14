@@ -19,6 +19,8 @@ const options: Options = {
   debug: process.env.NODE_ENV !== 'production',
   highlighter:
     process.env.NODE_ENV !== 'production' ? new MongoHighlighter() : undefined,
+  // https://mikro-orm.io/docs/usage-with-mongo/
+  ensureIndexes: true,
 };
 
 export default options;

@@ -19,6 +19,7 @@ export enum UserRole {
 }
 
 @Entity()
+@Unique({ properties: 'email' })
 export class User extends BaseEntity {
   @Property()
   deactivated: boolean = false; // accounts should be deactivatable
@@ -29,8 +30,8 @@ export class User extends BaseEntity {
   @Property()
   lastName!: string;
 
-  @Unique()
   @Property()
+  @Unique()
   email!: string;
 
   @Property()

@@ -9,3 +9,9 @@ export type ReminderReturn = {
     employee: Partial<User>;
   };
 };
+
+export type SubAddressType = {
+  name: string;
+  latitude: number;
+  longitude: number;
+};

@@ -4,6 +4,7 @@ import authenticatedRoute from '../middleware/authenticatedRoute';
 import { AdminController } from './AdminController';
 import { AppointmentController } from './AppointmentController';
 import { AuthController } from './AuthController';
+import { CompanyController } from './CompanyController';
 import { ReminderController } from './ReminderController';
 import { UserController } from './UserController';
 
@@ -15,6 +16,7 @@ const router = Router();
 
 router.use('/appointments', authenticatedRoute, AppointmentController);
 router.use('/auth', AuthController);
+router.use('/company', CompanyController);
 router.use('/reminders', authenticatedRoute, ReminderController);
 router.use('/users', authenticatedRoute, UserController);
 router.use('/admin', authenticatedRoute, adminRoute, AdminController);

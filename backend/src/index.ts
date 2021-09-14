@@ -15,6 +15,9 @@ import mongoStoreConfig from './config/store';
 import MongoDBStore from 'connect-mongodb-session';
 import scheduler from './util/schedule';
 
+// seed the database : UNCOMMENT WHEN NOT NEEDEED
+import seed from './util/seed';
+
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const PORT = process.env.PORT || 5000;
@@ -55,6 +58,9 @@ async function bootstrap() {
 
   // set the global so it can be imported in the other files
   em = orm.em;
+
+  // seed the database : UNCOMMENT WHEN NOT NEEDEED
+  seed();
 
   // this will initialize the cron scheduler, which will look for reminders
   // to send every 1 minute.
