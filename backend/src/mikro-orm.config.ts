@@ -5,11 +5,14 @@ import { MongoHighlighter } from '@mikro-orm/mongo-highlighter';
 import path from 'path';
 import { Reminder } from './entities/Reminder';
 import { Token } from './entities/Token';
+import { Company } from './entities/Company';
+import { SubAddress } from './entities/SubAddress';
+import { Image } from './entities/Image';
 
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const options: Options = {
-  entities: [User, Appointment, Reminder, Token],
+  entities: [User, Appointment, Reminder, Token, Company, SubAddress, Image],
   type: 'mongo',
   dbName: process.env.DB_NAME,
   clientUrl: process.env.DB_URI!,

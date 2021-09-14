@@ -2,6 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
+  ManyToOne,
   OneToMany,
   Property,
   Unique,
@@ -9,6 +10,7 @@ import {
 import bcrypt from 'bcryptjs';
 import { Appointment } from './Appointment';
 import { BaseEntity } from './BaseEntity';
+import { Company } from './Company';
 
 export enum UserRole {
   BASE = 'BASE',
@@ -39,6 +41,9 @@ export class User extends BaseEntity {
 
   @Enum(() => UserRole)
   role: UserRole = UserRole.BASE; // default priviledge
+
+  @ManyToOne()
+  company?: Company;
 
   @OneToMany(() => Appointment, (apt) => apt.client)
   appointments = new Collection<Appointment>(this);
