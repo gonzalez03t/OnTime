@@ -10,10 +10,10 @@ const router = Router();
 
 router.get('/viewer', authenticatedRoute, getViewer);
 
-// TODO: list patients --> should this be in admin controller??
-// router.post('/patients', adminRoute, getPatients)
+// TODO: list clients --> should this be in admin controller??
+// router.post('/clients', adminRoute, getclients)
 
-// TODO: get patient --> should this be in admin controller??
-// router.post('/patient', adminRoute, getPatient)
+// TODO: get client --> should this be in admin controller??
+// router.post('/client', adminRoute, getclient)
 
 export const UserController = router;

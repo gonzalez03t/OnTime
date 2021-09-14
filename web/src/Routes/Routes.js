@@ -30,7 +30,11 @@ export default function Routes() {
       <Route path="/general_info" exact component={GeneralInformationPage} />
       <Route path="/nav_to_parking" exact component={NavigateToParkingPage} />
       <Route path="/nav_to_hospital" exact component={NavigateToHospitalPage} />
-      <Route path="/patient_appointments" exact component={PatientAppointmentPage} />
+      <Route
+        path="/patient_appointments"
+        exact
+        component={PatientAppointmentPage}
+      />
       <Route path="/manage_appts" exact component={ManageAppointmentsPage} />
       <Route path="/manage_reminders" exact component={ManageRemindersPage} />
       <Route path="/manage_admins" exact component={ManageAdminsPage} />

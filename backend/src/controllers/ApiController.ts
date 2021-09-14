@@ -18,6 +18,5 @@ router.use('/auth', AuthController);
 router.use('/reminders', authenticatedRoute, ReminderController);
 router.use('/users', authenticatedRoute, UserController);
 router.use('/admin', authenticatedRoute, adminRoute, AdminController);
-// router.use('/doctors', authenticatedRoute, doctorRoute, DoctorController);
 
 export const ApiController = router;

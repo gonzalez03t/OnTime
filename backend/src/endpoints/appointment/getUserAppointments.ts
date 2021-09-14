@@ -2,16 +2,16 @@ import { Request, Response } from 'express';
 import { em } from '../..';
 import { Appointment } from '../../entities/Appointment';
 import { redactAppointments } from '../../util/redacting';
+import { getSessionUser } from '../../util/session';
 
 /**
  * This function will return all the appointments for the logged in user.
  */
 export default async function getUserAppointments(req: Request, res: Response) {
-  // @ts-ignore: bug but promise it works
-  const { userId } = req.session;
+  const user = await getSessionUser(req);
 
   await em
-    .find(Appointment, { patient: userId }, ['doctor', 'reminders'])
+    .find(Appointment, { client: user }, ['employee', 'reminders'])
     .then((appointments) => res.send(redactAppointments(appointments)))
     .catch((err) => res.status(500).send(err));
 }
