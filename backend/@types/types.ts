@@ -11,7 +11,7 @@ export type ReminderReturn = {
 };
 
 export type SubAddressType = {
-  name: string;
+  label: string;
   latitude: number;
   longitude: number;
 };

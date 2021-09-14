@@ -29,7 +29,7 @@ export default async function registerCompany(req: Request, res: Response) {
       );
 
       // update the user's company
-      user.company = company;
+      user.makeCompanyOwner();
 
       await em
         .persistAndFlush([company, user])

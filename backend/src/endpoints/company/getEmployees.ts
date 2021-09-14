@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
-import { User, UserRole } from '../../entities/User';
+import { Company } from '../../entities/Company';
 
 /**
  * This endpoint will retrieve all users associated with a company (employees)
@@ -8,9 +8,15 @@ import { User, UserRole } from '../../entities/User';
 export default async function getEmployees(req: Request, res: Response) {
   const { companyId } = req.body;
 
-  // TODO: include admins?
-  await em
-    .find(User, { company: companyId, role: UserRole.EMPLOYEE })
-    .then((users) => users.map((user) => user.getEmployeeDetails()))
-    .catch((err) => res.status(500).send(err));
+  const company = await em.findOne(Company, { id: companyId }, ['employees']);
+
+  if (company) {
+    const employees = company.employees
+      .getItems()
+      .map((empl) => empl.getEmployeeDetails());
+
+    res.send(employees);
+  } else {
+    res.status(500).send('Could not retrieve target company');
+  }
 }

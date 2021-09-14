@@ -3,7 +3,7 @@ import { Embeddable, Property } from '@mikro-orm/core';
 @Embeddable()
 export class SubAddress {
   @Property()
-  name!: string;
+  label!: string;
 
   @Property()
   latitude!: number;
@@ -11,8 +11,8 @@ export class SubAddress {
   @Property()
   longitude!: number;
 
-  constructor(name: string, lat: number, long: number) {
-    this.name = name;
+  constructor(label: string, lat: number, long: number) {
+    this.label = label;
     this.latitude = lat;
     this.longitude = long;
   }

@@ -24,7 +24,6 @@ export default async function login(req: Request, res: Response) {
     console.log(user);
 
     if (user && (await user.validatePassword(password))) {
-      console.log('VALID');
       const { code, err } = await startOtpAuthFlow(user);
 
       if (!code) {

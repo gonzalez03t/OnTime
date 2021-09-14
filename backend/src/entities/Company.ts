@@ -4,7 +4,7 @@ import {
   Entity,
   Enum,
   ManyToMany,
-  OneToMany,
+  OneToOne,
   Property,
   Unique,
 } from '@mikro-orm/core';
@@ -21,15 +21,18 @@ import { User } from './User';
 @Entity()
 @Unique({ properties: ['name', 'fullAddress'] })
 export class Company extends BaseEntity {
+  @OneToOne(() => User)
+  owner!: User; // whoever created the account
+
   @ManyToMany(() => User)
-  admins = new Collection<User>(this);
+  admins = new Collection<User>(this); // does not include owner
 
   @Property()
   @Unique()
-  name!: string;
+  name!: string; // name of the company
 
   @Embedded({ object: true })
-  image?: Image;
+  image?: Image; // the logo of the company, wrapped in an embedded entity.
 
   @Property()
   @Unique()
@@ -41,7 +44,7 @@ export class Company extends BaseEntity {
   @Embedded(() => SubAddress, { array: true, nullable: true })
   subAddresses?: SubAddress[];
 
-  @OneToMany(() => User, (user) => user.company)
+  @ManyToMany(() => User)
   employees = new Collection<User>(this);
 
   @Enum(() => VerificationStatus)
@@ -55,6 +58,25 @@ export class Company extends BaseEntity {
     return this.status === VerificationStatus.VERIFIED;
   }
 
+  isOwnedBy(user: User) {
+    return user === this.owner;
+  }
+
+  hasAdmin(user: User) {
+    return this.admins.contains(user);
+  }
+
+  getDetails() {
+    return {
+      id: this.id,
+      name: this.name,
+      image: this.image,
+      phone: this.phone,
+      fullAddress: this.fullAddress,
+      subAddresses: this.subAddresses,
+    };
+  }
+
   constructor(
     creator: User,
     name: string,
@@ -65,9 +87,7 @@ export class Company extends BaseEntity {
   ) {
     super();
 
-    this.admins.add(creator);
-    // FIXME: is this necessary?
-    this.employees.add(creator);
+    this.owner = creator;
 
     this.name = name;
     this.image = new Image(imageUrl);
@@ -76,8 +96,8 @@ export class Company extends BaseEntity {
 
     if (subAddresses) {
       this.subAddresses = subAddresses.map(
-        ({ name, latitude, longitude }) =>
-          new SubAddress(name, latitude, longitude)
+        ({ label, latitude, longitude }) =>
+          new SubAddress(label, latitude, longitude)
       );
     }
   }

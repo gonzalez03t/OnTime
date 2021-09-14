@@ -13,4 +13,7 @@ router.get('/users', getUsers);
 router.post('/users/change-role', changeRole);
 router.post('/appointments', getAppointments);
 
+// TODO: approve/reject pending companies
+// TODO: approve/reject pending company images
+
 export const AdminController = router;

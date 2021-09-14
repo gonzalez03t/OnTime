@@ -12,6 +12,7 @@ import requireSession from '../middleware/requireSession';
 
 const router = Router();
 
+router.post('/', registerCompany);
 router.post('/new', requireBody, registerCompany);
 router.post('/employees', requireBody, requireSession, getEmployees);
 router.post('/employees/new', requireBody, companyAdminRoute, registerEmployee);

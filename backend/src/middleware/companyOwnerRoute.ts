@@ -6,22 +6,20 @@ import { getSessionUser } from '../util/session';
 /**
  * Requires the user be an admin of a company
  */
-export default async function companyAdminRoute(
+export default async function companyOwnerRoute(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const user = await getSessionUser(req);
 
-  if (user && user.isCompanyAdmin()) {
-    const company = await em.findOne(
-      Company,
-      { admins: { $contains: [user.id] } },
-      ['admins']
-    );
+  if (user && user.isCompanyOwner()) {
+    const company = await em.findOne(Company, { owner: user });
 
-    if (company && company.hasAdmin(user)) {
+    if (company) {
       next();
+    } else {
+      res.sendStatus(403);
     }
   } else if (user) {
     res.sendStatus(403);

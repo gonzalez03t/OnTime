@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
+import { Company } from '../../entities/Company';
 import { User } from '../../entities/User';
 import { getSessionUser } from '../../util/session';
 
@@ -9,35 +10,51 @@ import { getSessionUser } from '../../util/session';
 export default async function registerEmployee(req: Request, res: Response) {
   const { firstName, lastName, email, password, phone } = req.body;
 
-  const existingUser = await em.findOne(User, {
-    email,
-  });
-
   const admin = await getSessionUser(req);
 
   if (admin) {
-    if (existingUser) {
-      res
-        .status(500)
-        .send('You already have an employee with these credentials.');
-    } else {
-      const newUser = em.create(User, {
-        firstName,
-        lastName,
+    const company = await em.findOne(Company, {
+      $or: [{ owner: admin }, { admins: { $contains: [admin.id] } }],
+    });
+
+    if (company) {
+      const existingUser = await em.findOne(User, {
         email,
-        phone,
-        password: await User.generateHash(password),
-        company: admin.company!,
       });
 
-      await em
-        .persistAndFlush(newUser)
-        .then(async () => {
-          res.status(201).send('Employee created.');
-        })
-        .catch((err) => res.status(500).send(err));
+      if (existingUser) {
+        res.status(500).send('User already has a base account.');
+      } else {
+        const newUser = em.create(User, {
+          firstName,
+          lastName,
+          email,
+          phone,
+          password: await User.generateHash(password),
+        });
+
+        newUser.makeCompanyEmployee();
+
+        // load the relation if not loaded
+        if (!company.employees.isInitialized()) {
+          await company.employees.init();
+        }
+
+        // add the new employee
+        company.addEmployee(newUser);
+
+        await em
+          .persistAndFlush([newUser, company])
+          .then(async () => {
+            res.status(201).send('Employee created.');
+          })
+          .catch((err) => res.status(500).send(err));
+      }
+    } else {
+      // NO COMPANY LOADED
     }
   } else {
+    // NO USER LOADED FROM SESSION
     res.sendStatus(403);
   }
 }

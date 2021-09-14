@@ -1,6 +1,6 @@
 import { em } from '..';
 import { Company } from '../entities/Company';
-import { User, UserRole } from '../entities/User';
+import { User } from '../entities/User';
 
 /**
  * This will populate the database with fake data
@@ -16,7 +16,6 @@ export default async function seed() {
     email: 'aaronleopold1221@gmail.com',
     phone: '5616761089',
     password: await User.generateHash('dev'),
-    role: UserRole.ADMIN,
   });
 
   // const rodrigo = em.create(User, {
@@ -43,7 +42,6 @@ export default async function seed() {
     email: 'emilysmemily@gmail.com',
     phone: '1234567890',
     password: await User.generateHash('emily'),
-    role: UserRole.EMPLOYEE,
   });
 
   await em
@@ -65,12 +63,19 @@ export default async function seed() {
     '6502530000'
   );
 
+  console.log('*** Setting aaron as owner of Playcare Daycare');
+  aaron.makeCompanyOwner();
+
   console.log('*** Setting emily as employee of Playcare Daycare');
+
+  // add as employee
   daycare.addEmployee(emily);
-  emily.company = daycare;
+
+  // add work information
+  emily.makeCompanyEmployee();
 
   await em
-    .persistAndFlush([daycare, emily])
+    .persistAndFlush([daycare, emily, aaron])
     .then(() => console.log('*** Created all companies!'))
     .catch((err) =>
       err.code === 11000

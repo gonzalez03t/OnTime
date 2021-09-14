@@ -62,9 +62,13 @@ async function bootstrap() {
   // seed the database : UNCOMMENT WHEN NOT NEEDEED
   seed();
 
-  // this will initialize the cron scheduler, which will look for reminders
-  // to send every 1 minute.
-  scheduler.start();
+  // only init the scheduler on prod OR is var is set. This will cut the fluff in the
+  // debug console during development if the checks are not needed
+  if (process.env.LOOK_FOR_REMINDERS || process.env.NODE_ENV === 'production') {
+    // this will initialize the cron scheduler, which will look for reminders
+    // to send every 1 minute.
+    scheduler.start();
+  }
 
   // if production, serve the react files
   // FIXME: if we add mobile AND web variants, we will need
