@@ -7,6 +7,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
+import { Company } from './Company';
 import { Reminder } from './Reminder';
 import { User } from './User';
 
@@ -20,6 +21,9 @@ export enum AppointmentStatus {
 
 @Entity()
 export class Appointment extends BaseEntity {
+  @ManyToOne()
+  company!: Company;
+
   @ManyToOne()
   client!: User;
 

@@ -66,6 +66,10 @@ export class Company extends BaseEntity {
     return this.admins.contains(user);
   }
 
+  hasEmployee(user: User) {
+    return this.employees.contains(user);
+  }
+
   getDetails() {
     return {
       id: this.id,
@@ -75,6 +79,14 @@ export class Company extends BaseEntity {
       fullAddress: this.fullAddress,
       subAddresses: this.subAddresses,
     };
+  }
+
+  verifyCompany() {
+    this.status = VerificationStatus.VERIFIED;
+  }
+
+  rejectCompany() {
+    this.status = VerificationStatus.DENIED;
   }
 
   constructor(

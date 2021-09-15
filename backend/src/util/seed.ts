@@ -9,7 +9,7 @@ export default async function seed() {
   console.log('*** SEEDING DATABASE ***');
 
   console.log('*** Creating users...');
-  // create dev account
+
   const aaron = em.create(User, {
     firstName: 'Aaron',
     lastName: 'Leopold',
@@ -18,23 +18,13 @@ export default async function seed() {
     password: await User.generateHash('dev'),
   });
 
-  // const rodrigo = em.create(User, {
-  //   firstName: 'Rodrigo',
-  //   lastName: 'Lobo',
-  //   email: '',
-  //   phone: '',
-  //   password: await User.generateHash('dev'),
-  //   role: UserRole.ADMIN,
-  // });
-
-  // const jesus = em.create(User, {
-  //   firstName: 'Rodrigo',
-  //   lastName: 'Lobo',
-  //   email: '',
-  //   phone: '',
-  //   password: await User.generateHash('dev'),
-  //   role: UserRole.ADMIN,
-  // });
+  const jesus = em.create(User, {
+    firstName: 'Jesus',
+    lastName: 'Gonzalez',
+    email: 'gonzalez03t@gmail.com',
+    phone: '5555555555',
+    password: await User.generateHash('dev'),
+  });
 
   const emily = em.create(User, {
     firstName: 'Emily',
@@ -44,8 +34,16 @@ export default async function seed() {
     password: await User.generateHash('emily'),
   });
 
+  const mary = em.create(User, {
+    firstName: 'Mary',
+    lastName: 'Good',
+    email: 'mgood@med.hosp',
+    phone: '1234567899',
+    password: await User.generateHash('mary'),
+  });
+
   await em
-    .persistAndFlush([aaron, emily])
+    .persistAndFlush([aaron, jesus, emily, mary])
     .then(() => console.log('*** Created all users!'))
     .catch((err) =>
       err.code === 11000
@@ -55,16 +53,19 @@ export default async function seed() {
 
   console.log('*** Creating companies...');
 
+  console.log('*** Setting jesus as owner of Playcare Daycare');
+
   const daycare = new Company(
-    aaron,
+    jesus,
     'Playcare Daycare',
     'https://images.unsplash.com/photo-1572059002053-8cc5ad2f4a38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80',
     '1600 Amphitheatre Pkwy, Mountain View, CA 94043',
     '6502530000'
   );
 
-  console.log('*** Setting aaron as owner of Playcare Daycare');
-  aaron.makeCompanyOwner();
+  daycare.verifyCompany();
+
+  jesus.makeCompanyOwner();
 
   console.log('*** Setting emily as employee of Playcare Daycare');
 
@@ -74,8 +75,30 @@ export default async function seed() {
   // add work information
   emily.makeCompanyEmployee();
 
+  console.log('*** Setting aaron as owner of UF Neurosurgery');
+
+  const clinic = new Company(
+    aaron,
+    'UF Neurosurgery',
+    'https://images.unsplash.com/photo-1572059002053-8cc5ad2f4a38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80',
+    '1505 SW Archer Rd, Gainesville, FL 32608',
+    '3522739000'
+  );
+
+  clinic.verifyCompany();
+
+  aaron.makeCompanyOwner();
+
+  console.log('*** Setting mary as employee of Playcare Daycare');
+
+  // add as employee
+  clinic.addEmployee(mary);
+
+  // add work information
+  mary.makeCompanyEmployee();
+
   await em
-    .persistAndFlush([daycare, emily, aaron])
+    .persistAndFlush([daycare, clinic, aaron, jesus, emily, mary])
     .then(() => console.log('*** Created all companies!'))
     .catch((err) =>
       err.code === 11000
