@@ -65,7 +65,7 @@ export default async function seed() {
 
   daycare.verifyCompany();
 
-  jesus.makeCompanyOwner();
+  jesus.makeCompanyOwner(daycare);
 
   console.log('*** Setting emily as employee of Playcare Daycare');
 
@@ -73,7 +73,7 @@ export default async function seed() {
   daycare.addEmployee(emily);
 
   // add work information
-  emily.makeCompanyEmployee();
+  emily.makeCompanyEmployee(daycare);
 
   console.log('*** Setting aaron as owner of UF Neurosurgery');
 
@@ -87,7 +87,7 @@ export default async function seed() {
 
   clinic.verifyCompany();
 
-  aaron.makeCompanyOwner();
+  aaron.makeCompanyOwner(clinic);
 
   console.log('*** Setting mary as employee of Playcare Daycare');
 
@@ -95,7 +95,7 @@ export default async function seed() {
   clinic.addEmployee(mary);
 
   // add work information
-  mary.makeCompanyEmployee();
+  mary.makeCompanyEmployee(clinic);
 
   await em
     .persistAndFlush([daycare, clinic, aaron, jesus, emily, mary])

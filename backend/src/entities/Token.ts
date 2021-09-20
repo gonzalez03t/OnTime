@@ -1,13 +1,16 @@
-import { Entity, Enum, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
 import { User } from './User';
 import bcrypt from 'bcryptjs';
+import { Company } from './Company';
 
 export enum TokenType {
   OTP = 'OTP', // used for login auth flow
+  EMPLOYEE_INVITE = 'EMPLOYEE_INVITE',
 }
 
 @Entity()
+@Unique({ properties: ['user', 'type'] })
 export class Token extends BaseEntity {
   @Property()
   code!: string; // hash
@@ -15,8 +18,11 @@ export class Token extends BaseEntity {
   @Property()
   expiresAt!: Date;
 
-  @OneToOne()
+  @ManyToOne()
   user!: User;
+
+  @ManyToOne()
+  company?: Company;
 
   @Enum(() => TokenType)
   type!: TokenType;
@@ -44,6 +50,25 @@ export class Token extends BaseEntity {
     const encryptedCode = await Token.hashCode(code);
 
     return new Token(encryptedCode, expiresAt, user, TokenType.OTP);
+  }
+
+  static async createInviteToken(
+    code: string,
+    expiresAt: Date,
+    user: User,
+    company: Company
+  ) {
+    const encryptedCode = await Token.hashCode(code);
+
+    const token = new Token(
+      encryptedCode,
+      expiresAt,
+      user,
+      TokenType.EMPLOYEE_INVITE
+    );
+    token.company = company;
+
+    return token;
   }
 
   /**

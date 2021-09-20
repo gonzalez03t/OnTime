@@ -63,7 +63,7 @@ export class Company extends BaseEntity {
   }
 
   hasAdmin(user: User) {
-    return this.admins.contains(user);
+    return this.admins.contains(user) || this.isOwnedBy(user);
   }
 
   hasEmployee(user: User) {

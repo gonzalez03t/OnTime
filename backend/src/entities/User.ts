@@ -2,7 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
-  // ManyToOne,
+  ManyToOne,
   OneToMany,
   Property,
   Unique,
@@ -10,6 +10,7 @@ import {
 import bcrypt from 'bcryptjs';
 import { Appointment } from './Appointment';
 import { BaseEntity } from './BaseEntity';
+import { Company } from './Company';
 
 export enum UserRole {
   BASE = 'BASE', // user making appointments with companies
@@ -46,6 +47,9 @@ export class User extends BaseEntity {
 
   @Enum(() => UserRole)
   role: UserRole = UserRole.BASE; // default priviledge
+
+  @ManyToOne(() => Company, { nullable: true })
+  company?: Company;
 
   @OneToMany(() => Appointment, (apt) => apt.client)
   appointments = new Collection<Appointment>(this);
@@ -127,15 +131,23 @@ export class User extends BaseEntity {
     this.role = newRole;
   }
 
-  makeCompanyEmployee() {
+  makeBaseUser() {
+    this.role = UserRole.BASE;
+    this.company = undefined;
+  }
+
+  makeCompanyEmployee(company: Company) {
     this.role = UserRole.EMPLOYEE;
+    this.company = company;
   }
 
-  makeCompanyAdmin() {
+  makeCompanyAdmin(company: Company) {
     this.role = UserRole.COMPANY_ADMIN;
+    this.company = company;
   }
 
-  makeCompanyOwner() {
+  makeCompanyOwner(company: Company) {
     this.role = UserRole.COMPANY_OWNER;
+    this.company = company;
   }
 }

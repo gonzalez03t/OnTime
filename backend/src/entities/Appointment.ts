@@ -12,6 +12,7 @@ import { Reminder } from './Reminder';
 import { User } from './User';
 
 // TODO: set up cronjob to occassionally remove stored, past appointments?
+// TODO: add an approved status
 export enum AppointmentStatus {
   PENDING = 'PENDING',
   MISSED = 'MISSED',
