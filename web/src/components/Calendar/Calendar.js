@@ -1,7 +1,8 @@
-import { Calendar,  momentLocalizer } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import React from 'react';
-import moment from 'moment'
+import { Calendar,  momentLocalizer } from 'react-big-calendar';
+import ViewApptModal from '../modals/ViewApptModal';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import moment from 'moment';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -23,18 +24,33 @@ const myEventsList = [
     },
 ]
 
-const ApptCalendar = props => (
-    <div id="appointment-calendar">
-      <Calendar
-        localizer={localizer}
-        events={myEventsList}
-        views={["week", "month"]}
-        step={30}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-      />
-    </div>
-)
+export default function ApptCalendar() {
+  const [open, setOpen] = React.useState(false)
+  const [event, setEvent] = React.useState()
+  
+  function handleSelectEvent(event) {
+    setEvent(event)
+    setOpen(true)
+  }
 
-export default ApptCalendar;
+  function handleClose(){
+    setOpen(false)
+    setEvent(undefined)
+  }
+
+  return (
+    <div id="appointment-calendar">
+    <Calendar
+      localizer={localizer}
+      events={myEventsList}
+      views={["week", "month"]}
+      step={30}
+      startAccessor="start"
+      endAccessor="end"
+      onSelectEvent={handleSelectEvent}
+      style={{ height: 500 }}
+    />
+    <ViewApptModal open={open} appointment={event} onClose={handleClose}/>
+  </div>
+  )
+}
