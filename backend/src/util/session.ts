@@ -41,21 +41,14 @@ export function getSessionUserOrFail(req: Request) {
   return em.findOneOrFail(User, { id: userId });
 }
 
-export async function getSessionUserCompany(req: Request) {
-  // @ts-ignore: bug but promise this works
-  const { userId } = req.session;
-
-  const user = await em.findOneOrFail(User, { id: userId }, [
-    'company',
-    'company.admins',
-  ]);
-
-  return user.company;
-}
-
 export async function getSessionUserAndCompany(req: Request) {
   // @ts-ignore: bug but promise this works
   const { userId } = req.session;
 
-  return await em.findOne(User, { id: userId }, ['company', 'company.admins']);
+  // I am populating the relations here, lazy loading
+  return em.findOne(User, { id: userId }, [
+    'company',
+    'company.admins',
+    'company.employees',
+  ]);
 }
