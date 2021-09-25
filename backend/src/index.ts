@@ -22,6 +22,8 @@ require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const PORT = process.env.PORT || 5000;
 
+export const PRODUCTION = process.env.NODE_ENV === 'production';
+
 export let em: EntityManager<IDatabaseDriver<Connection>>;
 
 async function bootstrap() {
@@ -59,12 +61,13 @@ async function bootstrap() {
   // set the global so it can be imported in the other files
   em = orm.em;
 
-  // seed the database : UNCOMMENT WHEN NOT NEEDEED
-  seed();
+  if (!PRODUCTION) {
+    await seed();
+  }
 
   // only init the scheduler on prod OR is var is set. This will cut the fluff in the
   // debug console during development if the checks are not needed
-  if (process.env.LOOK_FOR_REMINDERS || process.env.NODE_ENV === 'production') {
+  if (process.env.LOOK_FOR_REMINDERS || PRODUCTION) {
     // this will initialize the cron scheduler, which will look for reminders
     // to send every 1 minute.
     scheduler.start();
@@ -73,7 +76,7 @@ async function bootstrap() {
   // if production, serve the react files
   // FIXME: if we add mobile AND web variants, we will need
   // more than just 'development' or 'production'.
-  if (process.env.NODE_ENV === 'production') {
+  if (PRODUCTION) {
     app.use(
       '/static',
       express.static(path.join(__dirname, '../../web/build/static'))
