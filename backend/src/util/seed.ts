@@ -10,6 +10,14 @@ export default async function seed() {
 
   console.log('*** Creating users...');
 
+  const base = em.create(User, {
+    firstName: 'Base',
+    lastName: 'User',
+    email: 'base@gmail.com',
+    phone: '1111111111',
+    password: await User.generateHash('dev'),
+  });
+
   const aaron = em.create(User, {
     firstName: 'Aaron',
     lastName: 'Leopold',
@@ -43,7 +51,7 @@ export default async function seed() {
   });
 
   await em
-    .persistAndFlush([aaron, jesus, emily, mary])
+    .persistAndFlush([base, aaron, jesus, emily, mary])
     .then(() => console.log('*** Created all users!'))
     .catch((err) =>
       err.code === 11000

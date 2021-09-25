@@ -2,6 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
@@ -53,6 +54,13 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Appointment, (apt) => apt.client)
   appointments = new Collection<Appointment>(this);
+
+  @ManyToMany(() => Company)
+  favoriteCompanies = new Collection<Company>(this);
+
+  isBaseUser() {
+    return this.role === UserRole.BASE;
+  }
 
   isEmployee() {
     return this.role === UserRole.EMPLOYEE;
