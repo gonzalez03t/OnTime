@@ -12,8 +12,8 @@ export default async function getUserReminders(req: Request, res: Response) {
   const { userId } = req.session;
 
   await em
-    .find(Appointment, { patient: userId }, [
-      'doctor',
+    .find(Appointment, { client: userId }, [
+      'employee',
       'reminders',
       'reminders.appointment',
     ])

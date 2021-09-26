@@ -10,17 +10,17 @@ export default async function createTestReminder(_req: Request, res: Response) {
   const testAptDate = new Date(now.getTime() + 61 * 60000);
   testAptDate.setHours(testAptDate.getHours(), testAptDate.getMinutes(), 0, 0);
 
-  const patient = await em.findOneOrFail(User, {
+  const client = await em.findOneOrFail(User, {
     email: 'stimky@gmail.com',
   });
 
-  const doctor = await em.findOneOrFail(User, {
+  const employee = await em.findOneOrFail(User, {
     email: 'mgood@med.hosp',
   });
 
   const appointment = em.create(Appointment, {
-    patient,
-    doctor,
+    client,
+    employee,
     startsAt: testAptDate,
   });
 

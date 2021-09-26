@@ -10,12 +10,9 @@ import bcrypt from 'bcryptjs';
 import { Appointment } from './Appointment';
 import { BaseEntity } from './BaseEntity';
 
-// TODO: other roles? I feel like not all doctors should be admins,
-// but all doctors need some of the functions currently available to
-// doctors
 export enum UserRole {
   BASE = 'BASE',
-  DOCTOR = 'DOCTOR', // TODO: use me!
+  EMPLOYEE = 'EMPLOYEE',
   ADMIN = 'ADMIN',
 }
 
@@ -43,15 +40,15 @@ export class User extends BaseEntity {
   @Enum(() => UserRole)
   role: UserRole = UserRole.BASE; // default priviledge
 
-  @OneToMany(() => Appointment, (apt) => apt.patient)
+  @OneToMany(() => Appointment, (apt) => apt.client)
   appointments = new Collection<Appointment>(this);
+
+  isEmployee() {
+    return this.role === UserRole.EMPLOYEE;
+  }
 
   isAdmin() {
     return this.role === UserRole.ADMIN;
-  }
-
-  isDoctor() {
-    return this.role === UserRole.DOCTOR;
   }
 
   /**
@@ -96,7 +93,7 @@ export class User extends BaseEntity {
    * This function is a more restricted version of User.getDetails() above. It is
    * meant to be used when BASE users request information about ADMIN users
    */
-  getDoctorDetails() {
+  getEmployeeDetails() {
     return {
       firstName: this.firstName,
       lastName: this.lastName,

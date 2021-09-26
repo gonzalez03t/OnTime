@@ -10,6 +10,7 @@ import { BaseEntity } from './BaseEntity';
 import { Reminder } from './Reminder';
 import { User } from './User';
 
+// TODO: set up cronjob to occassionally remove stored, past appointments?
 export enum AppointmentStatus {
   PENDING = 'PENDING',
   MISSED = 'MISSED',
@@ -20,13 +21,13 @@ export enum AppointmentStatus {
 @Entity()
 export class Appointment extends BaseEntity {
   @ManyToOne()
-  patient!: User;
+  client!: User;
 
   @Property()
   startsAt!: Date; // startsAt
 
   @ManyToOne()
-  doctor!: User; // this would be the doctor
+  employee!: User;
 
   @Property()
   duration: number = 60; // measured in MINUTES
@@ -75,13 +76,24 @@ export class Appointment extends BaseEntity {
   // this is so I do not have to import AppointmentStatus everywhere
   cancel() {
     this.status = AppointmentStatus.CANCELLED;
+    this.reminders.removeAll();
   }
 
-  miss() {
+  missed() {
     this.status = AppointmentStatus.MISSED;
   }
 
   complete() {
     this.status = AppointmentStatus.COMPLETED;
+  }
+
+  async reschedule(newDate: Date) {
+    const diffTime = Math.abs(newDate.getTime() - this.startsAt.getTime()); // milliseconds
+
+    this.startsAt = newDate;
+
+    this.reminders
+      .getItems()
+      .forEach((reminder) => reminder.reschedule(diffTime));
   }
 }

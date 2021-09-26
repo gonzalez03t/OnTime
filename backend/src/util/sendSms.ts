@@ -2,7 +2,7 @@ import Twilio from 'twilio';
 import twilioConfig from '../config/twilio';
 
 /**
- * This function will use twilio to send an SMS message to remind a patient
+ * This function will use twilio to send an SMS message to remind a client
  * about an upcoming appointment.
  *
  * @param message the preformatted message string to text
@@ -36,5 +36,9 @@ export default async function sendSms(message: string, to: string) {
 export async function sendOtpSms(code: string, to: string) {
   const message = `Your MedApt verification PIN is ${code}`;
 
-  sendSms(message, to);
+  if (process.env.USE_TWILIO || process.env.NODE_ENV === 'production') {
+    sendSms(message, to);
+  } else {
+    console.log('*** SMS MESSAGE:', message);
+  }
 }

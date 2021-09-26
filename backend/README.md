@@ -182,61 +182,61 @@ Base URL: `/api/auth`
 
 Base URL: `/api/appointments`
 
-| Path                              | `/`                                                     |
-| :-------------------------------- | :------------------------------------------------------ |
-| <b>Description</b>                | Retrieves a list of all appointments for logged in user |
-| <b>Method </b>                    | ![Get Request](./assets/get.png)                        |
-| <b>Body Parameters</b>            |                                                         |
-| <b>Response object</b>            |                                                         |
-| `[{ _id, startsAt, doctor, ...}]` | Success Type: Appointment[] (JSON)                      |
-|                                   | Failure Type: JSON (Mikro Error) OR plain-text string   |
-| <b>Response Status</b>            |                                                         |
-| `200`                             | Sucessful response                                      |
-| `500`                             | Server Error                                            |
+| Path                                | `/`                                                     |
+| :---------------------------------- | :------------------------------------------------------ |
+| <b>Description</b>                  | Retrieves a list of all appointments for logged in user |
+| <b>Method </b>                      | ![Get Request](./assets/get.png)                        |
+| <b>Body Parameters</b>              |                                                         |
+| <b>Response object</b>              |                                                         |
+| `[{ _id, startsAt, employee, ...}]` | Success Type: Appointment[] (JSON)                      |
+|                                     | Failure Type: JSON (Mikro Error) OR plain-text string   |
+| <b>Response Status</b>              |                                                         |
+| `200`                               | Sucessful response                                      |
+| `500`                               | Server Error                                            |
 
 <br/>
 <br/>
 
-| Path                     | `/filled`                                                   |
-| :----------------------- | :---------------------------------------------------------- |
-| <b>Description</b>       | Retrieves a list of scheduled appointments                  |
-| <b>Method </b>           | ![Post Request](./assets/post.png)                          |
-| <b>Body Parameters</b>   |                                                             |
-| `date`                   | Required: no                                                |
-|                          | Type: Date (JS Date/ISODate)                                |
-|                          | Description: Looks for appointments scheduled at this date  |
-|                          | When absent, default searches for appointments current date |
-| <b>Response object</b>   |                                                             |
-| `[{startsAt, duration}]` | Success Type: Partial<Appointment>[] (JSON)                 |
-|                          | Failure Type: JSON (Mikro Error) OR plain-text string       |
-| <b>Response Status</b>   |                                                             |
-| `200`                    | Sucessful response                                          |
-| `500`                    | Server Error                                                |
+| Path                     | `/filled`                                                                         |
+| :----------------------- | :-------------------------------------------------------------------------------- |
+| <b>Description</b>       | Retrieves a list of scheduled appointments                                        |
+| <b>Method </b>           | ![Post Request](./assets/post.png)                                                |
+| <b>Body Parameters</b>   |                                                                                   |
+| `dateRange`              | Required: no                                                                      |
+|                          | Type: JSON `{start, end}`                                                         |
+|                          | Description: Looks for appointments scheduled within this date range              |
+|                          | When absent, default searches for appointments from today to the end of the month |
+| <b>Response object</b>   |                                                                                   |
+| `[{startsAt, duration}]` | Success Type: Partial<Appointment>[] (JSON)                                       |
+|                          | Failure Type: JSON (Mikro Error) OR plain-text string                             |
+| <b>Response Status</b>   |                                                                                   |
+| `200`                    | Sucessful response                                                                |
+| `500`                    | Server Error                                                                      |
 
 <br/>
 <br/>
 
-| Path                            | `/new`                                                                 |
-| :------------------------------ | :--------------------------------------------------------------------- |
-| <b>Description</b>              | Create a new appointment                                               |
-| <b>Method </b>                  | ![Post Request](./assets/post.png)                                     |
-| <b>Body Parameters</b>          |                                                                        |
-| `doctorEmail`                   | Required: yes                                                          |
-|                                 | Type: string                                                           |
-|                                 | Description: the email of the doctor the appointment is with           |
-| `startsAt`                      | Required: yes                                                          |
-|                                 | Type: string                                                           |
-|                                 | Description: the date/time of the appointment                          |
-| `wantsReminder`                 | Required: no                                                           |
-|                                 | Type: boolean                                                          |
-|                                 | Description: indication of if the patient wants a twilio reminder sent |
-| <b>Response object</b>          |                                                                        |
-| `{ _id, startsAt, doctor, ...}` | Success Type: Appointment (JSON)                                       |
-|                                 | Failure Type: JSON (Mikro Error) OR plain-text string                  |
-| <b>Response Status</b>          |                                                                        |
-| `200`                           | Sucessful response                                                     |
-| `400`                           | Missing body parameters                                                |
-| `500`                           | Server Error                                                           |
+| Path                              | `/new`                                                                |
+| :-------------------------------- | :-------------------------------------------------------------------- |
+| <b>Description</b>                | Create a new appointment                                              |
+| <b>Method </b>                    | ![Post Request](./assets/post.png)                                    |
+| <b>Body Parameters</b>            |                                                                       |
+| `employeeEmail`                   | Required: yes                                                         |
+|                                   | Type: string                                                          |
+|                                   | Description: the email of the employee the appointment is with        |
+| `startsAt`                        | Required: yes                                                         |
+|                                   | Type: string                                                          |
+|                                   | Description: the date/time of the appointment                         |
+| `wantsReminder`                   | Required: no                                                          |
+|                                   | Type: boolean                                                         |
+|                                   | Description: indication of if the client wants a twilio reminder sent |
+| <b>Response object</b>            |                                                                       |
+| `{ _id, startsAt, employee, ...}` | Success Type: Appointment (JSON)                                      |
+|                                   | Failure Type: JSON (Mikro Error) OR plain-text string                 |
+| <b>Response Status</b>            |                                                                       |
+| `200`                             | Sucessful response                                                    |
+| `400`                             | Missing body parameters                                               |
+| `500`                             | Server Error                                                          |
 
 <br />
 

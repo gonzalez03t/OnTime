@@ -1,7 +1,7 @@
-export default function AccountInformation() {
-    return (
-        <div className="AccountInformation">
-          <p>ACCOUNT INFORMATION PAGE</p>
-        </div>
-    );
-  }
+export default function AccountInformationPage() {
+  return (
+    <div className="AccountInformation">
+      <p>ACCOUNT INFORMATION PAGE</p>
+    </div>
+  );
+}
