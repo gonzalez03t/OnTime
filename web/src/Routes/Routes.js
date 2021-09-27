@@ -1,6 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 
-// Pages
+// pages
 import HomePage from '../pages/HomePage/HomePage';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
