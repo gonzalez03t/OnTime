@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button, Form, Input } from 'semantic-ui-react';
 import { login } from '../../api/auth';
 import ValidateOtpModal from '../../components/modals/ValidateOtpModal';
 import useToggle from '../../hooks/useToggle';
+import useStore from '../../store/store';
 
 export default function LoginPage() {
+  const history = useHistory();
+
+  const { isAuthenticated, setUser, setUserStatus } = useStore((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    setUser: state.setUser,
+    setUserStatus: state.setUserStatus,
+  }));
+
   const [loading, { on, off }] = useToggle(false);
   const [open, openOtpTogglers] = useToggle(false);
-  const history = useHistory();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,8 +31,8 @@ export default function LoginPage() {
       const { user, status } = res.data;
 
       if (user && status === 'pending_otp_validation') {
+        setUser({ ...user, status });
         openOtpTogglers.on();
-        // TODO: store the user when we have a store
       }
     }
 
@@ -32,14 +40,25 @@ export default function LoginPage() {
   }
 
   function handleCancelOtpValidation() {
-    // TODO: clear store, they are cancelling mid auth flow
+    // they are cancelling mid auth flow, so remove user from store
+    setUser(null);
+    openOtpTogglers.off();
   }
 
   function handleValidOtpMatch() {
     openOtpTogglers.off();
 
+    setUserStatus('authenticated');
+
     history.push('/');
   }
+
+  // empty dep array so it only runs this once on initial render
+  useEffect(() => {
+    if (isAuthenticated()) {
+      history.push('/');
+    }
+  }, []);
 
   return (
     <div>

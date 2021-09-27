@@ -1,21 +1,21 @@
-# Appointment Scheduling Manager
+# OnTime
 
-FIRST ORDER OF BUSINESS -> Name this project and rename this repository!!
-
-## About this Project
-
-<NAME_OF_PROJECT> is a tool for scheduling and managing appointments, similar to Calendly. Companies may register their businesses to manage appointments, users register to make/manage their own appointments to the businesses.
+OnTime is a tool for scheduling and managing appointments, similar to Calendly. Companies may register their businesses to manage appointments, users register to make/manage their own appointments to the businesses.
 
 ## Configuration
 
-You will need to write an `.env` file in the format of the `.env.example` provided at the project root, as well as `web/.env`. This will include:
+You will need to write an `.env` file in the format of the `.env.example` provided at the project root, as well as `web/.env`. This will include things like:
 
 - Mongo Connection Credentials
   - https://docs.atlas.mongodb.com/getting-started/
 - Twilio API Configs (Keys, SID, Phone Numbers, etc)
   - https://www.twilio.com/docs/sms/quickstart/node#sign-up-for-twilio-and-get-a-twilio-phone-number
+- Google Maps API Configs
+  - https://developers.google.com/maps/documentation/javascript/get-api-key
+  - Be sure to add a Billing account for your project, and restrict the API key you get to your localhost
+    - Credentials -> Edit API Key -> Application Restrictions -> HTTP referrers (web sites) -> add the following items: localhost, localhost:3000, 127.0.0.1
 - CORS Configuration
-- Security Constants (i.e. bcryptjs configs)
+- Security Constants (e.g. bcryptjs configs, encryption secrets, etc)
 
 ## Installation and Startup
 
