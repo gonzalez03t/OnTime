@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 
 // pages
+import RouteLinks from '../pages/RouteLinks/RouteLinks';
 import HomePage from '../pages/HomePage/HomePage';
 import SignUpPage from '../pages/SignUpPage/SignUpPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
@@ -21,6 +22,7 @@ export default function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={HomePage} />
+      <Route path="/dev" exact component={RouteLinks} />
       <Route path="/contact_us" component={ContactUsPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/sign_up" component={SignUpPage} />

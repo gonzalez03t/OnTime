@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  InfoWindow,
-} from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import MapStyles from './MapStyles';
 import UFHealthLogoStyle from './UFHealthLogo.css';
 import SearchMapStyle from './SearchMap.css';
@@ -16,14 +11,17 @@ import UFHealthLogo from '../../assets/ufhealth.png';
 //} from 'use-places-autocomplete';
 
 const libraries = ['places'];
+
 const mapContainerStyle = {
   width: '70vw',
   height: '60vh',
 };
+
 const center = {
   lat: 29.648657,
   lng: -82.343629,
 };
+
 const options = {
   styles: MapStyles,
   disableDefaultUI: true,
@@ -36,8 +34,9 @@ export default function GoogleMaps() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
+
   // Marker state to display where user clicks
-  const [marker, setMarker] = React.useState([]);
+  const [marker, setMarker] = React.useState();
 
   const onMapClick = React.useCallback((event) => {
     setMarker({
@@ -73,7 +72,7 @@ export default function GoogleMaps() {
           </h1>
         </div>
 
-        <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+        {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
     </div>
   );
