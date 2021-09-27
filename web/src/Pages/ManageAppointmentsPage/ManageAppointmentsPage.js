@@ -1,4 +1,4 @@
-import ApptCalendar from "../../components/Calendar/Calendar"
+import ApptCalendar from '../../components/Calendar/Calendar';
 
 export default function ManageAppointments() {
   return (

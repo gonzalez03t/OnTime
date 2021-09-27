@@ -4,7 +4,7 @@ FIRST ORDER OF BUSINESS -> Name this project and rename this repository!!
 
 ## About this Project
 
-TODO
+<NAME_OF_PROJECT> is a tool for scheduling and managing appointments, similar to Calendly. Companies may register their businesses to manage appointments, users register to make/manage their own appointments to the businesses.
 
 ## Configuration
 
@@ -51,9 +51,17 @@ $ yarn start:web
 For individual milestones, be sure to check out the README files in each of the subfolders in the project root (backend, web and mobile). These will outline more specific completed features.
 
 - Session-based authentication for secure user interactions with the software
+- Multifactor authentication, using OTP over SMS
+  - One-way hashing of OTP codes and user passwords
 - Role-based access control to restrict users of varying privleges
-  - Base, Employee and Admin roles
+  - Base, Employee, Company Admin/Owner, and Admin roles
 - Automated SMS appointment reminders
+
+## Future Work
+
+There is plenty of opportunity for additional features to be developed. A list of potential features include:
+
+- Develop a way to embed the bulk of the scheduling UI as an iframe, so companies may integrate directly on their own website
 
 ## Known Issues
 
