@@ -8,18 +8,22 @@ import {
 } from 'semantic-ui-react';
 import ApptCalendar from '../../components/Calendar/Calendar';
 import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
 
 export default function UserDashboard() {
   function handleNewAppointment() {
     // TODO
   }
 
-  const { getUser } = useStore((state) => ({
-    isAuthenticated: state.getUser,
-  }));
+  const { user } = useStore(
+    (state) => ({
+      user: state.user,
+    }),
+    shallow
+  );
 
   return (
-    <Container style={{ marginTop: 100 }} fluid>
+    <Container style={{ marginTop: 100 }}>
       <Header as="h1" textAlign="center">
         <Icon name="address book outline" />
         <Header.Content>User Dashboard</Header.Content>
@@ -40,7 +44,7 @@ export default function UserDashboard() {
           </Button>
         </Grid.Column>
         <Grid.Column width={5}>
-          <Segment fluid>
+          <Segment>
             <Header as="h3" textAlign="center">
               Scheduled Reminders
             </Header>

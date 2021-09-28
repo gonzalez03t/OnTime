@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
+import UnAuthenticatedRoute from './UnAuthenticatedRoute';
+import useStore from '../store/store';
+import { viewer } from '../api/user';
 
 // pages
 import RouteLinks from '../pages/RouteLinks/RouteLinks';
@@ -21,9 +25,30 @@ import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPag
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 
 export default function Routes() {
+  const { isAuthenticated, setUser } = useStore((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    setUser: state.setUser,
+  }));
+
+  useEffect(() => {
+    async function init() {
+      const res = await viewer();
+
+      // console.log(res);
+
+      // the store is out of sync with the session.
+      // session has likely just expired.
+      if (res.status === 401 && isAuthenticated()) {
+        setUser(null);
+      }
+    }
+
+    init();
+  }, []);
+
   return (
     <Switch>
-      <Route path="/" exact component={HomePage} />
+      <UnAuthenticatedRoute path="/" exact component={HomePage} />
       <Route path="/dev" exact component={RouteLinks} />
       <Route path="/contact_us" component={ContactUsPage} />
       <Route path="/login" component={LoginPage} />

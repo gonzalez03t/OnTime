@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import SettingsNav from './SettingsNav/SettingsNav';
 import AccountSettings from './AccountSettings/AccountSettings';
 import CompanySettings from './CompanySettings/CompanySettings';
-import './SettingsPage.css';
 import PasswordSettings from './PasswordSettings/PasswordSettings';
+
+import './SettingsPage.css';
 
 export default function SettingsPage() {
   const [tab, setTab] = useState('account');

@@ -2,10 +2,11 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import useStore from '../store/store';
 
-// redirectTo is optional, defaulting to /login
-function ProtectedRoute({
+// this is essentially just the reverse of the ProtectedRoute.js
+// redirectedTo defaults to /dashboard
+function UnAuthenticatedRoute({
   component: Component,
-  redirectTo = '/login',
+  redirectTo = '/dashboard',
   ...restOfProps
 }) {
   const { isAuthenticated } = useStore((state) => ({
@@ -17,13 +18,13 @@ function ProtectedRoute({
       {...restOfProps}
       render={(props) =>
         isAuthenticated() ? (
-          <Component {...props} />
-        ) : (
           <Redirect to={redirectTo} />
+        ) : (
+          <Component {...props} />
         )
       }
     />
   );
 }
 
-export default ProtectedRoute;
+export default UnAuthenticatedRoute;
