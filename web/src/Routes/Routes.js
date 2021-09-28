@@ -1,4 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 // pages
 import RouteLinks from '../pages/RouteLinks/RouteLinks';
@@ -13,7 +14,7 @@ import GeneralInformationPage from '../pages/GeneralInformationPage/GeneralInfor
 import NavigateToParkingPage from '../pages/NavigateToParkingPage/NavigateToParking';
 import NavigateToHospitalPage from '../pages/NavigateToHospitalPage/NavigateToHospitalPage';
 import PatientAppointmentPage from '../pages/PatientAppointmentsPage/PatientAppointmentsPage';
-import ManageAppointmentsPage from '../pages/ManageAppointmentsPage/ManageAppointmentsPage';
+import UserDashboard from '../pages/UserDashboard/UserDashboard';
 import ManageRemindersPage from '../pages/ManageRemindersPage/ManageRemindersPage';
 import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
 import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
@@ -37,7 +38,7 @@ export default function Routes() {
         exact
         component={PatientAppointmentPage}
       />
-      <Route path="/manage_appts" exact component={ManageAppointmentsPage} />
+      <ProtectedRoute path="/dashboard" exact component={UserDashboard} />
       <Route path="/manage_reminders" exact component={ManageRemindersPage} />
       <Route path="/manage_admins" exact component={ManageAdminsPage} />
       <Route path="/manage_non_admins" exact component={ManageNonAdminsPage} />

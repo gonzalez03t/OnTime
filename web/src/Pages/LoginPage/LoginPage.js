@@ -50,7 +50,7 @@ export default function LoginPage() {
 
     setUserStatus('authenticated');
 
-    history.push('/');
+    history.push('/dashboard');
   }
 
   // empty dep array so it only runs this once on initial render
