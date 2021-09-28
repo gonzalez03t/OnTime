@@ -1,0 +1,14 @@
+.settings-section__title {
+  /* override semantic */
+  line-height: 1.5rem !important;
+  margin: 0 !important;
+
+  font-weight: 500;
+  color: #111827;
+}
+
+.settings-section__subtitle {
+  margin-top: 0.25rem;
+  font-size: small;
+  color: #6b7280;
+}

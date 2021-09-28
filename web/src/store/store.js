@@ -42,6 +42,12 @@ const useStore = create(
         return user && user.status === 'authenticated';
       },
 
+      isCompanyOwner() {
+        const user = get().user;
+
+        return get().isAuthenticated() && user?.type === 'COMPANY_OWNER';
+      },
+
       fullname: () => `${get().user['firstName']} ${get().user['lastName']}`,
 
       // This just assigns the state a new user. We don't check for null/undefined
