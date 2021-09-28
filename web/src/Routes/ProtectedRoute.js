@@ -1,5 +1,5 @@
-import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
 import useStore from '../store/store';
 
 function ProtectedRoute({ component: Component, ...restOfProps }) {
