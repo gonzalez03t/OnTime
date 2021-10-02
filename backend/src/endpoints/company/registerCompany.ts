@@ -18,6 +18,12 @@ export default async function registerCompany(req: Request, res: Response) {
       res
         .status(400)
         .send('Company name, address and phone number are required.');
+    } else if (user.hasAppointments()) {
+      res
+        .status(403)
+        .send(
+          'You must cancel your scheduled appointments before converting to a company account.'
+        );
     } else {
       const company = new Company(
         user,
