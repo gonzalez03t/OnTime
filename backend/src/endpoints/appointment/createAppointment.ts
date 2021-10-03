@@ -1,30 +1,45 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
 import { Appointment } from '../../entities/Appointment';
+import { Company } from '../../entities/Company';
 import { Reminder } from '../../entities/Reminder';
 import { User, UserRole } from '../../entities/User';
-import { getSessionUser } from '../../util/session';
+import { getSessionUserOrFail } from '../../util/session';
 
-// TODO: add logic for creating more than just a default reminder
 /**
  * This function will attempt to create an appointment for the logged in user
  */
 export default async function createAppointment(req: Request, res: Response) {
-  const user = await getSessionUser(req);
+  const user = await getSessionUserOrFail(req);
 
-  const { startsAt, employeeEmail, wantsReminder } = req.body;
+  const { startsAt, employeeEmail, wantsReminder, companyId } = req.body;
 
-  if (!startsAt || !employeeEmail) {
-    res.status(400).send('You must specify an appointment time and employee.');
+  if (!startsAt || !employeeEmail || !companyId) {
+    res
+      .status(400)
+      .send('You must specify an appointment time, company and employee.');
   } else {
     const employee = await em.findOne(User, {
       email: employeeEmail,
       role: UserRole.EMPLOYEE,
     });
 
-    if (employee) {
+    const company = await em.findOne(
+      Company,
+      {
+        id: companyId,
+      },
+      ['employees', 'admins']
+    );
+
+    if (
+      employee &&
+      company &&
+      (company.hasEmployee(employee) || company.hasAdmin(employee))
+    ) {
       const appointment = em.create(Appointment, {
         client: user,
+        company,
         employee,
         startsAt,
       });
@@ -42,6 +57,7 @@ export default async function createAppointment(req: Request, res: Response) {
         .then(() => res.status(201).send(appointment))
         .catch((err) => res.status(500).send(err));
     } else {
+      // EMPLOYEE/USER NOT FOUND
       res.status(400).send('Could not find the requested employee.');
     }
   }

@@ -2,6 +2,8 @@ import {
   Collection,
   Entity,
   Enum,
+  ManyToMany,
+  ManyToOne,
   OneToMany,
   Property,
   Unique,
@@ -9,14 +11,21 @@ import {
 import bcrypt from 'bcryptjs';
 import { Appointment } from './Appointment';
 import { BaseEntity } from './BaseEntity';
+import { Company } from './Company';
 
 export enum UserRole {
-  BASE = 'BASE',
-  EMPLOYEE = 'EMPLOYEE',
-  ADMIN = 'ADMIN',
+  BASE = 'BASE', // user making appointments with companies
+  EMPLOYEE = 'EMPLOYEE', // employee of company
+  COMPANY_ADMIN = 'COMPANY_ADMIN', // admins of companies
+  COMPANY_OWNER = 'COMPANY_OWNER', // owner of a 'company'
+  ADMIN = 'ADMIN', // admin of SAAS itself (i.e. developers, managing entities, etc)
 }
 
+// email must always be unique, phone must be unique relative to an email. This allows
+// company employees to have work and personal accounts while using their personal
+// phone number if they do not have a work number.
 @Entity()
+@Unique({ properties: ['email', 'phone'] })
 export class User extends BaseEntity {
   @Property()
   deactivated: boolean = false; // accounts should be deactivatable
@@ -27,8 +36,8 @@ export class User extends BaseEntity {
   @Property()
   lastName!: string;
 
-  @Unique()
   @Property()
+  @Unique()
   email!: string;
 
   @Property()
@@ -40,11 +49,32 @@ export class User extends BaseEntity {
   @Enum(() => UserRole)
   role: UserRole = UserRole.BASE; // default priviledge
 
+  @ManyToOne(() => Company, { nullable: true })
+  company?: Company;
+
   @OneToMany(() => Appointment, (apt) => apt.client)
   appointments = new Collection<Appointment>(this);
 
+  @ManyToMany(() => Company)
+  favoriteCompanies = new Collection<Company>(this);
+
+  isBaseUser() {
+    return this.role === UserRole.BASE;
+  }
+
   isEmployee() {
     return this.role === UserRole.EMPLOYEE;
+  }
+
+  isCompanyAdmin() {
+    return (
+      this.role === UserRole.COMPANY_ADMIN ||
+      this.role === UserRole.COMPANY_OWNER
+    );
+  }
+
+  isCompanyOwner() {
+    return this.role === UserRole.COMPANY_OWNER;
   }
 
   isAdmin() {
@@ -107,5 +137,25 @@ export class User extends BaseEntity {
    */
   changeRole(newRole: UserRole) {
     this.role = newRole;
+  }
+
+  makeBaseUser() {
+    this.role = UserRole.BASE;
+    this.company = undefined;
+  }
+
+  makeCompanyEmployee(company: Company) {
+    this.role = UserRole.EMPLOYEE;
+    this.company = company;
+  }
+
+  makeCompanyAdmin(company: Company) {
+    this.role = UserRole.COMPANY_ADMIN;
+    this.company = company;
+  }
+
+  makeCompanyOwner(company: Company) {
+    this.role = UserRole.COMPANY_OWNER;
+    this.company = company;
   }
 }

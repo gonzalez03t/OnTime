@@ -7,10 +7,12 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
+import { Company } from './Company';
 import { Reminder } from './Reminder';
 import { User } from './User';
 
 // TODO: set up cronjob to occassionally remove stored, past appointments?
+// TODO: add an approved status
 export enum AppointmentStatus {
   PENDING = 'PENDING',
   MISSED = 'MISSED',
@@ -20,6 +22,9 @@ export enum AppointmentStatus {
 
 @Entity()
 export class Appointment extends BaseEntity {
+  @ManyToOne()
+  company!: Company;
+
   @ManyToOne()
   client!: User;
 

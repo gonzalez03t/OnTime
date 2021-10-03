@@ -22,13 +22,14 @@ All express controllers are defined at `backend/src/controllers`. There is a wra
 
 All controllers mapped in the ApiController have the `/api` prefix
 
-| Path            | Controller                                |
-| :-------------- | :---------------------------------------- |
-| `/admin`        | [AdminController](#admincontroller)       |
-| `/auth`         | [AuthController](#authcontroller)         |
-| `/appointments` | [AuthController](#appointmentcontroller)  |
-| `/users`        | [UserController](#usercontroller)         |
-| `/reminders`    | [ReminderController](#remindercontroller) |
+| Path            | Controller                                      |
+| :-------------- | :---------------------------------------------- |
+| `/admin`        | [AdminController](#admincontroller)             |
+| `/auth`         | [AuthController](#authcontroller)               |
+| `/company`      | [CompanyController](#companycontroller)         |
+| `/appointments` | [AppointmentController](#appointmentcontroller) |
+| `/users`        | [UserController](#usercontroller)               |
+| `/reminders`    | [ReminderController](#remindercontroller)       |
 
 <br/>
 
@@ -176,6 +177,15 @@ Base URL: `/api/auth`
 | `400`                  | Missing body parameters                               |
 | `500`                  | Server Error OR Unauthorized                          |
 
+<br/>
+
+### CompanyController
+
+Base URL: `/api/company`
+
+TODO: write the docs
+
+<br/>
 <br/>
 
 ### AppointmentController
