@@ -132,6 +132,10 @@ export class User extends BaseEntity {
     };
   }
 
+  hasAppointments() {
+    return this.appointments.length > 0;
+  }
+
   /**
    * This function is just a utility for altering a users role
    */
@@ -157,5 +161,13 @@ export class User extends BaseEntity {
   makeCompanyOwner(company: Company) {
     this.role = UserRole.COMPANY_OWNER;
     this.company = company;
+
+    if (this.appointments.length) {
+      this.appointments.removeAll();
+    }
+
+    if (this.favoriteCompanies.length) {
+      this.favoriteCompanies.removeAll();
+    }
   }
 }

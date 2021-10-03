@@ -6,6 +6,16 @@ import { User } from '../entities/User';
  * This will populate the database with fake data
  */
 export default async function seed() {
+  console.log('*** CLEARING DATABASE ***');
+
+  await em.getDriver().nativeDelete('User', {});
+  await em.getDriver().nativeDelete('Appointment', {});
+  await em.getDriver().nativeDelete('Reminder', {});
+  await em.getDriver().nativeDelete('Company', {});
+  await em.getDriver().nativeDelete('Token', {});
+
+  console.log('*** DATABASE CLEARED --> READY TO POPULATE ***');
+
   console.log('*** SEEDING DATABASE ***');
 
   console.log('*** Creating users...');
