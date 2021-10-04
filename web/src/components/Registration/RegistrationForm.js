@@ -9,7 +9,7 @@ import { userFields, ownerCompanyFields } from './FormFields';
 // Pending:
 // Make secondary address optional. (maybe next sprint)
 // If secondary address is true, then city, state, zip become required
-// Handle submit for all three forms 
+// Handle submit for all three forms
 // Fix errors
 // Connect to back end
 
@@ -18,40 +18,36 @@ export default function RegistrationForm(props) {
   const history = useHistory();
 
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    password: "",
-    phone: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    password: '',
+    phone: '',
+    email: '',
   });
   const [companyData, setCompanyData] = useState({
-    companyName: "",
-    companyPhone: "",
-    mainAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    secondaryAddress: "",
-    secCity: "",
-    secState: "",
-    secZipCode: "",
-    imageURL: ""
+    companyName: '',
+    companyPhone: '',
+    mainAddress: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    secondaryAddress: '',
+    secCity: '',
+    secState: '',
+    secZipCode: '',
+    imageURL: '',
   });
 
-  console.log(userData);
-  console.log(companyData);
-
-  function handleChange(_e, { name, value }) {
-    console.log(name, value);
+  function handleUserChange(_e, { name, value }) {
     setUserData((current) => {
       return { ...current, [name]: value };
     });
-    
-    /*if (props.formType !== '3') {
-      setCompanyData((current) => {
-        return { ...current, [name]: value };
-      });
-    }*/
+  }
+
+  function handleCompanyChange(_e, { name, value }) {
+    setCompanyData((current) => {
+      return { ...current, [name]: value };
+    });
   }
 
   async function handleSubmit() {
@@ -70,7 +66,7 @@ export default function RegistrationForm(props) {
   }
 
   // Form header
-  let formHeader = "User Information:";
+  let formHeader = 'User Information:';
 
   // Add reusable fields to form
   const formGroups = userFields.map((group) => (
@@ -83,7 +79,7 @@ export default function RegistrationForm(props) {
             placeholder={field.placeholder}
             autoComplete={field.autoComplete}
             type={field.type}
-            onChange={handleChange}
+            onChange={handleUserChange}
             disabled={loading}
             required={field.required}
           />
@@ -93,14 +89,13 @@ export default function RegistrationForm(props) {
   ));
 
   if (props.formType !== '0') {
-
     // Update Employee form header
     if (props.formType == 2) {
-      formHeader = "Employee Information:";
+      formHeader = 'Employee Information:';
     }
     // Add owner company fields to form
     else if (props.formType == 3) {
-      formHeader = "Owner Information:";
+      formHeader = 'Owner Information:';
 
       const ownerCompanyGroups = ownerCompanyFields.map((group) => (
         <Form.Group widths="equal">
@@ -112,7 +107,7 @@ export default function RegistrationForm(props) {
                 placeholder={field.placeholder}
                 autoComplete={field.autoComplete}
                 type={field.type}
-                onChange={handleChange}
+                onChange={handleCompanyChange}
                 disabled={loading}
                 required={field.required}
               />
@@ -123,7 +118,7 @@ export default function RegistrationForm(props) {
 
       formGroups.push(
         <Header as="h3" style={{ marginTop: 35, marginBottom: 15 }}>
-              Company Information:
+          Company Information:
         </Header>
       );
       formGroups.push(...ownerCompanyGroups);
@@ -133,7 +128,10 @@ export default function RegistrationForm(props) {
       <Container style={{ marginTop: 20 }}>
         <Segment padded raised>
           <Form onSubmit={handleSubmit}>
-            <Header as="h3" style={{ marginTop: 10, marginBottom: 15 }}> {formHeader} </Header>
+            <Header as="h3" style={{ marginTop: 10, marginBottom: 15 }}>
+              {' '}
+              {formHeader}{' '}
+            </Header>
             {formGroups}
 
             <p style={{ marginTop: 30 }}>

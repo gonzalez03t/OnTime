@@ -88,7 +88,7 @@ export const ownerCompanyFields = [
     },
     {
       name: 'state',
-      lable: 'State:',
+      label: 'State:',
       placeholder: 'Florida',
       autoComplete: 'state',
       type: 'state',
@@ -116,7 +116,7 @@ export const ownerCompanyFields = [
   [
     {
       name: 'secCity',
-      lable: 'City:',
+      label: 'City:',
       placeholder: 'Jacksonville',
       autoComplete: 'city',
       type: 'city',
@@ -124,7 +124,7 @@ export const ownerCompanyFields = [
     },
     {
       name: 'secState',
-      lable: 'State:',
+      label: 'State:',
       placeholder: 'Florida',
       autoComplete: 'state',
       type: 'state',
@@ -132,7 +132,7 @@ export const ownerCompanyFields = [
     },
     {
       name: 'secZipCode',
-      lable: 'Postal / zip code:',
+      label: 'Postal / zip code:',
       placeholder: '32250',
       autoComplete: 'zip-code',
       type: 'zip-code',
@@ -142,7 +142,7 @@ export const ownerCompanyFields = [
   [
     {
       name: 'imageURL',
-      lable: 'Image url:',
+      label: 'Image url:',
       placeholder: 'https://ufhealth.com-1024x614.jpeg',
       autoComplete: '',
       type: '',
