@@ -43,7 +43,7 @@ export default function SignUpPage() {
           </Form.Group>
         </Form>
       </Segment>
-      <RegistrationForm formType={value}/>
+      <RegistrationForm formType={value} />
     </Container>
   );
 }

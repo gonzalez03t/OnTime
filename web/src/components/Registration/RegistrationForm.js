@@ -4,58 +4,18 @@ import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
 import { register } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
-
-const fields = [
-  [
-    {
-      "name": "First Name",
-      "placeholder": "Bob",
-      "autoComplete": "given-name",
-      "type": ""
-    },
-    {
-      "name": "Last Name",
-      "placeholder": "Burger",
-      "autoComplete": "family-name",
-      "type" : ""
-    }
-  ],
-  [
-    {
-      "name": "Password",
-      "placeholder": "supersecurepassword",
-      "autoComplete": "password",
-      "type": "password",
-    }
-  ],
-  [
-    {
-      "name": "Email address",
-      "placeholder": "somecoolname@gmail.com",
-      "autoComplete": "email",
-      "width": "4"
-    },
-    {
-      "name": "Phone number",
-      "placeholder": "555-555-5555",
-      "autoComplete": "tel",
-      "type": "tel"
-    }
-  ],
-];
-
+import { userFields, employeeCompanyFields, ownerCompanyFields } from './FormFields';
 
 export default function RegistrationForm(props) {
   const [loading, { on, off }] = useToggle(false);
   const history = useHistory();
-  let form = null;
 
   const [userData, setUserData] = useState({
-    firstName: '',
-    lastName: '',
-    password: '',
-    phone: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    password: "",
+    phone: "",
+    email: "",
   });
 
   function handleChange(_e, { name, value }) {
@@ -79,41 +39,95 @@ export default function RegistrationForm(props) {
     }
   }
 
-  const fieldList = fields.map((group) =>
+  // Form header
+  let formHeader = "User Information:";
+
+  // Add reusable fields to form
+  const formGroups = userFields.map((group) => (
     <Form.Group widths="equal">
-      {
-        group.map((field) =>
-          <Form.Field key={field.name} > 
-            <label>{field.name}</label>
-            <Form.Input
-              name={field.name}
-              placeholder={field.placeholder}
-              autoComplete={field.autoComplete}
-              type={field.type}
-              onChange={handleChange}
-              disabled={loading}
-              required
-            />
-          </Form.Field>
-        )
-      }
+      {group.map((field) => (
+        <Form.Field key={field.name}>
+          <label>{field.name}</label>
+          <Form.Input
+            name={field.name}
+            placeholder={field.placeholder}
+            autoComplete={field.autoComplete}
+            type={field.type}
+            onChange={handleChange}
+            disabled={loading}
+            required={field.required}
+          />
+        </Form.Field>
+      ))}
     </Form.Group>
-  );
+  ));
 
   if (props.formType !== '0') {
 
-    if (props.formType == 1) {
-      // continue here...
+    // Add employee company fields to form
+    if (props.formType == 2) {
+      formHeader = "Employee Information:";
+
+      const employeeCompanyGroups = employeeCompanyFields.map((group) => (
+        <Form.Group widths="equal">
+          {group.map((field) => (
+            <Form.Field key={field.name}>
+              <label>{field.name}</label>
+              <Form.Input
+                name={field.name}
+                placeholder={field.placeholder}
+                autoComplete={field.autoComplete}
+                type={field.type}
+                onChange={handleChange}
+                disabled={loading}
+                required={field.required}
+              />
+            </Form.Field>
+          ))}
+        </Form.Group>
+      ));
+
+      formGroups.push(...employeeCompanyGroups);
+    }
+    // Add owner company fields to form
+    else if (props.formType == 3) {
+      formHeader = "Owner Information:";
+
+      const ownerCompanyGroups = ownerCompanyFields.map((group) => (
+        <Form.Group widths="equal">
+          {group.map((field) => (
+            <Form.Field key={field.name}>
+              <label>{field.name}</label>
+              <Form.Input
+                name={field.name}
+                placeholder={field.placeholder}
+                autoComplete={field.autoComplete}
+                type={field.type}
+                onChange={handleChange}
+                disabled={loading}
+                required={field.required}
+              />
+            </Form.Field>
+          ))}
+        </Form.Group>
+      ));
+
+      formGroups.push(
+        <Header as="h3" style={{ marginTop: 35, marginBottom: 15 }}>
+              Company Information:
+        </Header>
+      );
+      formGroups.push(...ownerCompanyGroups);
     }
 
     return (
       <Container style={{ marginTop: 20 }}>
         <Segment padded raised>
-          <Form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+          <Form onSubmit={handleSubmit}>
+            <Header as="h3" style={{ marginTop: 10, marginBottom: 15 }}> {formHeader} </Header>
+            {formGroups}
 
-            {fieldList}
-
-            <p style={{ marginTop: 30 }}> 
+            <p style={{ marginTop: 30 }}>
               Already have an account? <Link to="/login">Login here</Link>
             </p>
 
