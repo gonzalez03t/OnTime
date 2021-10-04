@@ -3,10 +3,10 @@ import { Container, Segment, Header, Form, Radio } from 'semantic-ui-react';
 import RegistrationForm from '../../components/Registration/RegistrationForm';
 
 export default function SignUpPage() {
-  const [value, setValue] = useState('0');
+  const [formType, setFormType] = useState('NONE');
 
   function handleFormType(_e, { value }) {
-    setValue(value);
+    setFormType(value);
   }
 
   return (
@@ -19,30 +19,30 @@ export default function SignUpPage() {
               style={{ marginTop: 15 }}
               control={Radio}
               label="Make appointments (costumer)"
-              value="1"
-              checked={value === '1'}
+              value="USER"
+              checked={formType === 'USER'}
               onChange={handleFormType}
             />
             <Form.Field
               style={{ marginTop: 15 }}
               control={Radio}
               label="Manage appointments (employee)"
-              value="2"
-              checked={value === '2'}
+              value="EMPLOYEE"
+              checked={formType === 'EMPLOYEE'}
               onChange={handleFormType}
             />
             <Form.Field
               style={{ marginTop: 15 }}
               control={Radio}
               label="Register company (owner)"
-              value="3"
-              checked={value === '3'}
+              value="COMPANY_OWNER"
+              checked={formType === 'COMPANY_OWNER'}
               onChange={handleFormType}
             />
           </Form.Group>
         </Form>
       </Segment>
-      <RegistrationForm formType={value} />
+      <RegistrationForm formType={formType} />
     </Container>
   );
 }

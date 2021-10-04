@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
-import { register } from '../../api/auth';
+import { register, registerUserAndCompany } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
 import { userFields, ownerCompanyFields } from './FormFields';
+import clsx from 'clsx';
 
 // Pending:
 // Make secondary address optional. (maybe next sprint)
@@ -13,9 +14,10 @@ import { userFields, ownerCompanyFields } from './FormFields';
 // Fix errors
 // Connect to back end
 
-export default function RegistrationForm(props) {
-  const [loading, { on, off }] = useToggle(false);
+export default function RegistrationForm({ formType }) {
   const history = useHistory();
+
+  const [loading, { on, off }] = useToggle(false);
 
   const [userData, setUserData] = useState({
     firstName: '',
@@ -24,10 +26,11 @@ export default function RegistrationForm(props) {
     phone: '',
     email: '',
   });
+
   const [companyData, setCompanyData] = useState({
     companyName: '',
     companyPhone: '',
-    mainAddress: '',
+    streetAddress: '',
     city: '',
     state: '',
     zipCode: '',
@@ -50,15 +53,38 @@ export default function RegistrationForm(props) {
     });
   }
 
+  // TODO: handle employee registration, I think the backend needs work to support this
   async function handleSubmit() {
     on();
-    const res = await register(userData);
+    let res;
+
+    if (formType === 'COMPANY_OWNER') {
+      // TODO: don't perform this after this issue is completed (https://github.com/medapt/ontime/issues/77)
+      res = await registerUserAndCompany(userData, {
+        ...companyData,
+        fullAddress: [
+          companyData.streetAddress,
+          companyData.city,
+          clsx(companyData.state, companyData.zipCode),
+        ].join(', '),
+      });
+    } else if (formType === 'EMPLOYEE') {
+      // TODO:
+    } else {
+      res = await register(userData);
+    }
+
     off();
 
-    if (res && res.status === 201) {
+    console.log(res);
+
+    if (res?.status === 201) {
       alert('SUCCESS');
-      // TODO: send notification, wait like half a second then route to login
-      history.push('/login');
+
+      // TODO: send notification
+
+      // wait half a second then route to login
+      setTimeout(() => history.push('/login'), 500);
     } else {
       // TODO: properly handle this situation
       alert('RUH ROH');
@@ -69,8 +95,8 @@ export default function RegistrationForm(props) {
   let formHeader = 'User Information:';
 
   // Add reusable fields to form
-  const formGroups = userFields.map((group) => (
-    <Form.Group widths="equal">
+  const formGroups = userFields.map((group, i) => (
+    <Form.Group widths="equal" key={String('user-group-' + i)}>
       {group.map((field) => (
         <Form.Field key={field.name}>
           <label>{field.label}</label>
@@ -88,17 +114,17 @@ export default function RegistrationForm(props) {
     </Form.Group>
   ));
 
-  if (props.formType !== '0') {
+  if (formType !== '0') {
     // Update Employee form header
-    if (props.formType == 2) {
+    if (formType === 'EMPLOYEE') {
       formHeader = 'Employee Information:';
     }
     // Add owner company fields to form
-    else if (props.formType == 3) {
+    else if (formType === 'COMPANY_OWNER') {
       formHeader = 'Owner Information:';
 
-      const ownerCompanyGroups = ownerCompanyFields.map((group) => (
-        <Form.Group widths="equal">
+      const ownerCompanyGroups = ownerCompanyFields.map((group, i) => (
+        <Form.Group widths="equal" key={String('owner-group-' + i)}>
           {group.map((field) => (
             <Form.Field key={field.name}>
               <label>{field.label}</label>
@@ -117,10 +143,15 @@ export default function RegistrationForm(props) {
       ));
 
       formGroups.push(
-        <Header as="h3" style={{ marginTop: 35, marginBottom: 15 }}>
+        <Header
+          as="h3"
+          style={{ marginTop: 35, marginBottom: 15 }}
+          key="FORM_HEADING"
+        >
           Company Information:
         </Header>
       );
+
       formGroups.push(...ownerCompanyGroups);
     }
 

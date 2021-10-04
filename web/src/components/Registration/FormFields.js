@@ -6,7 +6,7 @@ export const userFields = [
       placeholder: 'Bob',
       autoComplete: 'given-name',
       type: '',
-      required: 'true',
+      required: true,
     },
     {
       name: 'lastName',
@@ -14,7 +14,7 @@ export const userFields = [
       placeholder: 'Burger',
       autoComplete: 'family-name',
       type: '',
-      required: 'true',
+      required: true,
     },
   ],
   [
@@ -24,7 +24,7 @@ export const userFields = [
       placeholder: 'supersecurepassword',
       autoComplete: 'password',
       type: 'password',
-      required: 'true',
+      required: true,
     },
   ],
   [
@@ -34,7 +34,7 @@ export const userFields = [
       placeholder: 'somecoolname@gmail.com',
       autoComplete: 'email',
       width: '4',
-      required: 'true',
+      required: true,
     },
     {
       name: 'phone',
@@ -42,7 +42,7 @@ export const userFields = [
       placeholder: '555-555-5555',
       autoComplete: 'tel',
       type: 'tel',
-      required: 'true',
+      required: true,
     },
   ],
 ];
@@ -56,7 +56,7 @@ export const ownerCompanyFields = [
       placeholder: 'UF Health',
       autoComplete: 'company-name',
       type: 'company',
-      required: 'true',
+      required: true,
     },
     {
       name: 'companyPhone',
@@ -64,17 +64,17 @@ export const ownerCompanyFields = [
       placeholder: '555-555-5555',
       autoComplete: 'tel',
       type: 'tel',
-      required: 'true',
+      required: true,
     },
   ],
   [
     {
-      name: 'mainAddress',
-      label: 'Main address:',
+      name: 'streetAddress',
+      label: 'Street address:',
       placeholder: '9018 Jones St.',
       autoComplete: 'address',
       type: 'address',
-      required: 'true',
+      required: true,
     },
   ],
   [
@@ -84,7 +84,7 @@ export const ownerCompanyFields = [
       placeholder: 'Jacksonville',
       autoComplete: 'city',
       type: 'city',
-      required: 'true',
+      required: true,
     },
     {
       name: 'state',
@@ -92,7 +92,7 @@ export const ownerCompanyFields = [
       placeholder: 'Florida',
       autoComplete: 'state',
       type: 'state',
-      required: 'true',
+      required: true,
     },
     {
       name: 'zipCode',
@@ -100,7 +100,7 @@ export const ownerCompanyFields = [
       placeholder: '32250',
       autoComplete: 'zip-code',
       type: 'zip-code',
-      required: 'true',
+      required: true,
     },
   ],
   [
@@ -110,7 +110,7 @@ export const ownerCompanyFields = [
       placeholder: '9740 Cambridge St.',
       autoComplete: 'address',
       type: 'address',
-      required: 'false',
+      required: false,
     },
   ],
   [
@@ -120,7 +120,7 @@ export const ownerCompanyFields = [
       placeholder: 'Jacksonville',
       autoComplete: 'city',
       type: 'city',
-      required: 'false',
+      required: false,
     },
     {
       name: 'secState',
@@ -128,7 +128,7 @@ export const ownerCompanyFields = [
       placeholder: 'Florida',
       autoComplete: 'state',
       type: 'state',
-      required: 'false',
+      required: false,
     },
     {
       name: 'secZipCode',
@@ -136,7 +136,7 @@ export const ownerCompanyFields = [
       placeholder: '32250',
       autoComplete: 'zip-code',
       type: 'zip-code',
-      required: 'false',
+      required: false,
     },
   ],
   [
@@ -146,7 +146,7 @@ export const ownerCompanyFields = [
       placeholder: 'https://ufhealth.com-1024x614.jpeg',
       autoComplete: '',
       type: '',
-      required: 'false',
+      required: false,
     },
   ],
 ];

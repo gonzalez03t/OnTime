@@ -14,6 +14,12 @@ export function register(userDetails) {
     .catch((err) => err.response);
 }
 
+export function registerUserAndCompany(userDetails, companyDetails) {
+  return axios
+    .post(baseUrl + '/register-company-owner', { userDetails, companyDetails })
+    .catch((err) => err.response);
+}
+
 export function logout() {
   return axios.post(baseUrl + '/logout').catch((err) => err.response);
 }
