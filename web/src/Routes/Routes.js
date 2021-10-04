@@ -23,6 +23,7 @@ import ManageRemindersPage from '../pages/ManageRemindersPage/ManageRemindersPag
 import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
 import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
+import TestImageUpload from '../pages/TestImageUpload';
 
 export default function Routes() {
   const { isAuthenticated, setUser } = useStore((state) => ({
@@ -34,11 +35,9 @@ export default function Routes() {
     async function init() {
       const res = await viewer();
 
-      // console.log(res);
-
       // the store is out of sync with the session.
       // session has likely just expired.
-      if (res.status === 401 && isAuthenticated()) {
+      if ((!res || res.status === 401) && isAuthenticated()) {
         setUser(null);
       }
     }
@@ -69,6 +68,7 @@ export default function Routes() {
       <Route path="/manage_reminders" exact component={ManageRemindersPage} />
       <Route path="/manage_admins" exact component={ManageAdminsPage} />
       <Route path="/manage_non_admins" exact component={ManageNonAdminsPage} />
+      <Route path="/test" exact component={TestImageUpload} />
       <Route path="*" component={FourOhFourPage} />
     </Switch>
   );
