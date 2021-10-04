@@ -8,11 +8,10 @@ import { userFields, ownerCompanyFields } from './FormFields';
 import clsx from 'clsx';
 
 // Pending:
+// Pass company data to api... (Connect to back end)
+// Fix errors
 // Make secondary address optional. (maybe next sprint)
 // If secondary address is true, then city, state, zip become required
-// Handle submit for all three forms
-// Fix errors
-// Connect to back end
 
 export default function RegistrationForm({ formType }) {
   const history = useHistory();
