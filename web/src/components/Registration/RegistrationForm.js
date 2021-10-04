@@ -7,11 +7,10 @@ import { useHistory } from 'react-router';
 import { userFields, ownerCompanyFields } from './FormFields';
 
 // Pending:
+// Pass company data to api... (Connect to back end)
+// Fix errors
 // Make secondary address optional. (maybe next sprint)
 // If secondary address is true, then city, state, zip become required
-// Handle submit for all three forms
-// Fix errors
-// Connect to back end
 
 export default function RegistrationForm(props) {
   const [loading, { on, off }] = useToggle(false);
@@ -50,6 +49,7 @@ export default function RegistrationForm(props) {
     });
   }
 
+  // PENDING: pass company data to api...
   async function handleSubmit() {
     on();
     const res = await register(userData);
