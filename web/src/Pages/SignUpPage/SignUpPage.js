@@ -6,7 +6,6 @@ export default function SignUpPage() {
   const [value, setValue] = useState('0');
 
   function handleFormType(_e, { value }) {
-    console.log(value);
     setValue(value);
   }
 

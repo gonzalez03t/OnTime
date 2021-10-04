@@ -4,7 +4,14 @@ import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
 import { register } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
-import { userFields, employeeCompanyFields, ownerCompanyFields } from './FormFields';
+import { userFields, ownerCompanyFields } from './FormFields';
+
+// Pending:
+// Make secondary address optional. (maybe next sprint)
+// If secondary address is true, then city, state, zip become required
+// Handle submit for all three forms 
+// Fix errors
+// Connect to back end
 
 export default function RegistrationForm(props) {
   const [loading, { on, off }] = useToggle(false);
@@ -17,11 +24,34 @@ export default function RegistrationForm(props) {
     phone: "",
     email: "",
   });
+  const [companyData, setCompanyData] = useState({
+    companyName: "",
+    companyPhone: "",
+    mainAddress: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    secondaryAddress: "",
+    secCity: "",
+    secState: "",
+    secZipCode: "",
+    imageURL: ""
+  });
+
+  console.log(userData);
+  console.log(companyData);
 
   function handleChange(_e, { name, value }) {
+    console.log(name, value);
     setUserData((current) => {
       return { ...current, [name]: value };
     });
+    
+    /*if (props.formType !== '3') {
+      setCompanyData((current) => {
+        return { ...current, [name]: value };
+      });
+    }*/
   }
 
   async function handleSubmit() {
@@ -47,7 +77,7 @@ export default function RegistrationForm(props) {
     <Form.Group widths="equal">
       {group.map((field) => (
         <Form.Field key={field.name}>
-          <label>{field.name}</label>
+          <label>{field.label}</label>
           <Form.Input
             name={field.name}
             placeholder={field.placeholder}
@@ -64,30 +94,9 @@ export default function RegistrationForm(props) {
 
   if (props.formType !== '0') {
 
-    // Add employee company fields to form
+    // Update Employee form header
     if (props.formType == 2) {
       formHeader = "Employee Information:";
-
-      const employeeCompanyGroups = employeeCompanyFields.map((group) => (
-        <Form.Group widths="equal">
-          {group.map((field) => (
-            <Form.Field key={field.name}>
-              <label>{field.name}</label>
-              <Form.Input
-                name={field.name}
-                placeholder={field.placeholder}
-                autoComplete={field.autoComplete}
-                type={field.type}
-                onChange={handleChange}
-                disabled={loading}
-                required={field.required}
-              />
-            </Form.Field>
-          ))}
-        </Form.Group>
-      ));
-
-      formGroups.push(...employeeCompanyGroups);
     }
     // Add owner company fields to form
     else if (props.formType == 3) {
@@ -97,7 +106,7 @@ export default function RegistrationForm(props) {
         <Form.Group widths="equal">
           {group.map((field) => (
             <Form.Field key={field.name}>
-              <label>{field.name}</label>
+              <label>{field.label}</label>
               <Form.Input
                 name={field.name}
                 placeholder={field.placeholder}
