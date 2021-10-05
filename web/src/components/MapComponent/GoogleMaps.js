@@ -67,7 +67,11 @@ export default function GoogleMaps() {
         <div style={UFHealthLogoStyle}>
           <h1>
             <span role="img" aria-label="UF Health Logo">
-              <img src={UFHealthLogo} alt="UF Health Logo" />
+              <img
+                className="uf-health-logo"
+                src={UFHealthLogo}
+                alt="UF Health Logo"
+              />
             </span>
           </h1>
         </div>

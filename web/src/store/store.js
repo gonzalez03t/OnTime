@@ -50,6 +50,18 @@ const useStore = create(
 
       fullname: () => `${get().user['firstName']} ${get().user['lastName']}`,
 
+      getUserImage() {
+        const user = get().user;
+
+        return user?.imageUrl;
+      },
+
+      getUserNotificationSetting() {
+        const user = get().user;
+
+        return user?.notificationPreference;
+      },
+
       // This just assigns the state a new user. We don't check for null/undefined
       // to allow for easy logout
       setUser: (newUser) => {

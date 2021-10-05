@@ -67,7 +67,7 @@ export default function ImageUploader({
       <input {...getInputProps()} />
 
       {useButton ? (
-        <Button loading={loading} type="button" onClick={open}>
+        <Button size="small" loading={loading} type="button" onClick={open}>
           {buttonLabel ?? 'Upload Image'}
         </Button>
       ) : (
