@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function RouteLinks() {
   return (
-    <div className="RouteLinks">
+    <div>
       <p>Links:</p>
 
       <ul>

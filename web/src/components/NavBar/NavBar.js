@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import navIcon from './navIcon.png';
 import './NavBar.css';

@@ -17,7 +17,6 @@ export default function ValidateOtpModal({ open, onValidMatch, onCancel }) {
     loadingValidateToggles.off();
 
     if (res && res.data && res.data.valid) {
-      alert('CORRECT');
       onValidMatch();
     } else {
       alert('INCORRECT');
@@ -30,7 +29,7 @@ export default function ValidateOtpModal({ open, onValidMatch, onCancel }) {
 
     if (res && res.status === 201) {
       // TODO: notify user it worked
-      alert('SENT NEW OTP');
+      alert('TODO: alert using notifications it worked');
     } else {
       // TODO: notify user there was a problem trying to complete request
       console.log(res);
