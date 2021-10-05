@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import { Button, Modal } from 'semantic-ui-react';
-import { generateNewOtp, validateOtp } from '../../api/auth';
-import useToggle from '../../hooks/useToggle';
+import { generateNewOtp, validateOtp } from '../../../api/auth';
+import useToggle from '../../../hooks/useToggle';
+
+import './ValidateOtpModal.css';
 
 export default function ValidateOtpModal({ open, onValidMatch, onCancel }) {
   const [loadingValidate, loadingValidateToggles] = useToggle(false);
@@ -40,14 +42,17 @@ export default function ValidateOtpModal({ open, onValidMatch, onCancel }) {
     <Modal size="tiny" open={open}>
       <Modal.Header>Verify Login</Modal.Header>
       <Modal.Content>
-        <p>Please enter the code we sent to your device</p>
+        <p>
+          If the account exists you will recieve a code via SMS. Please enter
+          the code you received below:
+        </p>
 
         <OtpInput
           value={otp}
           onChange={(val) => setOtp(val)}
           numInputs={6}
-          separator={<span>-</span>}
-          inputStyle={{ width: '3rem', height: '3rem' }}
+          separator={<span>&nbsp;&nbsp;-&nbsp;&nbsp;</span>}
+          inputStyle="otp-input"
         />
       </Modal.Content>
       <Modal.Actions>
