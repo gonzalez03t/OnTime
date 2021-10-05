@@ -113,7 +113,7 @@ export default function RegistrationForm({ formType }) {
     </Form.Group>
   ));
 
-  if (formType !== '0') {
+  if (formType !== 'NONE') {
     // Update Employee form header
     if (formType === 'EMPLOYEE') {
       formHeader = 'Employee Information:';
