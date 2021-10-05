@@ -15,17 +15,17 @@ export default async function registerAsCompanyOwner(
   req: Request,
   res: Response
 ) {
-  const { user, company } = req.body;
+  const { userDetails, companyDetails } = req.body;
 
-  if (!user || !company) {
+  if (!userDetails || !companyDetails) {
     res.sendStatus(400);
   } else {
-    const userEntity = await registerCompanyOwnerUser(user);
+    const userEntity = await registerCompanyOwnerUser(userDetails);
 
     if (userEntity) {
       const companyEntity = await registerCompanyOwnerCompany(
         userEntity,
-        company
+        companyDetails
       );
 
       if (companyEntity) {
