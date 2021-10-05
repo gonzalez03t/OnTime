@@ -2,6 +2,8 @@ import { em } from '..';
 import { Company } from '../entities/Company';
 import { User } from '../entities/User';
 
+// TODO: refactor these to return errors, not null
+
 export async function registerCompanyOwnerUser(
   user: any
 ): Promise<User | null> {
@@ -12,6 +14,7 @@ export async function registerCompanyOwnerUser(
   });
 
   if (existingUser) {
+    console.log('user already exists');
     return null;
   } else {
     return em.create(User, {
@@ -32,11 +35,19 @@ export async function registerCompanyOwnerCompany(
     return null;
   }
 
-  const { name, imageUrl, fullAddress, subAddresses, phone } = company;
+  const { companyName, imageUrl, fullAddress, subAddresses, companyPhone } =
+    company;
 
-  if (!name || !fullAddress || !phone) {
+  if (!companyName || !fullAddress || !companyPhone) {
     return null;
   }
 
-  return new Company(user, name, imageUrl, fullAddress, phone, subAddresses);
+  return new Company(
+    user,
+    companyName,
+    imageUrl,
+    fullAddress,
+    companyPhone,
+    subAddresses
+  );
 }

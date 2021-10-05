@@ -31,7 +31,7 @@ export default function Home() {
             imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper
             ultricies nisi.
           </p>
-          <Button size="big" floated="center" as={Link} to="/login">
+          <Button size="big" floated="left" as={Link} to="/login">
             Login
           </Button>
           <Button size="big" floated="left" as={Link} to="/sign_up">

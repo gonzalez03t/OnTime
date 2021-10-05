@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { Button, Form, Input } from 'semantic-ui-react';
+import { Container, Segment, Button, Form, Input } from 'semantic-ui-react';
 import { login } from '../../api/auth';
 import ValidateOtpModal from '../../components/modals/ValidateOtpModal';
 import useToggle from '../../hooks/useToggle';
@@ -61,46 +61,48 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div>
-      <ValidateOtpModal
-        open={open}
-        onValidMatch={handleValidOtpMatch}
-        onCancel={handleCancelOtpValidation}
-      />
+    <Container style={{ marginTop: 100 }}>
+      <Segment padded raised>
+        <ValidateOtpModal
+          open={open}
+          onValidMatch={handleValidOtpMatch}
+          onCancel={handleCancelOtpValidation}
+        />
 
-      <Form onSubmit={handleSubmit}>
-        <Form.Field>
-          <label>Email</label>
-          <Form.Input
-            icon="user"
-            iconPosition="left"
-            placeholder="somecoolname@gmail.com"
-            autoComplete="email"
-            onChange={(e, { value }) => setEmail(value)}
-            disabled={loading}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Password</label>
-          <Input
-            icon="lock"
-            iconPosition="left"
-            placeholder="somesecurepassword"
-            type="password"
-            autoComplete="current-password"
-            onChange={(e, { value }) => setPassword(value)}
-            disabled={loading}
-          />
-        </Form.Field>
+        <Form onSubmit={handleSubmit}>
+          <Form.Field>
+            <label>Email</label>
+            <Form.Input
+              icon="user"
+              iconPosition="left"
+              placeholder="somecoolname@gmail.com"
+              autoComplete="email"
+              onChange={(e, { value }) => setEmail(value)}
+              disabled={loading}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Password</label>
+            <Input
+              icon="lock"
+              iconPosition="left"
+              placeholder="somesecurepassword"
+              type="password"
+              autoComplete="current-password"
+              onChange={(e, { value }) => setPassword(value)}
+              disabled={loading}
+            />
+          </Form.Field>
 
-        <p>
-          Don't have an account? <Link to="/sign_up">Register here</Link>
-        </p>
+          <p>
+            Don't have an account? <Link to="/sign_up">Register here</Link>
+          </p>
 
-        <Button type="submit" loading={loading}>
-          Submit
-        </Button>
-      </Form>
-    </div>
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
+        </Form>
+      </Segment>
+    </Container>
   );
 }
