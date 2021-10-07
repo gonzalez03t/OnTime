@@ -3,6 +3,7 @@ import favoriteCompany from '../endpoints/user/favoriteCompany';
 import getFavoritedCompanies from '../endpoints/user/getFavoritedCompanies';
 import getViewer from '../endpoints/user/getViewer';
 import updateNotificationPreference from '../endpoints/user/updateNotificationPreference';
+import updateUserPassword from '../endpoints/user/updateUserPassword';
 import updateUserProfile from '../endpoints/user/updateUserProfile';
 import baseUserRoute from '../middleware/baseUserRoute';
 import requireBody from '../middleware/requireBody';
@@ -24,5 +25,6 @@ router.put(
   requireBody,
   updateNotificationPreference
 );
+router.put('/settings/password', requireBody, updateUserPassword);
 
 export const UserController = router;
