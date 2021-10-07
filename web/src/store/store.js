@@ -68,6 +68,14 @@ const useStore = create(
         set({ user: newUser });
       },
 
+      setUserDetails(userDetails) {
+        set({ user: { ...get().user, ...userDetails } });
+      },
+
+      setNotificationPreference(newPreference) {
+        set({ user: { ...get().user, notificationPreference: newPreference } });
+      },
+
       // this is primarily used for auth stages. I.e. on login, user status is
       // pending_otp_auth. Once they pass the 2FA, they become authenticated.
       setUserStatus(newStatus) {

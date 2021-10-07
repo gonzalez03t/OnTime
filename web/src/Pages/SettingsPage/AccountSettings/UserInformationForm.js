@@ -6,10 +6,11 @@ import ProfileImageUpload from '../../../components/ProfileImageUpload/ProfileIm
 import useStore from '../../../store/store';
 
 export default function UserInformationForm() {
-  const { userImage, user } = useStore(
+  const { userImage, user, updateDetails } = useStore(
     (state) => ({
       userImage: state.getUserImage(),
       user: state.user,
+      updateDetails: state.setUserDetails,
     }),
     shallow
   );
@@ -17,10 +18,20 @@ export default function UserInformationForm() {
   const [imageSrc, setImageSrc] = useState(null);
   const [userDetails, setUserDetails] = useState(user);
 
-  console.log(userDetails);
+  function isSame() {
+    return (
+      user.firstName === userDetails.firstName &&
+      user.lastName === userDetails.lastName &&
+      user.email === userDetails.email &&
+      user.phone === userDetails.phone
+    );
+  }
 
   async function handleSave(e) {
-    alert('TODO');
+    if (isSame() && !imageSrc) {
+      alert('NO CHANGES');
+      return;
+    }
 
     let imageUrl;
 
@@ -32,10 +43,13 @@ export default function UserInformationForm() {
 
     const res = await updateUserProfile({ ...userDetails, imageUrl });
 
-    console.log(res);
-
-    // TODO: notify user if successful save.
-    // TODO: if successful save, update store
+    if (res?.status === 200 && res.data) {
+      updateDetails(res.data.user);
+      alert('PROFILE UPDATED');
+    } else {
+      console.log(res);
+      alert('RUH ROH');
+    }
   }
 
   function handleChange(e, { name, value }) {
@@ -65,7 +79,7 @@ export default function UserInformationForm() {
             onChange={handleChange}
           />
           <Form.Input
-            name="firstName"
+            name="lastName"
             label="Last name"
             defaultValue={user.lastName}
             onChange={handleChange}

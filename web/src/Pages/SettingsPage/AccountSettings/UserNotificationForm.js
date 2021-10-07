@@ -6,9 +6,10 @@ import useStore from '../../../store/store';
 import SettingsSectionSubHeader from '../SettingsComponents/SettingsSectionSubHeader';
 
 export default function UserNotificationForm() {
-  const { currentPreference } = useStore(
+  const { currentPreference, updateNotificationPreference } = useStore(
     (state) => ({
       currentPreference: state.getUserNotificationSetting(),
+      updateNotificationPreference: state.setNotificationPreference,
     }),
     shallow
   );
@@ -17,18 +18,19 @@ export default function UserNotificationForm() {
     useState(currentPreference);
 
   async function handleSave(e) {
-    alert('TODO');
-
     if (notificationPreference !== currentPreference) {
       const res = await updateUserNotificationPreference(
         notificationPreference
       );
 
-      console.log(res);
-
-      // TODO: notify success or failure of save
+      if (res?.status === 200) {
+        updateNotificationPreference(notificationPreference);
+      } else {
+        console.log(res);
+        alert('RUH ROH');
+      }
     } else {
-      // TODO: notify no changes to be made
+      alert('NO CHANGES');
     }
   }
 

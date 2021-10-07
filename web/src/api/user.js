@@ -12,12 +12,12 @@ export function viewer() {
 
 export function updateUserProfile(userDetails) {
   return axios
-    .put(baseUrl + '/settings/profile', userDetails)
+    .put(baseUrl + '/settings/profile', { userDetails })
     .catch((err) => err.response);
 }
 
 export function updateUserNotificationPreference(newPreference) {
   return axios
-    .put(baseUrl + '/settings/notifications', newPreference)
+    .put(baseUrl + '/settings/notifications', { newPreference })
     .catch((err) => err.response);
 }

@@ -29,8 +29,10 @@ export class Image {
     this.status = VerificationStatus.DENIED;
   }
 
+  // TODO: change this after dev period :)
   isVerified() {
-    return this.status === VerificationStatus.VERIFIED;
+    return true;
+    // return this.status === VerificationStatus.VERIFIED;
   }
 
   isAppropriate() {
@@ -46,6 +48,10 @@ export class Image {
     } else {
       return this.imageUrl;
     }
+  }
+
+  setImageUrl(imageUrl: string) {
+    this.imageUrl = imageUrl;
   }
 
   constructor(url: string) {

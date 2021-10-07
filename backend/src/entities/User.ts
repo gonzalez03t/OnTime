@@ -1,5 +1,6 @@
 import {
   Collection,
+  Embedded,
   Entity,
   Enum,
   ManyToMany,
@@ -12,6 +13,7 @@ import bcrypt from 'bcryptjs';
 import { Appointment } from './Appointment';
 import { BaseEntity } from './BaseEntity';
 import { Company } from './Company';
+import { Image } from './Image';
 
 export enum UserRole {
   BASE = 'BASE', // user making appointments with companies
@@ -21,12 +23,19 @@ export enum UserRole {
   ADMIN = 'ADMIN', // admin of SAAS itself (i.e. developers, managing entities, etc)
 }
 
+export enum NotificationPreference {
+  ALL = 'ALL',
+  REMINDERS_ONLY = 'REMINDERS_ONLY',
+  NONE = 'NONE',
+}
+
 // email must always be unique, phone must be unique relative to an email. This allows
 // company employees to have work and personal accounts while using their personal
 // phone number if they do not have a work number.
 @Entity()
 @Unique({ properties: ['email', 'phone'] })
 export class User extends BaseEntity {
+  // ====== PROPERTIES ====== //
   @Property()
   deactivated: boolean = false; // accounts should be deactivatable
 
@@ -46,8 +55,16 @@ export class User extends BaseEntity {
   @Property()
   password!: string; // this is a hash
 
+  // ====== ENUMS ====== //
   @Enum(() => UserRole)
   role: UserRole = UserRole.BASE; // default priviledge
+
+  @Enum(() => NotificationPreference)
+  notificationPreference = NotificationPreference.ALL;
+
+  // ====== RELATIONS ====== //
+  @Embedded({ object: true })
+  image?: Image;
 
   @ManyToOne(() => Company, { nullable: true })
   company?: Company;
@@ -58,6 +75,7 @@ export class User extends BaseEntity {
   @ManyToMany(() => Company)
   favoriteCompanies = new Collection<Company>(this);
 
+  // ====== METHODS ====== //
   isBaseUser() {
     return this.role === UserRole.BASE;
   }
@@ -116,6 +134,7 @@ export class User extends BaseEntity {
       email: this.email,
       phone: this.phone,
       role: this.role,
+      notificationPreference: this.notificationPreference,
     };
   }
 
@@ -134,6 +153,23 @@ export class User extends BaseEntity {
 
   hasAppointments() {
     return this.appointments.length > 0;
+  }
+
+  // ====== MUTATORS ====== //
+
+  setDetails(userDetails: any) {
+    const { firstName, lastName, email, phone, imageUrl } = userDetails;
+
+    this.firstName = firstName ?? this.firstName;
+    this.lastName = lastName ?? this.lastName;
+    this.email = email ?? this.email;
+    this.phone = phone ?? this.phone;
+
+    if (imageUrl && this.image) {
+      this.image.setImageUrl(imageUrl);
+    } else if (imageUrl) {
+      this.image = new Image(imageUrl);
+    }
   }
 
   /**
