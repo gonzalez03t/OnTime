@@ -62,7 +62,7 @@ async function bootstrap() {
   em = orm.em;
 
   if (!PRODUCTION) {
-    await seed();
+    await seed(true);
   }
 
   // only init the scheduler on prod OR is var is set. This will cut the fluff in the

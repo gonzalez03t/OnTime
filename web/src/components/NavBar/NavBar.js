@@ -1,52 +1,72 @@
+import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
+import navIcon from './navIcon.png';
+import './NavBar.css';
+import UserDropdown from '../UserDropdown/UserDropdown';
+import clsx from 'clsx';
+import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
+
+const authenticatedLinks = [
+  {
+    label: 'Dashboard',
+    to: '/dashboard',
+  },
+  {
+    label: 'Dev Links',
+    to: '/dev',
+  },
+];
+
+const unAuthenticatedLinks = [
+  { label: 'Login', to: '/login' },
+  { label: 'Register', to: '/sign_up' },
+];
+
+function NavLink({ label, to }) {
+  const location = useLocation();
+
+  function isActive() {
+    return location.pathname === to;
+  }
+
+  return (
+    <Link className={clsx('nav__link', isActive() && 'active')} to={to}>
+      {label}
+    </Link>
+  );
+}
 
 export default function NavBar() {
+  const user = useStore((state) => state.user, shallow);
+
+  function isAuthenticated() {
+    return !!user;
+  }
+
   return (
-    <div className="NavBar">
-      <p>Mock Nav</p>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/login">Test Login</Link>
-          </li>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/contact_us">Contact Us</Link>
-          </li>
-          <li>
-            <Link to="/find_us">Find Us</Link>
-          </li>
-          <li>
-            <Link to="/account_info">Account Information</Link>
-          </li>
-          <li>
-            <Link to="/general_info">General Information</Link>
-          </li>
-          <li>
-            <Link to="/nav_to_parking">Navigate to Parking</Link>
-          </li>
-          <li>
-            <Link to="/nav_to_hospital">Navigate to Hospital</Link>
-          </li>
-          <li>
-            <Link to="/patient_appointments">Patient Appointments</Link>
-          </li>
-          <li>
-            <Link to="/manage_appts">Manage Appointments</Link>
-          </li>
-          <li>
-            <Link to="/manage_reminders">Manage Reminders</Link>
-          </li>
-          <li>
-            <Link to="/manage_admins">Manage Admins</Link>
-          </li>
-          <li>
-            <Link to="/manage_non_admins">Manage Non-Admins</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <nav className="nav">
+      <div className="nav__container">
+        {/* LEFT */}
+        <div className="nav__left-container">
+          <Link to="/">
+            <img className="nav__icon" src={navIcon} alt="OnTime Logo" />
+          </Link>
+
+          <div className="nav__links">
+            {isAuthenticated()
+              ? authenticatedLinks.map((link) => (
+                  <NavLink key={link.to} {...link} />
+                ))
+              : unAuthenticatedLinks.map((link) => (
+                  <NavLink key={link.to} {...link} />
+                ))}
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div>{isAuthenticated() && <UserDropdown />}</div>
+      </div>
+    </nav>
   );
 }

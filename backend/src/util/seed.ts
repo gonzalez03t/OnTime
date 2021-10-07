@@ -1,126 +1,146 @@
 import { em } from '..';
+import { Appointment } from '../entities/Appointment';
 import { Company } from '../entities/Company';
-import { User } from '../entities/User';
+import { Reminder } from '../entities/Reminder';
+import { User, UserRole } from '../entities/User';
+import { seedData } from './seedData';
+
+async function generateUsers(role: UserRole): Promise<User[]> {
+  let userList, phoneList;
+
+  if (role === UserRole.COMPANY_OWNER) {
+    userList = seedData.companyOwnerNames;
+    phoneList = seedData.companyOwnerPhoneNumbers;
+  } else if (role === UserRole.EMPLOYEE) {
+    userList = seedData.employeeNames;
+    phoneList = seedData.employeePhoneNumbers;
+  } else {
+    userList = seedData.baseUserNames;
+    phoneList = seedData.baseUserPhoneNumbers;
+  }
+
+  const users: User[] = [];
+
+  for (let i = 0; i < userList.length; i++) {
+    const p = userList[i];
+
+    const names = p.split(' ');
+
+    const firstName = names[0];
+    const lastName = names[1];
+    const email = `${lastName}.${firstName}@gmail.com`.toLowerCase();
+    const phone = phoneList[i];
+
+    users.push(
+      em.create(User, {
+        firstName,
+        lastName,
+        email,
+        phone,
+        password: await User.generateHash('password'),
+        role,
+      })
+    );
+  }
+
+  return em.persistAndFlush(users).then(() => users);
+}
+
+function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
+  let companies: Company[] = [];
+
+  for (let i = 0; i < seedData.companies.length; i++) {
+    const c = seedData.companies[i];
+
+    const { name, address } = c;
+
+    const companyOwner = companyOwners[c.owner];
+    const employees = c.employees.map((i) => employeeUsers[i]);
+    const phone = seedData.companyPhoneNumbers[i];
+
+    const company = em.create(Company, {
+      name,
+      phone,
+      owner: companyOwner,
+      employees,
+      // address, // TODO: see sprint 3 issue
+      fullAddress: address,
+    });
+
+    em.persist([company]);
+
+    companies.push(company);
+  }
+
+  return em.flush().then(() => companies);
+}
 
 /**
- * This will populate the database with fake data
+ * This will populate the database with fake data. Added forceIgnore param so the process is
+ * more controlled during development if I don't want to consistently build/destory the db
  */
-export default async function seed() {
-  console.log('*** CLEARING DATABASE ***');
+export default async function seed(forceIgnore = false) {
+  if (forceIgnore) {
+    console.log('*** SKIPPING SEED PROCESS ***');
+    return;
+  }
 
+  console.log('*** CLEARING DATABASE ***');
   await em.getDriver().nativeDelete('User', {});
   await em.getDriver().nativeDelete('Appointment', {});
   await em.getDriver().nativeDelete('Reminder', {});
   await em.getDriver().nativeDelete('Company', {});
   await em.getDriver().nativeDelete('Token', {});
-
-  console.log('*** DATABASE CLEARED --> READY TO POPULATE ***');
+  console.log('*** DATABASE CLEARED AND READY TO SEED ***');
 
   console.log('*** SEEDING DATABASE ***');
 
-  console.log('*** Creating users...');
+  console.log('*** CREATING BASE USERS');
+  const baseUsers = await generateUsers(UserRole.BASE);
+  console.log('*** BASE USERS CREATED');
 
-  const base = em.create(User, {
-    firstName: 'Base',
-    lastName: 'User',
-    email: 'base@gmail.com',
-    phone: '1111111111',
-    password: await User.generateHash('dev'),
-  });
+  console.log('*** CREATING EMPLOYEE USERS');
+  const employeeUsers = await generateUsers(UserRole.EMPLOYEE);
+  console.log('*** EMPLOYEE USERS CREATED');
 
-  const aaron = em.create(User, {
-    firstName: 'Aaron',
-    lastName: 'Leopold',
-    email: 'aaronleopold1221@gmail.com',
-    phone: '5616761089',
-    password: await User.generateHash('dev'),
-  });
+  console.log('*** CREATING COMPANY_OWNER USERS');
+  const companyOwners = await generateUsers(UserRole.COMPANY_OWNER);
+  console.log('*** COMPANY_OWNER USERS CREATED');
 
-  const jesus = em.create(User, {
-    firstName: 'Jesus',
-    lastName: 'Gonzalez',
-    email: 'gonzalez03t@gmail.com',
-    phone: '5555555555',
-    password: await User.generateHash('dev'),
-  });
+  // console.log('*** CREATING ADMIN USERS');
+  // const admins = await generateUsers(UserRole.ADMIN);
+  // console.log('*** ADMIN USERS CREATED');
 
-  const emily = em.create(User, {
-    firstName: 'Emily',
-    lastName: 'Smemily',
-    email: 'emilysmemily@gmail.com',
-    phone: '1234567890',
-    password: await User.generateHash('emily'),
-  });
+  console.log('*** CREATING COMPANIES');
+  const companies = await generateCompanies(companyOwners, employeeUsers);
+  console.log('*** COMPANIES CREATED');
 
-  const mary = em.create(User, {
-    firstName: 'Mary',
-    lastName: 'Good',
-    email: 'mgood@med.hosp',
-    phone: '1234567899',
-    password: await User.generateHash('mary'),
-  });
+  console.log('*** CREATING APPOINTMENTS');
+  for (const { clientIndex, appointments } of seedData.appointments) {
+    const client = baseUsers[clientIndex];
 
-  await em
-    .persistAndFlush([base, aaron, jesus, emily, mary])
-    .then(() => console.log('*** Created all users!'))
-    .catch((err) =>
-      err.code === 11000
-        ? console.log('*** Users already present in db')
-        : console.log('*** Error creating users:', err)
-    );
+    for (const a of appointments) {
+      const company = companies[a.company];
+      const employee = employeeUsers[a.employee];
 
-  console.log('*** Creating companies...');
+      const clientAppointment = em.create(Appointment, {
+        client,
+        employee,
+        company,
+        startsAt: a.startsAt,
+      });
 
-  console.log('*** Setting jesus as owner of Playcare Daycare');
+      clientAppointment.reminders.add(
+        em.create(Reminder, {
+          remindAt: clientAppointment.getDefaultReminderTime(),
+        })
+      );
 
-  const daycare = new Company(
-    jesus,
-    'Playcare Daycare',
-    'https://images.unsplash.com/photo-1572059002053-8cc5ad2f4a38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80',
-    '1600 Amphitheatre Pkwy, Mountain View, CA 94043',
-    '6502530000'
-  );
+      em.persist(clientAppointment);
+    }
+  }
+  await em.flush();
+  console.log('*** APPOINTMENTS CREATED');
 
-  daycare.verifyCompany();
-
-  jesus.makeCompanyOwner(daycare);
-
-  console.log('*** Setting emily as employee of Playcare Daycare');
-
-  // add as employee
-  daycare.addEmployee(emily);
-
-  // add work information
-  emily.makeCompanyEmployee(daycare);
-
-  console.log('*** Setting aaron as owner of UF Neurosurgery');
-
-  const clinic = new Company(
-    aaron,
-    'UF Neurosurgery',
-    'https://images.unsplash.com/photo-1572059002053-8cc5ad2f4a38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80',
-    '1505 SW Archer Rd, Gainesville, FL 32608',
-    '3522739000'
-  );
-
-  clinic.verifyCompany();
-
-  aaron.makeCompanyOwner(clinic);
-
-  console.log('*** Setting mary as employee of Playcare Daycare');
-
-  // add as employee
-  clinic.addEmployee(mary);
-
-  // add work information
-  mary.makeCompanyEmployee(clinic);
-
-  await em
-    .persistAndFlush([daycare, clinic, aaron, jesus, emily, mary])
-    .then(() => console.log('*** Created all companies!'))
-    .catch((err) =>
-      err.code === 11000
-        ? console.log('*** Companies already present in db')
-        : console.log('*** Error creating users:', err)
-    );
+  console.log('*** DATABASE SEEDED ***');
 }

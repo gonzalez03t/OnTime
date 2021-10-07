@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Container, Segment, Button, Form, Input } from 'semantic-ui-react';
 import { login } from '../../api/auth';
-import ValidateOtpModal from '../../components/modals/ValidateOtpModal';
+import ValidateOtpModal from '../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../hooks/useToggle';
 import useStore from '../../store/store';
 
