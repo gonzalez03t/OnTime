@@ -1,7 +1,7 @@
-.settings-nav__container {
+/* .settings-nav__container {
   width: 25%;
   margin-right: 1rem;
-}
+} */
 
 .settings-nav__item {
   display: flex !important;
@@ -20,4 +20,47 @@
 
 .settings-nav__icon {
   margin-right: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .settings-nav__container > .ui.menu.fluid,
+  .ui.vertical.menu.fluid {
+    display: flex !important;
+    flex-direction: row !important;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .settings-nav__container > .ui.secondary.vertical.menu > .item {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse)) !important;
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse))) !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .settings-nav__container {
+    width: 25%;
+    margin-right: 1rem;
+  }
+
+  .settings-nav__item {
+    display: flex !important;
+    align-items: center;
+
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse)) !important;
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse))) !important;
+
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    color: #6b7280;
+  }
 }

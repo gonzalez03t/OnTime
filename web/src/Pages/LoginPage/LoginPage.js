@@ -99,15 +99,17 @@ export default function LoginPage() {
             />
           </Form.Field>
 
-          <p>
-            Forgot your password?{' '}
-            <span
-              style={{ color: '#4183c4', cursor: 'pointer' }}
-              onClick={() => alert('TODO')}
-            >
-              Click here
-            </span>
-            <br />
+          <p style={{ margin: '0rem' }}>
+            Forgot your password? <Link to="/forgot_password">Click here</Link>
+          </p>
+
+          <p
+            style={{
+              margin: '0rem',
+              marginTop: '0.25rem',
+              marginBottom: '1em',
+            }}
+          >
             Don't have an account? <Link to="/sign_up">Register here</Link>
           </p>
 

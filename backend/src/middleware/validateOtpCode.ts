@@ -2,6 +2,7 @@ import { TokenType } from '@mikro-orm/mongo-highlighter/enums';
 import { NextFunction, Request, Response } from 'express';
 import { em } from '..';
 import { Token } from '../entities/Token';
+import { User } from '../entities/User';
 import { getSessionUser } from '../util/session';
 
 export default async function validateOtpCode(
@@ -9,8 +10,12 @@ export default async function validateOtpCode(
   res: Response,
   next: NextFunction
 ) {
-  const user = await getSessionUser(req);
-  const { tokenType, code } = req.body;
+  let user = await getSessionUser(req);
+  const { tokenType, code, email, phone } = req.body;
+
+  if (!user && email && phone) {
+    user = await em.findOne(User, { email, phone });
+  }
 
   if (user && tokenType && code) {
     const token = await em.findOne(Token, {

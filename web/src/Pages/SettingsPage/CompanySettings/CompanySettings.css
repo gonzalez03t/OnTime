@@ -1,3 +1,19 @@
 .company-settings__inner {
   margin-top: 1rem;
 }
+
+.create-company__container {
+  margin-top: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.create-company__container > .section-subheader {
+  margin-top: 0.75rem;
+  text-align: center;
+
+  margin-bottom: 1rem;
+}

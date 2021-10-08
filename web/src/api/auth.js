@@ -24,8 +24,16 @@ export function logout() {
   return axios.post(baseUrl + '/logout').catch((err) => err.response);
 }
 
-export function forgotPassword() {
-  // TODO: might be more complicated than a single function
+export function forgotPassword(email, phone, code, password) {
+  return axios
+    .post(baseUrl + '/password/forgot', {
+      email,
+      phone,
+      password,
+      code,
+      tokenType: 'FORGOT_PASSWORD',
+    })
+    .catch((err) => err.response);
 }
 
 export function validateOtp(code) {

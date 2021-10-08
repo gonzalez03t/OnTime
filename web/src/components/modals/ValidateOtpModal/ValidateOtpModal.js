@@ -3,13 +3,10 @@ import OtpInput from 'react-otp-input';
 import { Button, Modal } from 'semantic-ui-react';
 import { generateNewOtp } from '../../../api/auth';
 import useToggle from '../../../hooks/useToggle';
+import okResponse from '../../../utils/okResponse';
 
 import './ValidateOtpModal.css';
 
-// TODO: generalize this component so it takes in a validator function.
-// validator function takes in code, and internally calls the proper
-// endpoint. i.e.
-// res = await validator(code);
 export default function ValidateOtpModal({
   open,
   validator,
@@ -36,7 +33,7 @@ export default function ValidateOtpModal({
     loadingNewCodeToggles.on();
     const res = await generateNewOtp();
 
-    if (res?.status === 201) {
+    if (okResponse(res)) {
       // TODO: notify user it worked
       alert('TODO: alert using notifications it worked');
     } else {
@@ -67,10 +64,10 @@ export default function ValidateOtpModal({
         <Button disabled={loadingNewCode || loadingValidate} onClick={onCancel}>
           Cancel
         </Button>
-        <Button loading={loadingNewCode} onClick={handleSendNewOtp}>
+        <Button secondary loading={loadingNewCode} onClick={handleSendNewOtp}>
           Send New Code
         </Button>
-        <Button loading={loadingValidate} onClick={handleValidateOtp}>
+        <Button primary loading={loadingValidate} onClick={handleValidateOtp}>
           Confirm
         </Button>
       </Modal.Actions>

@@ -21,7 +21,7 @@ export function updateUserPassword(password, code) {
     .put(baseUrl + '/settings/password', {
       password,
       code,
-      type: 'CHANGE_PASSWORD',
+      tokenType: 'CHANGE_PASSWORD',
     })
     .catch((err) => err.response);
 }

@@ -6,6 +6,8 @@ export function createChangePasswordToken() {
   return axios.post(baseUrl + '/password/change').catch((err) => err.response);
 }
 
-export function createForgotPasswordToken() {
-  return axios.post(baseUrl + '/password/forgot').catch((err) => err.response);
+export function createForgotPasswordToken(email, phone) {
+  return axios
+    .post(baseUrl + '/password/forgot', { email, phone })
+    .catch((err) => err.response);
 }

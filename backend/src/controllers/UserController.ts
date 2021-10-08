@@ -7,6 +7,7 @@ import updateUserPassword from '../endpoints/user/updateUserPassword';
 import updateUserProfile from '../endpoints/user/updateUserProfile';
 import baseUserRoute from '../middleware/baseUserRoute';
 import requireBody from '../middleware/requireBody';
+import validateOtpCode from '../middleware/validateOtpCode';
 
 /**
  * This controller handles all user-entity interactions
@@ -25,6 +26,11 @@ router.put(
   requireBody,
   updateNotificationPreference
 );
-router.put('/settings/password', requireBody, updateUserPassword);
+router.put(
+  '/settings/password',
+  requireBody,
+  validateOtpCode,
+  updateUserPassword
+);
 
 export const UserController = router;
