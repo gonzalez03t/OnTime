@@ -10,7 +10,7 @@ export default async function validateOtp(req: Request, res: Response) {
 
   const user = await getSessionUser(req);
 
-  const otp = await em.findOne(Token, { user, type: TokenType.OTP });
+  const otp = await em.findOne(Token, { user, type: TokenType.LOGIN });
 
   if (!code) {
     res.status(400).send('The code is required.');
@@ -25,11 +25,7 @@ export default async function validateOtp(req: Request, res: Response) {
     em.removeAndFlush(otp)
       .then(() =>
         saveSession(userId, 'authenticated', req)
-          .then(() =>
-            res.status(200).json({
-              valid: true,
-            })
-          )
+          .then(() => res.sendStatus(200))
           .catch((err) => res.status(500).send(err))
       )
       .catch((err) => res.status(500).send(err));

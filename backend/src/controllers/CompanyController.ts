@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import getCompanies from '../endpoints/company/getCompanies';
 import getEmployees from '../endpoints/company/getEmployees';
-import inviteEmployee from '../endpoints/company/inviteEmployee';
+// import inviteEmployee from '../endpoints/company/inviteEmployee';
 import registerCompany from '../endpoints/company/registerCompany';
 import registerEmployee from '../endpoints/company/registerEmployee';
 import authenticatedRoute from '../middleware/authenticatedRoute';
@@ -18,13 +18,13 @@ const router = Router();
 router.get('/', getCompanies);
 router.post('/new', requireBody, registerCompany);
 router.post('/employees', requireBody, requireSession, getEmployees);
-router.post(
-  '/employees/invite',
-  requireBody,
-  authenticatedRoute,
-  companyAdminRoute,
-  inviteEmployee
-);
+// router.post(
+//   '/employees/invite',
+//   requireBody,
+//   authenticatedRoute,
+//   companyAdminRoute,
+//   inviteEmployee
+// );
 router.post(
   '/employees/new',
   requireBody,

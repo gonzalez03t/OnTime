@@ -8,11 +8,21 @@ import { Token } from './entities/Token';
 import { Company } from './entities/Company';
 import { SubAddress } from './entities/SubAddress';
 import { Image } from './entities/Image';
+import Invitation from './entities/Invitation';
 
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const options: Options = {
-  entities: [User, Appointment, Reminder, Token, Company, SubAddress, Image],
+  entities: [
+    User,
+    Appointment,
+    Reminder,
+    Token,
+    Invitation,
+    Company,
+    SubAddress,
+    Image,
+  ],
   type: 'mongo',
   dbName: process.env.DB_NAME,
   clientUrl: process.env.DB_URI!,

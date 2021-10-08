@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { startOtpAuthFlow } from '../../util/otp';
+import { createLoginToken } from '../../util/otp';
 import { sendOtpSms } from '../../util/sendSms';
 import { getSessionUser } from '../../util/session';
 
@@ -9,11 +9,11 @@ import { getSessionUser } from '../../util/session';
  * assumed a user already has a session (i.e. they already completed the login step
  * of the auth flow).
  */
-export default async function createOtp(req: Request, res: Response) {
+export default async function createNewLoginOtp(req: Request, res: Response) {
   const user = await getSessionUser(req);
 
   if (user) {
-    const { code, err } = await startOtpAuthFlow(user);
+    const { code, err } = await createLoginToken(user);
 
     if (!code) {
       res.status(500).send(err);

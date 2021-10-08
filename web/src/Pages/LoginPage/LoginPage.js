@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Container, Segment, Button, Form, Input } from 'semantic-ui-react';
-import { login } from '../../api/auth';
+import { login, validateOtp } from '../../api/auth';
 import ValidateOtpModal from '../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../hooks/useToggle';
 import useStore from '../../store/store';
@@ -53,6 +53,10 @@ export default function LoginPage() {
     history.push('/dashboard');
   }
 
+  async function validator(code) {
+    return validateOtp(code);
+  }
+
   // empty dep array so it only runs this once on initial render
   useEffect(() => {
     if (isAuthenticated()) {
@@ -65,6 +69,7 @@ export default function LoginPage() {
       <Segment padded raised>
         <ValidateOtpModal
           open={open}
+          validator={validator}
           onValidMatch={handleValidOtpMatch}
           onCancel={handleCancelOtpValidation}
         />
@@ -95,6 +100,14 @@ export default function LoginPage() {
           </Form.Field>
 
           <p>
+            Forgot your password?{' '}
+            <span
+              style={{ color: '#4183c4', cursor: 'pointer' }}
+              onClick={() => alert('TODO')}
+            >
+              Click here
+            </span>
+            <br />
             Don't have an account? <Link to="/sign_up">Register here</Link>
           </p>
 

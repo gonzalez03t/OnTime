@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Icon, Message } from 'semantic-ui-react';
 import { PasswordStrength } from 'tai-password-strength';
+import { createChangePasswordToken } from '../../../api/token';
+import { updateUserPassword } from '../../../api/user';
 import ValidateOtpModal from '../../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../../hooks/useToggle';
 
@@ -26,6 +28,7 @@ export default function PasswordSettingsForm() {
   }, []);
 
   function isWeakPassword(password) {
+    return false;
     const results = tester.check(password);
 
     console.log(results);
@@ -34,10 +37,13 @@ export default function PasswordSettingsForm() {
   }
 
   async function initOtpValidation() {
-    // TODO: generate OTP
-    on();
+    const res = await createChangePasswordToken();
 
-    alert('TODO: SMS not send, send SMS');
+    if (res?.status === 201) {
+      on();
+    } else {
+      // TODO: notify
+    }
   }
 
   async function handleSubmit(e) {
@@ -45,8 +51,6 @@ export default function PasswordSettingsForm() {
     const { password, confirmPassword } = passwords;
 
     setError(initialError);
-
-    console.log(password, confirmPassword);
 
     if (!password || !confirmPassword) {
       setError({
@@ -67,15 +71,19 @@ export default function PasswordSettingsForm() {
     }
   }
 
+  async function validator(code) {
+    return updateUserPassword(passwords.password, code);
+  }
+
   function handleChange(e, { name, value }) {
-    console.log(name, value);
     setPasswords((curr) => {
       return { ...curr, [name]: value };
     });
   }
 
   function handleValidMatch() {
-    alert('TODO: update password');
+    alert('PASSWORD CHANGED');
+    off();
   }
 
   function handleCancel() {
@@ -86,6 +94,7 @@ export default function PasswordSettingsForm() {
     <React.Fragment>
       <ValidateOtpModal
         open={isModalOpen}
+        validator={validator}
         onValidMatch={handleValidMatch}
         onCancel={handleCancel}
       />
