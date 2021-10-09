@@ -132,28 +132,28 @@ const companies = [
     // address: {},
     owner: 0, // index of owners
     employees: [0, 1, 2, 3], // index of empl,
-    address: '976 Rockcrest Dr. Beverly, MA 01915',
+    address: '506 US-46, Garfield, NJ 07026',
   },
   {
     name: 'UF Neurosurgery',
     // address: {},
     owner: 1, // index of owners
     employees: [4, 5, 6, 7, 8, 9, 10], // index of empl,
-    address: '64 W. Victoria Lane Floral Park, NY 11001',
+    address: '580 8th St W Tower I, 9th Floor, Jacksonville, FL 32209',
   },
   {
     name: 'Playcare Daycare',
     // address: {},
     owner: 2, // index of owners
     employees: [11, 12, 13, 14], // index of empl,
-    address: '338 Temple Circle Tucson, AZ 85718',
+    address: '1935 E Fort Lowell Rd, Tucson, AZ 85719',
   },
   {
     name: 'Sail Away Nail Co.',
     // address: {},
     owner: 3, // index of owners
     employees: [15, 16, 17, 18, 19], // index of empl,
-    address: '53 Pumpkin Hill Rd. Pembroke Pines, FL 33028',
+    address: '7931 N Oracle Rd, Oro Valley, AZ 85704',
   },
 ];
 

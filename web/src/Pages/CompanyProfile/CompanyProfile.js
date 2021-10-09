@@ -93,13 +93,15 @@ export default function CompanyProfile() {
       <Segment>
         <Segment.Header>
           <h3 className="title">Location</h3>
+          <p className="subtitle">{company?.fullAddress}</p>
         </Segment.Header>
 
         <Segment.Spacer />
 
-        <GoogleMaps fullAddress="University of Florida, Gainesville, FL 32611" />
-        {/* <GoogleMaps fullAddress="Arizona State University, Phoenix, AZ 85004" /> */}
-        {/*  */}
+        {/* <GoogleMaps fullAddress="University of Florida, Gainesville, FL 32611" /> */}
+        {company?.fullAddress && (
+          <GoogleMaps fullAddress={company.fullAddress} />
+        )}
       </Segment>
     </div>
   );

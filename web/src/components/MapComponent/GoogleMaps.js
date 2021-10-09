@@ -6,6 +6,7 @@ import MapStyles from './MapStyles';
 import UFHealthLogoStyle from './UFHealthLogo.css';
 import SearchMapStyle from './SearchMap.css';
 import UFHealthLogo from '../../assets/ufhealth.png';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
 const libraries = ['places'];
 
@@ -26,7 +27,7 @@ const options = {
   fullscreenControl: true,
 };
 
-export default function GoogleMaps({ fullAddress }) {
+export default function GoogleMaps({ fullAddress, imageUrl }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -66,8 +67,16 @@ export default function GoogleMaps({ fullAddress }) {
   }, []);
 
   if (loadError) return 'Error loading maps';
-  if (!isLoaded) return 'Loading maps';
+
   if (!fullAddress) throw new Error('fullAddress missing from props');
+
+  if (!isLoaded) {
+    return (
+      <div style={{ minHeight: '20rem' }}>
+        <Loader active />
+      </div>
+    );
+  }
 
   return (
     <div className="GoogleMaps">
@@ -79,17 +88,19 @@ export default function GoogleMaps({ fullAddress }) {
         onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        <div style={UFHealthLogoStyle}>
-          <h1>
-            <span role="img" aria-label="UF Health Logo">
-              <img
-                className="uf-health-logo"
-                src={UFHealthLogo}
-                alt="UF Health Logo"
-              />
-            </span>
-          </h1>
-        </div>
+        {imageUrl && (
+          <div style={UFHealthLogoStyle}>
+            <h1>
+              <span role="img" aria-label="UF Health Logo">
+                <img
+                  className="uf-health-logo"
+                  src={imageUrl}
+                  alt="UF Health Logo"
+                />
+              </span>
+            </h1>
+          </div>
+        )}
 
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
