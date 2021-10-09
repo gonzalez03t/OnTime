@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Icon, Message } from 'semantic-ui-react';
-import { PasswordStrength } from 'tai-password-strength';
+import { createChangePasswordToken } from '../../../api/token';
+import { updateUserPassword } from '../../../api/user';
 import ValidateOtpModal from '../../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../../hooks/useToggle';
+import isWeakPassword from '../../../utils/isWeakPassword';
+import okResponse from '../../../utils/okResponse';
 
 const initialError = {
   status: false,
@@ -10,34 +13,21 @@ const initialError = {
   message: '',
 };
 
-const WEAK_CODES = ['VERY_WEAK', 'WEAK'];
-
 export default function PasswordSettingsForm() {
-  const [tester, setTester] = useState();
-
   const [visible, { toggle }] = useToggle(false);
   const [isModalOpen, { on, off }] = useToggle(false);
 
   const [passwords, setPasswords] = useState({});
   const [error, setError] = useState(initialError);
 
-  useEffect(() => {
-    setTester(new PasswordStrength());
-  }, []);
-
-  function isWeakPassword(password) {
-    const results = tester.check(password);
-
-    console.log(results);
-
-    return WEAK_CODES.includes(results?.strengthCode);
-  }
-
   async function initOtpValidation() {
-    // TODO: generate OTP
-    on();
+    const res = await createChangePasswordToken();
 
-    alert('TODO: SMS not send, send SMS');
+    if (okResponse(res)) {
+      on();
+    } else {
+      // TODO: notify
+    }
   }
 
   async function handleSubmit(e) {
@@ -45,8 +35,6 @@ export default function PasswordSettingsForm() {
     const { password, confirmPassword } = passwords;
 
     setError(initialError);
-
-    console.log(password, confirmPassword);
 
     if (!password || !confirmPassword) {
       setError({
@@ -67,15 +55,19 @@ export default function PasswordSettingsForm() {
     }
   }
 
+  async function validator(code) {
+    return updateUserPassword(passwords.password, code);
+  }
+
   function handleChange(e, { name, value }) {
-    console.log(name, value);
     setPasswords((curr) => {
       return { ...curr, [name]: value };
     });
   }
 
   function handleValidMatch() {
-    alert('TODO: update password');
+    alert('PASSWORD CHANGED');
+    off();
   }
 
   function handleCancel() {
@@ -86,6 +78,7 @@ export default function PasswordSettingsForm() {
     <React.Fragment>
       <ValidateOtpModal
         open={isModalOpen}
+        validator={validator}
         onValidMatch={handleValidMatch}
         onCancel={handleCancel}
       />

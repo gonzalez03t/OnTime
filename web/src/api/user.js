@@ -16,6 +16,16 @@ export function updateUserProfile(userDetails) {
     .catch((err) => err.response);
 }
 
+export function updateUserPassword(password, code) {
+  return axios
+    .put(baseUrl + '/settings/password', {
+      password,
+      code,
+      tokenType: 'CHANGE_PASSWORD',
+    })
+    .catch((err) => err.response);
+}
+
 export function updateUserNotificationPreference(newPreference) {
   return axios
     .put(baseUrl + '/settings/notifications', { newPreference })

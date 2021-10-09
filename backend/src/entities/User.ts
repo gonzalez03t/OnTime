@@ -172,6 +172,10 @@ export class User extends BaseEntity {
     }
   }
 
+  async setPassword(plainText: string) {
+    this.password = await User.generateHash(plainText);
+  }
+
   /**
    * This function is just a utility for altering a users role
    */

@@ -2,10 +2,7 @@
   height: 100%;
   width: 100%;
   display: flex;
-
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  flex-direction: column;
 }
 
 .settings-content__outer {
@@ -47,4 +44,18 @@
   align-items: center;
 
   padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .settings-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+
+    flex-direction: row;
+
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
 }
