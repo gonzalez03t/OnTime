@@ -25,6 +25,7 @@ import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPag
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import TestImageUpload from '../pages/TestImageUpload';
 import CompanyProfile from '../pages/CompanyProfile/CompanyProfile';
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 
 export default function Routes() {
   const { isAuthenticated, setUser } = useStore((state) => ({
@@ -52,6 +53,7 @@ export default function Routes() {
       <Route path="/dev" exact component={RouteLinks} />
       <Route path="/contact_us" component={ContactUsPage} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/forgot_password" component={ForgotPassword} />
       <Route path="/sign_up" component={SignUpPage} />
       <Route path="/contact_us" exact component={ContactUsPage} />
       <Route path="/find_us" exact component={FindUsPage} />

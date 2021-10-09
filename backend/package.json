@@ -20,6 +20,7 @@
     "express-session": "^1.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "randomstring": "^1.2.1",
     "totp-generator": "^0.0.9",
     "twilio": "^3.61.0"
   },
@@ -33,6 +34,7 @@
     "@types/express-session": "^1.17.3",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^14.0.27",
+    "@types/randomstring": "^1.1.7",
     "@types/totp-generator": "^0.0.2",
     "mikro-orm": "^4.5.3",
     "ts-node-dev": "^1.1.6",

@@ -1,62 +1,42 @@
 import totp from 'totp-generator';
 import { em } from '..';
-import { Company } from '../entities/Company';
 import { Token, TokenType } from '../entities/Token';
 import { User } from '../entities/User';
 
-const OTP_SECRET = process.env.OTP_SECRET;
-const OTP_ALGORITHM = process.env.OTP_ALGORITHM;
-const OTP_EXIRE_IN_MIN = process.env.OTP_EXIRE_IN_MIN;
-const INVITE_EXIRE_IN_DAYS = process.env.INVITE_EXIRE_IN_DAYS;
+export const OTP_SECRET = process.env.OTP_SECRET;
+export const OTP_ALGORITHM = process.env.OTP_ALGORITHM;
 
-export function generateOtp(type = TokenType.OTP, digits?: number) {
-  const token = totp(OTP_SECRET!, {
-    digits: digits ?? 6,
-    algorithm: OTP_ALGORITHM,
-  });
-
-  let expiresAt = new Date();
-
-  if (type === TokenType.OTP) {
-    expiresAt.setHours(
-      expiresAt.getHours(),
-      expiresAt.getMinutes() + Number(OTP_EXIRE_IN_MIN),
-      expiresAt.getSeconds()
-    );
-  } else {
-    expiresAt.setDate(expiresAt.getDate() + Number(INVITE_EXIRE_IN_DAYS));
-  }
-
-  return {
-    code: String(token),
-    expiresAt,
-  };
-}
-
-interface OtpAuthFlowReturn {
+interface TokenReturn {
   code?: string;
   err?: any;
 }
 
-export async function startOtpAuthFlow(user: User): Promise<OtpAuthFlowReturn> {
-  const { code, expiresAt } = generateOtp();
+export function generateOtpCode() {
+  return String(
+    totp(OTP_SECRET!, {
+      digits: 4,
+      algorithm: OTP_ALGORITHM,
+    })
+  );
+}
 
-  let otp: Token;
+export async function createLoginToken(user: User): Promise<TokenReturn> {
+  const code = generateOtpCode();
 
-  const existing = await em.findOne(Token, { user, type: TokenType.OTP });
+  let token: Token;
 
-  // if an otp already exists for the user, use new fields
+  const existing = await em.findOne(Token, { user, type: TokenType.LOGIN });
+
+  // if an otp already exists for the user refresh with new code
   if (existing) {
-    existing.code = await Token.hashCode(code);
-    existing.expiresAt = expiresAt;
-
-    otp = existing;
+    token = existing;
+    await token.refresh(code);
   } else {
-    otp = await Token.createOtpToken(code, expiresAt, user);
+    token = await Token.createToken(code, user, TokenType.LOGIN);
   }
 
   return em
-    .persistAndFlush(otp)
+    .persistAndFlush(token)
     .then(() => {
       return { code };
     })
@@ -65,33 +45,26 @@ export async function startOtpAuthFlow(user: User): Promise<OtpAuthFlowReturn> {
     });
 }
 
-export async function startOtpEmployeeInviteFlow(
+export async function createToken(
   user: User,
-  company: Company
-): Promise<OtpAuthFlowReturn> {
-  const { code, expiresAt } = generateOtp(TokenType.EMPLOYEE_INVITE, 8);
+  type: TokenType
+): Promise<TokenReturn> {
+  const code = generateOtpCode();
 
-  let otp: Token;
+  let token: Token;
 
-  const existing = await em.findOne(Token, {
-    user,
-    // company,
-    type: TokenType.EMPLOYEE_INVITE,
-  });
+  const existing = await em.findOne(Token, { user, type });
 
-  // if an otp already exists for the user, use new fields
+  // if an otp already exists for the user refresh with new code
   if (existing) {
-    existing.code = await Token.hashCode(code);
-    existing.expiresAt = expiresAt;
-    existing.company = company;
-
-    otp = existing;
+    token = existing;
+    await token.refresh(code);
   } else {
-    otp = await Token.createInviteToken(code, expiresAt, user, company);
+    token = await Token.createToken(code, user, type);
   }
 
   return em
-    .persistAndFlush(otp)
+    .persistAndFlush(token)
     .then(() => {
       return { code };
     })

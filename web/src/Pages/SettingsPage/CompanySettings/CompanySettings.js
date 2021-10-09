@@ -8,14 +8,16 @@ export default function CompanySettings() {
   const isCompanyOwner = useStore((state) => state.isCompanyOwner);
 
   return (
-    <div>
+    <div className="settings-content__inner">
       <div className="settings-content__segment">
-        <SettingsSectionHeader
-          title="Company Settings"
-          subtitle="This page allows you to manage your company"
-        />
+        <div className="settings-content__segment-body">
+          <SettingsSectionHeader
+            title="Company Settings"
+            subtitle="This page allows you to manage your company"
+          />
+        </div>
 
-        <div className="company-settings__inner">
+        <div className="settings-form__body">
           {isCompanyOwner() ? (
             <div>TODO: load company info</div>
           ) : (
