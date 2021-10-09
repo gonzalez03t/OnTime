@@ -97,7 +97,9 @@ export default function CompanyProfile() {
 
         <Segment.Spacer />
 
-        <GoogleMaps />
+        <GoogleMaps fullAddress="University of Florida, Gainesville, FL 32611" />
+        {/* <GoogleMaps fullAddress="Arizona State University, Phoenix, AZ 85004" /> */}
+        {/*  */}
       </Segment>
     </div>
   );

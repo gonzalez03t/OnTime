@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
+
 import MapStyles from './MapStyles';
 import UFHealthLogoStyle from './UFHealthLogo.css';
 import SearchMapStyle from './SearchMap.css';
 import UFHealthLogo from '../../assets/ufhealth.png';
-
-// import usePlacesAutocomplete, {
-//    getGeocode,
-//    getLatLng,
-//} from 'use-places-autocomplete';
 
 const libraries = ['places'];
 
@@ -17,10 +14,10 @@ const mapContainerStyle = {
   height: '60vh',
 };
 
-const center = {
-  lat: 29.648657,
-  lng: -82.343629,
-};
+// const center = {
+//   lat: 29.648657,
+//   lng: -82.343629,
+// };
 
 const options = {
   styles: MapStyles,
@@ -29,12 +26,28 @@ const options = {
   fullscreenControl: true,
 };
 
-// TODO: add props to take in location
-export default function GoogleMaps() {
+export default function GoogleMaps({ fullAddress }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
+
+  useEffect(() => {
+    if (isLoaded && fullAddress) {
+      // Get latitude and longitude via utility functions
+      getGeocode({ address: fullAddress })
+        .then((results) => getLatLng(results[0]))
+        .then((coords) => {
+          setMarker(coords);
+          process.env.NODE_ENV !== 'production' &&
+            console.log('📍 Coordinates: ', coords);
+        })
+        .catch((error) => {
+          process.env.NODE_ENV !== 'production' &&
+            console.log('😱 Error: ', error);
+        });
+    }
+  }, [isLoaded, fullAddress]);
 
   // Marker state to display where user clicks
   const [marker, setMarker] = React.useState();
@@ -54,13 +67,14 @@ export default function GoogleMaps() {
 
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading maps';
+  if (!fullAddress) throw new Error('fullAddress missing from props');
 
   return (
     <div className="GoogleMaps">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={15}
-        center={center}
+        center={marker}
         options={options}
         onClick={onMapClick}
         onLoad={onMapLoad}
