@@ -24,6 +24,7 @@ import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
 import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import TestImageUpload from '../pages/TestImageUpload';
+import CompanyProfile from '../pages/CompanyProfile/CompanyProfile';
 
 export default function Routes() {
   const { isAuthenticated, setUser } = useStore((state) => ({
@@ -65,6 +66,7 @@ export default function Routes() {
       />
       <ProtectedRoute path="/dashboard" exact component={UserDashboard} />
       <ProtectedRoute path="/settings" exact component={SettingsPage} />
+      <Route path="/company/:name" component={CompanyProfile} />
       <Route path="/manage_reminders" exact component={ManageRemindersPage} />
       <Route path="/manage_admins" exact component={ManageAdminsPage} />
       <Route path="/manage_non_admins" exact component={ManageNonAdminsPage} />

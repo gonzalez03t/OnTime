@@ -148,6 +148,7 @@ export class User extends BaseEntity {
       lastName: this.lastName,
       email: this.email,
       phone: this.phone,
+      imageUrl: this.image?.getImageUrl(),
     };
   }
 

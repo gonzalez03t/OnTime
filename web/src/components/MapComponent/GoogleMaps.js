@@ -13,7 +13,7 @@ import UFHealthLogo from '../../assets/ufhealth.png';
 const libraries = ['places'];
 
 const mapContainerStyle = {
-  width: '70vw',
+  width: '100%',
   height: '60vh',
 };
 
@@ -29,6 +29,7 @@ const options = {
   fullscreenControl: true,
 };
 
+// TODO: add props to take in location
 export default function GoogleMaps() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,

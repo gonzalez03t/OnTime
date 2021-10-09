@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import getCompanies from '../endpoints/company/getCompanies';
+import getCompany from '../endpoints/company/getCompany';
 import getEmployees from '../endpoints/company/getEmployees';
 import inviteEmployee from '../endpoints/company/inviteEmployee';
 import registerCompany from '../endpoints/company/registerCompany';
@@ -16,6 +17,7 @@ import requireSession from '../middleware/requireSession';
 const router = Router();
 
 router.get('/', getCompanies);
+router.get('/:name', getCompany);
 router.post('/new', requireBody, registerCompany);
 router.post('/employees', requireBody, requireSession, getEmployees);
 router.post(

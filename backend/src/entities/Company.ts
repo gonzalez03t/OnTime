@@ -31,7 +31,7 @@ export class Company extends BaseEntity {
   @Unique()
   name!: string; // name of the company
 
-  @Embedded({ object: true })
+  @Embedded({ object: true, nullable: true })
   image?: Image; // the logo of the company, wrapped in an embedded entity.
 
   @Property()
@@ -74,10 +74,13 @@ export class Company extends BaseEntity {
     return {
       id: this.id,
       name: this.name,
-      image: this.image,
+      image: this.image?.getImageUrl(),
       phone: this.phone,
       fullAddress: this.fullAddress,
       subAddresses: this.subAddresses,
+      employees: this.employees
+        .getItems()
+        .map((empl) => empl.getEmployeeDetails()),
     };
   }
 
