@@ -1,26 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { getGeocode, getLatLng } from 'use-places-autocomplete';
+
 import MapStyles from './MapStyles';
 import UFHealthLogoStyle from './UFHealthLogo.css';
 import SearchMapStyle from './SearchMap.css';
 import UFHealthLogo from '../../assets/ufhealth.png';
-
-// import usePlacesAutocomplete, {
-//    getGeocode,
-//    getLatLng,
-//} from 'use-places-autocomplete';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
 const libraries = ['places'];
 
 const mapContainerStyle = {
-  width: '70vw',
+  width: '100%',
   height: '60vh',
 };
 
-const center = {
-  lat: 29.648657,
-  lng: -82.343629,
-};
+// const center = {
+//   lat: 29.648657,
+//   lng: -82.343629,
+// };
 
 const options = {
   styles: MapStyles,
@@ -29,11 +27,28 @@ const options = {
   fullscreenControl: true,
 };
 
-export default function GoogleMaps() {
+export default function GoogleMaps({ fullAddress, imageUrl }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
+
+  useEffect(() => {
+    if (isLoaded && fullAddress) {
+      // Get latitude and longitude via utility functions
+      getGeocode({ address: fullAddress })
+        .then((results) => getLatLng(results[0]))
+        .then((coords) => {
+          setMarker(coords);
+          process.env.NODE_ENV !== 'production' &&
+            console.log('📍 Coordinates: ', coords);
+        })
+        .catch((error) => {
+          process.env.NODE_ENV !== 'production' &&
+            console.log('😱 Error: ', error);
+        });
+    }
+  }, [isLoaded, fullAddress]);
 
   // Marker state to display where user clicks
   const [marker, setMarker] = React.useState();
@@ -52,29 +67,40 @@ export default function GoogleMaps() {
   }, []);
 
   if (loadError) return 'Error loading maps';
-  if (!isLoaded) return 'Loading maps';
+
+  if (!fullAddress) throw new Error('fullAddress missing from props');
+
+  if (!isLoaded) {
+    return (
+      <div style={{ minHeight: '20rem' }}>
+        <Loader active />
+      </div>
+    );
+  }
 
   return (
     <div className="GoogleMaps">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={15}
-        center={center}
+        center={marker}
         options={options}
         onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        <div style={UFHealthLogoStyle}>
-          <h1>
-            <span role="img" aria-label="UF Health Logo">
-              <img
-                className="uf-health-logo"
-                src={UFHealthLogo}
-                alt="UF Health Logo"
-              />
-            </span>
-          </h1>
-        </div>
+        {imageUrl && (
+          <div style={UFHealthLogoStyle}>
+            <h1>
+              <span role="img" aria-label="UF Health Logo">
+                <img
+                  className="uf-health-logo"
+                  src={imageUrl}
+                  alt="UF Health Logo"
+                />
+              </span>
+            </h1>
+          </div>
+        )}
 
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>

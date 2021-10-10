@@ -1,4 +1,5 @@
 import { em } from '..';
+import { VerificationStatus } from '../../@types/enums';
 import { Appointment } from '../entities/Appointment';
 import { Company } from '../entities/Company';
 import { Reminder } from '../entities/Reminder';
@@ -65,6 +66,7 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
       employees,
       // address, // TODO: see sprint 3 issue
       fullAddress: address,
+      status: VerificationStatus.VERIFIED,
     });
 
     em.persist([company]);

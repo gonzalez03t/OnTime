@@ -1,0 +1,19 @@
+.company-logo__container {
+  position: absolute;
+  display: inline-block;
+
+  left: 1.5rem;
+  bottom: -1.25rem;
+
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 6rem;
+  width: 6rem;
+}
+
+.company-logo__placeholder {
+  height: 100%;
+  width: 100%;
+  color: #d1d5db;
+}

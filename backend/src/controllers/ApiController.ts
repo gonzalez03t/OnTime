@@ -17,7 +17,7 @@ const router = Router();
 
 router.use('/appointments', authenticatedRoute, AppointmentController);
 router.use('/auth', AuthController);
-router.use('/company', CompanyController);
+router.use('/companies', CompanyController);
 router.use('/tokens', TokenController);
 router.use('/reminders', authenticatedRoute, ReminderController);
 router.use('/users', authenticatedRoute, UserController);

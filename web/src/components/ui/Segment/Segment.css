@@ -1,0 +1,57 @@
+.ui-segment {
+  position: relative;
+
+  margin-bottom: 1.25rem;
+
+  background-color: #fff;
+  border-radius: 0.375rem;
+
+  overflow: hidden;
+
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.ui-segment__header {
+  padding: 1.75rem 1.75rem 0 1.75rem;
+}
+
+.ui-segment__header > h3.title {
+  /* override semantic */
+  line-height: 1.5rem !important;
+  margin: 0 !important;
+
+  font-weight: 500;
+  color: #111827;
+}
+
+.ui-segment__header > p.subtitle {
+  margin-top: 0.25rem;
+  font-size: small;
+  color: #6b7280;
+}
+
+.ui-segment__body {
+  padding: 1.75rem;
+}
+
+.ui-segment__group {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ui-segment__actions {
+  background-color: #f9fafb;
+
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+
+  padding: 0.75rem;
+}
+
+.ui-segment__spacer {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
