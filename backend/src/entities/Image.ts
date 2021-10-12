@@ -4,13 +4,15 @@ import { VerificationStatus } from '../../@types/enums';
 /**
  * This is a utility, embeddable entity. This will be stored as JSON. The purpose of
  * wrapping something like an image in this type of entity is to have the status mainly -
- * images will be *hidden* unless verified. No imageUrl's should be sent to client
- * if not verified.
+ * images will be *hidden* unless verified. TODO: add 'CLIENT_VERIFIED' to enum
  */
 @Embeddable()
 export class Image {
+  /**
+   * this refers to the key of the object in the S3 bucket
+   */
   @Property()
-  imageUrl!: string;
+  s3Key!: string;
 
   @Enum(() => VerificationStatus)
   status = VerificationStatus.PENDING;
@@ -42,19 +44,19 @@ export class Image {
   /**
    * This function will be used to *hide* the image until verified.
    */
-  getImageUrl() {
+  getImageKey() {
     if (!this.isVerified()) {
       return null;
     } else {
-      return this.imageUrl;
+      return this.s3Key;
     }
   }
 
-  setImageUrl(imageUrl: string) {
-    this.imageUrl = imageUrl;
+  setImageKey(s3Key: string) {
+    this.s3Key = s3Key;
   }
 
-  constructor(url: string) {
-    this.imageUrl = url;
+  constructor(s3Key: string) {
+    this.s3Key = s3Key;
   }
 }

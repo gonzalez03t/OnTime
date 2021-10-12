@@ -43,7 +43,7 @@ async function bootstrap() {
   });
 
   app.use(cors(corsOptions));
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: true }));
 
   app.use(

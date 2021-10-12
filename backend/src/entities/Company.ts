@@ -74,7 +74,7 @@ export class Company extends BaseEntity {
     return {
       id: this.id,
       name: this.name,
-      image: this.image?.getImageUrl(),
+      imageKey: this.image?.getImageKey(),
       phone: this.phone,
       fullAddress: this.fullAddress,
       subAddresses: this.subAddresses,
@@ -95,7 +95,7 @@ export class Company extends BaseEntity {
   constructor(
     creator: User,
     name: string,
-    imageUrl: string,
+    _image: any,
     fullAddress: string,
     phone: string,
     subAddresses?: SubAddressType[]
@@ -105,7 +105,7 @@ export class Company extends BaseEntity {
     this.owner = creator;
 
     this.name = name;
-    this.image = new Image(imageUrl);
+    // this.image = new Image(imageUrl);
     this.fullAddress = fullAddress;
     this.phone = phone;
 

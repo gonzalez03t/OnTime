@@ -134,6 +134,7 @@ export class User extends BaseEntity {
       email: this.email,
       phone: this.phone,
       role: this.role,
+      imageKey: this.image?.getImageKey(),
       notificationPreference: this.notificationPreference,
     };
   }
@@ -148,7 +149,7 @@ export class User extends BaseEntity {
       lastName: this.lastName,
       email: this.email,
       phone: this.phone,
-      imageUrl: this.image?.getImageUrl(),
+      imageKey: this.image?.getImageKey(),
     };
   }
 
@@ -159,17 +160,19 @@ export class User extends BaseEntity {
   // ====== MUTATORS ====== //
 
   setDetails(userDetails: any) {
-    const { firstName, lastName, email, phone, imageUrl } = userDetails;
+    const { firstName, lastName, email, phone, s3Key } = userDetails;
 
     this.firstName = firstName ?? this.firstName;
     this.lastName = lastName ?? this.lastName;
     this.email = email ?? this.email;
     this.phone = phone ?? this.phone;
 
-    if (imageUrl && this.image) {
-      this.image.setImageUrl(imageUrl);
-    } else if (imageUrl) {
-      this.image = new Image(imageUrl);
+    if (s3Key) {
+      if (this.image) {
+        this.image.setImageKey(s3Key);
+      } else {
+        this.image = new Image(s3Key);
+      }
     }
   }
 

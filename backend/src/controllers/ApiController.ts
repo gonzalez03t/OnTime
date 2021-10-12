@@ -5,6 +5,7 @@ import { AdminController } from './AdminController';
 import { AppointmentController } from './AppointmentController';
 import { AuthController } from './AuthController';
 import { CompanyController } from './CompanyController';
+import { S3ImageController } from './S3ImageController';
 import { ReminderController } from './ReminderController';
 import { TokenController } from './TokenController';
 import { UserController } from './UserController';
@@ -21,6 +22,7 @@ router.use('/companies', CompanyController);
 router.use('/tokens', TokenController);
 router.use('/reminders', authenticatedRoute, ReminderController);
 router.use('/users', authenticatedRoute, UserController);
+router.use('/s3/images', authenticatedRoute, S3ImageController);
 router.use('/admin', authenticatedRoute, adminRoute, AdminController);
 
 export const ApiController = router;
