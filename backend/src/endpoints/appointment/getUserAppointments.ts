@@ -19,13 +19,14 @@ export default async function getUserAppointments(req: Request, res: Response) {
       employee: user,
     };
   } else if (user?.isBaseUser()) {
-    relations.push('employee');
+    relations.push('employee', 'employee.company');
     whereClause = {
       client: user,
     };
   }
 
-  if (whereClause && relations.length === 2) {
+  if (whereClause && relations.length > 1) {
+    console.log(relations);
     await em
       .find(Appointment, whereClause, relations)
       .then((appointments) =>
