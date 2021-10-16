@@ -63,13 +63,17 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
       name,
       phone,
       owner: companyOwner,
-      employees,
+      // employees,
       // address, // TODO: see sprint 3 issue
       fullAddress: address,
       status: VerificationStatus.VERIFIED,
     });
 
-    em.persist([company]);
+    for (const empl of employees) {
+      company.addEmployee(empl);
+    }
+
+    em.persist([company, ...employees]);
 
     companies.push(company);
   }

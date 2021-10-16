@@ -52,6 +52,7 @@ export class Company extends BaseEntity {
 
   addEmployee(user: User) {
     this.employees.add(user);
+    user.makeCompanyEmployee(this);
   }
 
   isVerified() {
