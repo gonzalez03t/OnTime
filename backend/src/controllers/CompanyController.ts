@@ -1,10 +1,12 @@
 import { Router } from 'express';
+import verifyCompany from '../endpoints/company/admin/verifyCompany';
 import getCompanies from '../endpoints/company/getCompanies';
 import getCompany from '../endpoints/company/getCompany';
 import getEmployees from '../endpoints/company/getEmployees';
 // import inviteEmployee from '../endpoints/company/inviteEmployee';
 import registerCompany from '../endpoints/company/registerCompany';
 import registerEmployee from '../endpoints/company/registerEmployee';
+import adminRoute from '../middleware/adminRoute';
 import authenticatedRoute from '../middleware/authenticatedRoute';
 import companyAdminRoute from '../middleware/companyAdminRoute';
 import requireBody from '../middleware/requireBody';
@@ -34,5 +36,7 @@ router.post(
   companyAdminRoute,
   registerEmployee
 );
+
+router.put('/:id/status', adminRoute, requireBody, verifyCompany);
 
 export const CompanyController = router;

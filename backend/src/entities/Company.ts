@@ -92,6 +92,14 @@ export class Company extends BaseEntity {
     this.status = VerificationStatus.DENIED;
   }
 
+  setStatus(status: VerificationStatus) {
+    if (status === VerificationStatus.VERIFIED) {
+      this.verifyCompany();
+    } else if (status === VerificationStatus.DENIED) {
+      this.rejectCompany();
+    }
+  }
+
   constructor(
     creator: User,
     name: string,

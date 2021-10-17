@@ -77,6 +77,19 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
   return em.flush().then(() => companies);
 }
 
+async function generateAdmin() {
+  return em.persistAndFlush(
+    em.create(User, {
+      firstName: 'admin',
+      lastName: 'admin',
+      email: 'admin@ontime.com',
+      password: await User.generateHash('admin'),
+      phone: '09876542',
+      role: UserRole.ADMIN,
+    })
+  );
+}
+
 /**
  * This will populate the database with fake data. Added forceIgnore param so the process is
  * more controlled during development if I don't want to consistently build/destory the db
@@ -109,9 +122,9 @@ export default async function seed(forceIgnore = false) {
   const companyOwners = await generateUsers(UserRole.COMPANY_OWNER);
   console.log('*** COMPANY_OWNER USERS CREATED');
 
-  // console.log('*** CREATING ADMIN USERS');
-  // const admins = await generateUsers(UserRole.ADMIN);
-  // console.log('*** ADMIN USERS CREATED');
+  console.log('*** CREATING ADMIN USER');
+  await generateAdmin();
+  console.log('*** ADMIN USER CREATED');
 
   console.log('*** CREATING COMPANIES');
   const companies = await generateCompanies(companyOwners, employeeUsers);
