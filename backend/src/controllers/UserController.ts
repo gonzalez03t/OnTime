@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import changeRole from '../endpoints/user/admin/changeRole';
+import verifyUserImage from '../endpoints/user/admin/verifyUserImage';
 import favoriteCompany from '../endpoints/user/favoriteCompany';
 import getFavoritedCompanies from '../endpoints/user/getFavoritedCompanies';
 import getViewer from '../endpoints/user/getViewer';
@@ -36,5 +37,6 @@ router.put(
 );
 
 router.put('/:id/role', requireBody, adminRoute, changeRole);
+router.put('/:id/image/status', requireBody, adminRoute, verifyUserImage);
 
 export const UserController = router;
