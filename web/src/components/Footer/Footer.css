@@ -37,6 +37,6 @@ footer {
 /* 'xl': '1280px', */
 @media (min-width: 1280px) {
   .footer__container {
-    max-width: 72rem;
+    max-width: 92rem;
   }
 }

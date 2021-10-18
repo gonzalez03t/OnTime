@@ -12,9 +12,9 @@ export function createUserAppointment(employeeEmail, startsAt, wantsReminder) {
     .catch((err) => err.response);
 }
 
-export function getFilledSlots(dateRange) {
+export function getFilledSlots(dateRange, employeeId) {
   return axios
-    .post(baseUrl + '/filled', { dateRange })
+    .post(baseUrl + '/filled', { dateRange, employeeId })
     .catch((err) => err.response);
 }
 
