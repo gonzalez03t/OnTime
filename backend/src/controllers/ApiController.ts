@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import adminRoute from '../middleware/adminRoute';
 import authenticatedRoute from '../middleware/authenticatedRoute';
-import { AdminController } from './AdminController';
 import { AppointmentController } from './AppointmentController';
 import { AuthController } from './AuthController';
 import { CompanyController } from './CompanyController';
@@ -21,6 +19,5 @@ router.use('/companies', CompanyController);
 router.use('/tokens', TokenController);
 router.use('/reminders', authenticatedRoute, ReminderController);
 router.use('/users', authenticatedRoute, UserController);
-router.use('/admin', authenticatedRoute, adminRoute, AdminController);
 
 export const ApiController = router;

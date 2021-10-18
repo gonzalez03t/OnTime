@@ -1,23 +1,24 @@
 import { Request, Response } from 'express';
-import { em } from '../..';
-import { User } from '../../entities/User';
+import { em } from '../../..';
+import { User, UserRole } from '../../../entities/User';
 
 /**
  * This route will alter the UserRole of a registered user. Only admins
  * may perform this route.
  */
 export default async function changeRole(req: Request, res: Response) {
-  const { email, newRole } = req.body;
+  const { id } = req.params;
+  const { role } = req.body;
 
-  if (!email || !newRole) {
-    // TODO: give meaningful response
-    res.sendStatus(400);
+  if (!id || !role) {
+    res.status(400).send('You must specify user ID and role');
+  } else if (!Object.keys(UserRole).includes(role)) {
+    res.status(400).send(`${role} is not a valid UserRole`);
   } else {
-    const targetUser = await em.findOne(User, { email });
+    const targetUser = await em.findOne(User, { id });
 
     if (targetUser) {
-      // TODO: check if this is a valid role
-      targetUser.changeRole(newRole);
+      targetUser.changeRole(role);
       await em
         .persistAndFlush(targetUser)
         .then(() => res.sendStatus(200))

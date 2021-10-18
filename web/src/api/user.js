@@ -31,3 +31,26 @@ export function updateUserNotificationPreference(newPreference) {
     .put(baseUrl + '/settings/notifications', { newPreference })
     .catch((err) => err.response);
 }
+
+// ADMIN ROUTES
+/**
+ *
+ * @param {string} id userId
+ * @param {'BASE' | 'EMPLOYEE' | 'COMPANY_OWNER' | 'ADMIN'} role
+ */
+export function changeUserRole(id, role) {
+  return axios
+    .put(baseUrl + `/${id}/role`, { role })
+    .catch((err) => err.response);
+}
+
+/**
+ *
+ * @param {string} id userId
+ * @param {'VERIFIED' | 'DENIED'} status
+ */
+export function verifyUserImage(id, status) {
+  return axios
+    .put(baseUrl + `/${id}/image/status`, { status })
+    .catch((err) => err.response);
+}
