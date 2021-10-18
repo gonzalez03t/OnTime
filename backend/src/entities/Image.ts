@@ -31,6 +31,14 @@ export class Image {
     this.status = VerificationStatus.DENIED;
   }
 
+  setStatus(status: VerificationStatus) {
+    if (status === VerificationStatus.VERIFIED) {
+      this.verifyImage();
+    } else if (status === VerificationStatus.DENIED) {
+      this.rejectImage();
+    }
+  }
+
   // TODO: change this after dev period :)
   isVerified() {
     return true;

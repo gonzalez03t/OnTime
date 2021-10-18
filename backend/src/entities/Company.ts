@@ -52,6 +52,7 @@ export class Company extends BaseEntity {
 
   addEmployee(user: User) {
     this.employees.add(user);
+    user.makeCompanyEmployee(this);
   }
 
   isVerified() {
@@ -90,6 +91,14 @@ export class Company extends BaseEntity {
 
   rejectCompany() {
     this.status = VerificationStatus.DENIED;
+  }
+
+  setStatus(status: VerificationStatus) {
+    if (status === VerificationStatus.VERIFIED) {
+      this.verifyCompany();
+    } else if (status === VerificationStatus.DENIED) {
+      this.rejectCompany();
+    }
   }
 
   constructor(

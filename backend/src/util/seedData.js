@@ -2,7 +2,7 @@ const today = new Date();
 
 function getStartDate(daysAway, hours, min) {
   const startsAt = new Date(Number(today));
-  startsAt.setDate(today.getDate() + 1);
+  startsAt.setDate(today.getDate() + daysAway);
   startsAt.setHours(hours, min);
 
   return startsAt;

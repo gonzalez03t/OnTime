@@ -12,6 +12,6 @@ export default async function getViewer(req: Request, res: Response) {
 
   await em
     .findOneOrFail(User, { id: userId })
-    .then((user) => res.send({ user: user.getDetails() }))
+    .then((user) => res.send({ user: user.getLoginDetails() }))
     .catch((err) => res.status(401).send(err));
 }

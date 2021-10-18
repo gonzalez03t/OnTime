@@ -1,0 +1,33 @@
+.ui.segment.calendar-segment {
+  padding-bottom: 65px;
+  width: auto;
+}
+
+.ui.segment.reminders-segment {
+  text-align: center;
+}
+
+#segment-column.stretched.four.wide.column {
+  padding-right: 0;
+}
+
+#calendar-column.twelve.wide.column {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* 'sm': '640px', */
+@media (max-width: 1030px) {
+  .ui.two.column.grid {
+    flex-direction: column;
+  }
+  #calendar-column.twelve.wide.column {
+    width: 100% !important;
+  }
+  #segment-column.stretched.four.wide.column {
+    width: 100% !important;
+    padding-left: 10%;
+    padding-right: 10%;
+    align-content: center;
+  }
+}
