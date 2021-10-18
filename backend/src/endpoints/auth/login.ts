@@ -21,8 +21,6 @@ export default async function login(req: Request, res: Response) {
   } else {
     const user = await em.findOne(User, { email });
 
-    console.log(user);
-
     if (user && (await user.validatePassword(password))) {
       const { code, err } = await createLoginToken(user);
 
@@ -34,7 +32,7 @@ export default async function login(req: Request, res: Response) {
         await saveSession(user.id, 'pending_otp_validation', req)
           .then(() =>
             res.status(200).json({
-              user: user.getDetails(),
+              user: user.getLoginDetails(),
               status: 'pending_otp_validation',
             })
           )

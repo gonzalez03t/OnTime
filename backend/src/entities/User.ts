@@ -133,22 +133,26 @@ export class User extends BaseEntity {
       lastName: this.lastName,
       email: this.email,
       phone: this.phone,
+      imageUrl: this.image?.getImageUrl(),
+    };
+  }
+
+  /**
+   * This function is really the same as getDetails but with a few more fields,
+   * used on login call and viewer call
+   */
+  getLoginDetails() {
+    return {
+      ...this.getDetails(),
       role: this.role,
       notificationPreference: this.notificationPreference,
     };
   }
 
-  /**
-   * This function is a more restricted version of User.getDetails() above. It is
-   * meant to be used when BASE users request information about ADMIN users
-   */
   getEmployeeDetails() {
     return {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      imageUrl: this.image?.getImageUrl(),
+      ...this.getDetails(),
+      company: this.company?.name,
     };
   }
 

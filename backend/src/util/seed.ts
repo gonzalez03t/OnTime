@@ -63,18 +63,35 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
       name,
       phone,
       owner: companyOwner,
-      employees,
+      // employees,
       // address, // TODO: see sprint 3 issue
       fullAddress: address,
       status: VerificationStatus.VERIFIED,
     });
 
-    em.persist([company]);
+    for (const empl of employees) {
+      company.addEmployee(empl);
+    }
+
+    em.persist([company, ...employees]);
 
     companies.push(company);
   }
 
   return em.flush().then(() => companies);
+}
+
+async function generateAdmin() {
+  return em.persistAndFlush(
+    em.create(User, {
+      firstName: 'admin',
+      lastName: 'admin',
+      email: 'admin@ontime.com',
+      password: await User.generateHash('admin'),
+      phone: '09876542',
+      role: UserRole.ADMIN,
+    })
+  );
 }
 
 /**
@@ -109,9 +126,9 @@ export default async function seed(forceIgnore = false) {
   const companyOwners = await generateUsers(UserRole.COMPANY_OWNER);
   console.log('*** COMPANY_OWNER USERS CREATED');
 
-  // console.log('*** CREATING ADMIN USERS');
-  // const admins = await generateUsers(UserRole.ADMIN);
-  // console.log('*** ADMIN USERS CREATED');
+  console.log('*** CREATING ADMIN USER');
+  await generateAdmin();
+  console.log('*** ADMIN USER CREATED');
 
   console.log('*** CREATING COMPANIES');
   const companies = await generateCompanies(companyOwners, employeeUsers);

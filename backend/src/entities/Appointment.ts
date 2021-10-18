@@ -60,12 +60,20 @@ export class Appointment extends BaseEntity {
    * to be used to populate calenders with filled slots, without revealing
    * sensative data.
    */
-  getDetails() {
-    return {
+  getDetails(employee = false) {
+    let baseInfo = {
       startsAt: this.startsAt,
       endsAt: this.getEndTime(),
       duration: this.duration,
     };
+
+    if (employee) {
+      Object.assign(baseInfo, { client: this.client.getDetails() });
+    } else {
+      Object.assign(baseInfo, { employee: this.employee.getEmployeeDetails() });
+    }
+
+    return baseInfo;
   }
 
   /**
