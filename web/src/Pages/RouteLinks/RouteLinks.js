@@ -23,9 +23,11 @@ export default function RouteLinks() {
         <li>
           <Link to="/settings">Settings</Link>
         </li>
-
         <li>
           <Link to="/test">Test NSFW Image Detection</Link>
+        </li>
+        <li>
+          <Link to="/company_search">Company Search</Link>
         </li>
       </ul>
     </div>
