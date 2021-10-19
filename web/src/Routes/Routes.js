@@ -69,7 +69,11 @@ export default function Routes() {
       />
       <ProtectedRoute path="/dashboard" exact component={UserDashboard} />
       <ProtectedRoute path="/settings" exact component={SettingsPage} />
-      <ProtectedRoute path="/company/:name/schedule" exact component={ScheduleAppointmentPage} />
+      <ProtectedRoute
+        path="/company/:name/schedule"
+        exact
+        component={ScheduleAppointmentPage}
+      />
       <Route path="/company/:name" component={CompanyProfile} />
       <Route path="/manage_reminders" exact component={ManageRemindersPage} />
       <Route path="/manage_admins" exact component={ManageAdminsPage} />
