@@ -14,6 +14,7 @@ import useStore from '../../store/store';
 import shallow from 'zustand/shallow';
 import { getUserAppointments } from '../../api/appointment';
 import './UserDashBoard.css';
+import { Link } from 'react-router-dom';
 
 export default function UserDashboard() {
   const history = useHistory();
@@ -90,6 +91,8 @@ export default function UserDashboard() {
               color="black"
               style={{ marginTop: 10 }}
               floated="right"
+              as={Link}
+              to="/company_search"
             >
               <Icon name="calendar plus" />
             </Button>
