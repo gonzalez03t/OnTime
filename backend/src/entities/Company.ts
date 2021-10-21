@@ -9,7 +9,7 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import { VerificationStatus } from '../../@types/enums';
-import { SubAddressType } from '../../@types/types';
+import Address from './Address';
 import { BaseEntity } from './BaseEntity';
 import { Image } from './Image';
 import { SubAddress } from './SubAddress';
@@ -19,7 +19,7 @@ import { User } from './User';
  *
  */
 @Entity()
-@Unique({ properties: ['name', 'fullAddress'] })
+@Unique({ properties: ['name', 'address'] })
 export class Company extends BaseEntity {
   @OneToOne(() => User)
   owner!: User; // whoever created the account
@@ -34,9 +34,11 @@ export class Company extends BaseEntity {
   @Embedded({ object: true, nullable: true })
   image?: Image; // the logo of the company, wrapped in an embedded entity.
 
-  @Property()
-  @Unique()
-  fullAddress!: string;
+  @Embedded({ object: true, nullable: true })
+  coverPhoto?: Image;
+
+  @Embedded({ object: true })
+  address!: Address;
 
   @Property()
   phone!: string;
@@ -76,8 +78,10 @@ export class Company extends BaseEntity {
       id: this.id,
       name: this.name,
       image: this.image?.getImageUrl(),
+      coverPhoto: this.coverPhoto?.getImageUrl(),
       phone: this.phone,
-      fullAddress: this.fullAddress,
+      address: this.address,
+      fullAddress: this.address.toString(),
       subAddresses: this.subAddresses,
       employees: this.employees
         .getItems()
@@ -98,31 +102,6 @@ export class Company extends BaseEntity {
       this.verifyCompany();
     } else if (status === VerificationStatus.DENIED) {
       this.rejectCompany();
-    }
-  }
-
-  constructor(
-    creator: User,
-    name: string,
-    imageUrl: string,
-    fullAddress: string,
-    phone: string,
-    subAddresses?: SubAddressType[]
-  ) {
-    super();
-
-    this.owner = creator;
-
-    this.name = name;
-    this.image = new Image(imageUrl);
-    this.fullAddress = fullAddress;
-    this.phone = phone;
-
-    if (subAddresses) {
-      this.subAddresses = subAddresses.map(
-        ({ label, latitude, longitude }) =>
-          new SubAddress(label, latitude, longitude)
-      );
     }
   }
 }
