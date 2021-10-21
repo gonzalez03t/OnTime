@@ -178,7 +178,28 @@ const appointments = [
       {
         company: 1,
         employee: 5,
+        startsAt: getStartDate(0, 7, 45),
+      },
+
+      {
+        company: 1,
+        employee: 5,
+        startsAt: getStartDate(0, 10, 30),
+      },
+      {
+        company: 1,
+        employee: 5,
+        startsAt: getStartDate(0, 8, 45),
+      },
+      {
+        company: 1,
+        employee: 5,
         startsAt: getStartDate(0, 15, 45),
+      },
+      {
+        company: 1,
+        employee: 5,
+        startsAt: getStartDate(0, 17, 0),
       },
       {
         company: 1,
