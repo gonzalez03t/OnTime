@@ -38,7 +38,7 @@ export const userFields = [
     },
     {
       name: 'phone',
-      label: 'Phone number:',
+      label: 'Your phone number:',
       placeholder: '555-555-5555',
       autoComplete: 'tel',
       type: 'tel',
@@ -76,7 +76,16 @@ export const ownerCompanyFields = [
       type: 'address',
       required: true,
     },
+    {
+      name: 'unit',
+      label: 'Unit:',
+      placeholder: 'APT 123',
+      autoComplete: 'address',
+      type: 'address',
+      required: true,
+    },
   ],
+
   [
     {
       name: 'city',
@@ -103,50 +112,50 @@ export const ownerCompanyFields = [
       required: true,
     },
   ],
-  [
-    {
-      name: 'secondaryAddress',
-      label: 'Secondary address:',
-      placeholder: '9740 Cambridge St.',
-      autoComplete: 'address',
-      type: 'address',
-      required: false,
-    },
-  ],
-  [
-    {
-      name: 'secCity',
-      label: 'City:',
-      placeholder: 'Jacksonville',
-      autoComplete: 'city',
-      type: 'city',
-      required: false,
-    },
-    {
-      name: 'secState',
-      label: 'State:',
-      placeholder: 'Florida',
-      autoComplete: 'state',
-      type: 'state',
-      required: false,
-    },
-    {
-      name: 'secZipCode',
-      label: 'Postal / zip code:',
-      placeholder: '32250',
-      autoComplete: 'zip-code',
-      type: 'zip-code',
-      required: false,
-    },
-  ],
-  [
-    {
-      name: 'imageURL',
-      label: 'Image url:',
-      placeholder: 'https://ufhealth.com-1024x614.jpeg',
-      autoComplete: '',
-      type: '',
-      required: false,
-    },
-  ],
+  // [
+  //   {
+  //     name: 'secondaryAddress',
+  //     label: 'Secondary address:',
+  //     placeholder: '9740 Cambridge St.',
+  //     autoComplete: 'address',
+  //     type: 'address',
+  //     required: false,
+  //   },
+  // ],
+  // [
+  //   {
+  //     name: 'secCity',
+  //     label: 'City:',
+  //     placeholder: 'Jacksonville',
+  //     autoComplete: 'city',
+  //     type: 'city',
+  //     required: false,
+  //   },
+  //   {
+  //     name: 'secState',
+  //     label: 'State:',
+  //     placeholder: 'Florida',
+  //     autoComplete: 'state',
+  //     type: 'state',
+  //     required: false,
+  //   },
+  //   {
+  //     name: 'secZipCode',
+  //     label: 'Postal / zip code:',
+  //     placeholder: '32250',
+  //     autoComplete: 'zip-code',
+  //     type: 'zip-code',
+  //     required: false,
+  //   },
+  // ],
+  // [
+  //   {
+  //     name: 'imageURL',
+  //     label: 'Image url:',
+  //     placeholder: 'https://ufhealth.com-1024x614.jpeg',
+  //     autoComplete: '',
+  //     type: '',
+  //     required: false,
+  //   },
+  // ],
 ];
