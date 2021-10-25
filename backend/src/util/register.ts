@@ -8,7 +8,7 @@ import { User } from '../entities/User';
 export async function registerCompanyOwnerUser(
   user: any
 ): Promise<User | null> {
-  const { firstName, lastName, email, password, phone } = user;
+  const { firstName, lastName, email, password, phone, dob } = user;
 
   const existingUser = await em.findOne(User, {
     email,
@@ -23,6 +23,7 @@ export async function registerCompanyOwnerUser(
       lastName,
       email,
       phone,
+      dob,
       password: await User.generateHash(password),
     });
   }
