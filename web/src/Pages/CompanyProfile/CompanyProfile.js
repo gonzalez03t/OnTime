@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getCompanyByName } from '../../api/company';
-import EmployeeCard from '../../components/EmployeeCardList/EmployeeCard/EmployeeCard';
 import EmployeeList from '../../components/EmployeeCardList/EmployeeList';
 import GoogleMaps from '../../components/MapComponent/GoogleMaps';
 import Segment from '../../components/ui/Segment/Segment';

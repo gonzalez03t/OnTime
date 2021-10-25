@@ -9,6 +9,7 @@ import { Company } from './entities/Company';
 import { SubAddress } from './entities/SubAddress';
 import { Image } from './entities/Image';
 import Invitation from './entities/Invitation';
+import Address from './entities/Address';
 
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
@@ -21,6 +22,7 @@ const options: Options = {
     Invitation,
     Company,
     SubAddress,
+    Address,
     Image,
   ],
   type: 'mongo',

@@ -14,8 +14,6 @@ import sessionConfig from './config/session';
 import mongoStoreConfig from './config/store';
 import MongoDBStore from 'connect-mongodb-session';
 import scheduler from './util/schedule';
-
-// seed the database : UNCOMMENT WHEN NOT NEEDEED
 import seed from './util/seed';
 
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });

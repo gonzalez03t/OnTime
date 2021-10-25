@@ -1,5 +1,6 @@
 import { em } from '..';
 import { VerificationStatus } from '../../@types/enums';
+import Address from '../entities/Address';
 import { Appointment } from '../entities/Appointment';
 import { Company } from '../entities/Company';
 import { Reminder } from '../entities/Reminder';
@@ -53,19 +54,29 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
   for (let i = 0; i < seedData.companies.length; i++) {
     const c = seedData.companies[i];
 
-    const { name, address } = c;
+    const { name, address: rawAddress } = c;
 
     const companyOwner = companyOwners[c.owner];
     const employees = c.employees.map((i) => employeeUsers[i]);
     const phone = seedData.companyPhoneNumbers[i];
 
+    const { street, unit, city, stateProvince, postalCode, country } =
+      rawAddress;
+
+    const address = new Address(
+      street,
+      city,
+      stateProvince,
+      postalCode,
+      country,
+      unit
+    );
+
     const company = em.create(Company, {
       name,
       phone,
       owner: companyOwner,
-      // employees,
-      // address, // TODO: see sprint 3 issue
-      fullAddress: address,
+      address,
       status: VerificationStatus.VERIFIED,
     });
 

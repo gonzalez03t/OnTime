@@ -129,31 +129,53 @@ const adminNames = [];
 const companies = [
   {
     name: "Bob's Burgers",
-    // address: {},
     owner: 0, // index of owners
     employees: [0, 1, 2, 3], // index of empl,
-    address: '506 US-46, Garfield, NJ 07026',
+    address: {
+      street: '506 US-46',
+      city: 'Garfield',
+      stateProvince: 'NJ',
+      postalCode: '07026',
+      country: 'United States',
+    },
   },
   {
     name: 'UF Neurosurgery',
-    // address: {},
     owner: 1, // index of owners
     employees: [4, 5, 6, 7, 8, 9, 10], // index of empl,
-    address: '580 8th St W Tower I, 9th Floor, Jacksonville, FL 32209',
+    address: {
+      street: '580 8th St W Tower I',
+      unit: '9th Floor',
+      city: 'Jacksonville',
+      stateProvince: 'FL',
+      postalCode: '32209',
+      country: 'United States',
+    },
   },
   {
     name: 'Playcare Daycare',
     // address: {},
     owner: 2, // index of owners
     employees: [11, 12, 13, 14], // index of empl,
-    address: '1935 E Fort Lowell Rd, Tucson, AZ 85719',
+    address: {
+      street: '1935 E Fort Lowell Rd',
+      city: 'Tucson',
+      stateProvince: 'AZ',
+      postalCode: '85719',
+      country: 'United States',
+    },
   },
   {
     name: 'Sail Away Nail Co.',
-    // address: {},
     owner: 3, // index of owners
     employees: [15, 16, 17, 18, 19], // index of empl,
-    address: '7931 N Oracle Rd, Oro Valley, AZ 85704',
+    address: {
+      street: '7931 N Oracle Rd',
+      city: 'Oro Valley',
+      stateProvince: 'AZ',
+      postalCode: '85704',
+      country: 'United States',
+    },
   },
 ];
 
