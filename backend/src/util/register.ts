@@ -1,4 +1,5 @@
 import { em } from '..';
+import Address from '../entities/Address';
 import { Company } from '../entities/Company';
 import { User } from '../entities/User';
 
@@ -35,19 +36,29 @@ export async function registerCompanyOwnerCompany(
     return null;
   }
 
-  const { companyName, imageUrl, fullAddress, subAddresses, companyPhone } =
-    company;
+  const { companyName, address: rawAddress, companyPhone } = company;
+  // const { companyName, imageUrl, address, subAddresses, companyPhone } =
+  // company;
 
-  if (!companyName || !fullAddress || !companyPhone) {
+  if (!companyName || !rawAddress || !companyPhone) {
     return null;
   }
 
-  return new Company(
-    user,
-    companyName,
-    imageUrl,
-    fullAddress,
-    companyPhone,
-    subAddresses
+  const { street, unit, city, stateProvince, postalCode, country } = rawAddress;
+
+  const address = new Address(
+    street,
+    city,
+    stateProvince,
+    postalCode,
+    country,
+    unit
   );
+
+  return em.create(Company, {
+    owner: user,
+    name: companyName,
+    phone: companyPhone,
+    address,
+  });
 }

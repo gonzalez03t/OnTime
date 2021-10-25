@@ -30,14 +30,10 @@ export default function RegistrationForm({ formType }) {
     companyName: '',
     companyPhone: '',
     streetAddress: '',
+    unit: '',
     city: '',
     state: '',
     zipCode: '',
-    secondaryAddress: '',
-    secCity: '',
-    secState: '',
-    secZipCode: '',
-    imageURL: '',
   });
 
   function handleUserChange(_e, { name, value }) {
@@ -59,13 +55,18 @@ export default function RegistrationForm({ formType }) {
 
     if (formType === 'COMPANY_OWNER') {
       // TODO: don't perform this after this issue is completed (https://github.com/medapt/ontime/issues/77)
+
       res = await registerUserAndCompany(userData, {
-        ...companyData,
-        fullAddress: [
-          companyData.streetAddress,
-          companyData.city,
-          clsx(companyData.state, companyData.zipCode),
-        ].join(', '),
+        companyName: companyData.companyName,
+        companyPhone: companyData.companyPhone,
+        address: {
+          street: companyData.streetAddress,
+          unit: companyData.unit,
+          city: companyData.city,
+          stateProvince: companyData.state,
+          postalCode: companyData.postalCode,
+          country: 'United States', // FIXME: create form element
+        },
       });
     } else if (formType === 'EMPLOYEE') {
       // TODO:

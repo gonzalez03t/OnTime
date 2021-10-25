@@ -16,11 +16,14 @@ export default async function favoriteCompany(req: Request, res: Response) {
   if (company) {
     if (user.favoriteCompanies.contains(company)) {
       user.favoriteCompanies.remove(company);
-      res.status(201).send('Unfavorited company.');
     } else {
       user.favoriteCompanies.add(company);
-      res.status(201).send('Favorited company.');
     }
+
+    await em
+      .persistAndFlush(user)
+      .then(() => res.sendStatus(201))
+      .catch((err) => res.status(500).send(err));
   } else {
     res.status(400).send('Could not find target company.');
   }

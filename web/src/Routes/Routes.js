@@ -23,6 +23,7 @@ import ManageRemindersPage from '../pages/ManageRemindersPage/ManageRemindersPag
 import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
 import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
+import CompanySearchPage from '../pages/CompanySearchPage/CompanySearchPage';
 import TestImageUpload from '../pages/TestImageUpload';
 import CompanyProfile from '../pages/CompanyProfile/CompanyProfile';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
@@ -62,6 +63,7 @@ export default function Routes() {
       <Route path="/general_info" exact component={GeneralInformationPage} />
       <Route path="/nav_to_parking" exact component={NavigateToParkingPage} />
       <Route path="/nav_to_hospital" exact component={NavigateToHospitalPage} />
+      <Route path="/company_search" exact component={CompanySearchPage} />
       <Route
         path="/patient_appointments"
         exact
