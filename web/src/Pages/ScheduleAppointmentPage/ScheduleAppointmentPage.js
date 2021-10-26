@@ -94,7 +94,7 @@ export default function ScheduleAppointmentPage() {
       <Grid columns={2} centered>
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment">
-            <KendoReactCalendar 
+            <KendoReactCalendar
               selected_employee={selected_employee}
               handleAppointments={handleFilledSlots}
               appointments={appointments}
@@ -124,7 +124,6 @@ export default function ScheduleAppointmentPage() {
     </Container>
   );
 }
-
 
 //<ApptCalendar
 //  selected_employee={selected_employee}

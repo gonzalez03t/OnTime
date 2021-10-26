@@ -79,10 +79,10 @@ export default function UserDashboard() {
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment" style={{ height: '100%' }}>
             <ApptCalendar
-                selected_employee={null}
-                handleAppointments={handleAppointments}
-                appointments={appointments}
-              /> 
+              selected_employee={null}
+              handleAppointments={handleAppointments}
+              appointments={appointments}
+            />
             <Button
               onClick={handleNewAppointment}
               icon
