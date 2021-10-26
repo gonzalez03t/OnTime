@@ -39,6 +39,7 @@ async function generateUsers(role: UserRole): Promise<User[]> {
         lastName,
         email,
         phone,
+        dob: new Date('07/16/1997'),
         password: await User.generateHash('password'),
         role,
       })
@@ -98,6 +99,7 @@ async function generateAdmin() {
       firstName: 'admin',
       lastName: 'admin',
       email: 'admin@ontime.com',
+      dob: new Date('07/16/1997'),
       password: await User.generateHash('admin'),
       phone: '09876542',
       role: UserRole.ADMIN,
