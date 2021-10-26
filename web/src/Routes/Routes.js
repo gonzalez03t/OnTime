@@ -5,6 +5,10 @@ import UnAuthenticatedRoute from './UnAuthenticatedRoute';
 import useStore from '../store/store';
 import { viewer } from '../api/user';
 
+// TODO: we need to use lazy imports and react suspense to lower our
+// overall bundle size and build time. Pages should be lazily imported like:
+// const HomePage = React.lazy(() => import('../pages/HomePage/HomePage'));
+
 // pages
 import RouteLinks from '../pages/RouteLinks/RouteLinks';
 import HomePage from '../pages/HomePage/HomePage';

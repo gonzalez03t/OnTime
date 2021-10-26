@@ -49,7 +49,13 @@ const useStore = create(
       },
 
       getFullname() {
-        return `${get().user['firstName']} ${get().user['lastName']}`;
+        const user = get().user;
+
+        if (user) {
+          return `${user.firstName} ${user.lastName}`;
+        }
+
+        return null;
       },
 
       getUserImage() {
