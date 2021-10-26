@@ -8,7 +8,7 @@ import { User } from '../../entities/User';
  * the user must then log in to their new account to enter that flow.
  */
 export default async function register(req: Request, res: Response) {
-  const { firstName, lastName, email, password, phone } = req.body;
+  const { firstName, lastName, email, password, phone, dob } = req.body;
 
   const existingUser = await em.findOne(User, {
     email,
@@ -24,6 +24,7 @@ export default async function register(req: Request, res: Response) {
       lastName,
       email,
       phone,
+      dob,
       password: await User.generateHash(password),
     });
 

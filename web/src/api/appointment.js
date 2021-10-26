@@ -18,6 +18,12 @@ export function getFilledSlots(dateRange, employeeId) {
     .catch((err) => err.response);
 }
 
+export function getAvailableSlots(employeeId, dateRange) {
+  return axios
+    .post(baseUrl + '/available', { dateRange, employeeId })
+    .catch((err) => err.response);
+}
+
 export function rescheduleUserAppointment(appointmentId, newDateTime) {
   return axios
     .post(baseUrl + '/reschedule', { appointmentId, newDateTime })

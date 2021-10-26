@@ -7,7 +7,7 @@ import { getSessionUserAndCompany } from '../../util/session';
  * This endpoint will associate a user as an employee of the company
  */
 export default async function registerEmployee(req: Request, res: Response) {
-  const { firstName, lastName, email, password, phone } = req.body;
+  const { firstName, lastName, email, password, phone, dob } = req.body;
 
   const admin = await getSessionUserAndCompany(req);
 
@@ -26,6 +26,7 @@ export default async function registerEmployee(req: Request, res: Response) {
         lastName,
         email,
         phone,
+        dob,
         password: await User.generateHash(password),
       });
 

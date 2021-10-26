@@ -46,6 +46,9 @@ export class User extends BaseEntity {
   lastName!: string;
 
   @Property()
+  dob!: Date;
+
+  @Property()
   @Unique()
   email!: string;
 
@@ -133,6 +136,7 @@ export class User extends BaseEntity {
       lastName: this.lastName,
       email: this.email,
       phone: this.phone,
+      dob: this.dob,
       imageUrl: this.image?.getImageUrl(),
     };
   }
