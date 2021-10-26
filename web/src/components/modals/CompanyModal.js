@@ -5,16 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function CompanyModal(props) {
   const companyRoute = '/company/' + props.company.name;
-
-  const handleMoreDetails = () => {
-    props.closeModal(false);
-  };
-
-  const handleScheduleAppointment = () => {
-    props.closeModal(false);
-
-    alert('TODO: Schedule an appointment.');
-  };
+  const companySchedule = companyRoute + '/schedule';
 
   return (
     <Modal
@@ -39,7 +30,7 @@ export default function CompanyModal(props) {
           content="More Details"
           labelPosition="right"
           icon="plus"
-          onClick={() => handleMoreDetails()}
+          onClick={() => props.closeModal(false)}
           positive
           as={Link}
           to={companyRoute}
@@ -48,8 +39,10 @@ export default function CompanyModal(props) {
           content="Schedule an Appointment"
           labelPosition="right"
           icon="checkmark"
-          onClick={() => handleScheduleAppointment()}
+          onClick={() => props.closeModal(false)}
           positive
+          as={Link}
+          to={companySchedule}
         />
       </Modal.Actions>
     </Modal>
