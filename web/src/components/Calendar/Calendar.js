@@ -20,6 +20,10 @@ export default function ApptCalendar({
   const [open, setOpen] = useState(false);
   const [event, setEvent] = useState();
 
+  console.log(selected_employee);
+  console.log(handleAppointments);
+  console.log(appointments);
+
   // calendar settings
   const views = !selected_employee ? ['week', 'month'] : ['week'];
   const defaultView = !selected_employee ? Views.MONTH : Views.WEEK;
