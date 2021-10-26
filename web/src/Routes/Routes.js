@@ -18,7 +18,7 @@ import GeneralInformationPage from '../pages/GeneralInformationPage/GeneralInfor
 import NavigateToParkingPage from '../pages/NavigateToParkingPage/NavigateToParking';
 import NavigateToHospitalPage from '../pages/NavigateToHospitalPage/NavigateToHospitalPage';
 import PatientAppointmentPage from '../pages/PatientAppointmentsPage/PatientAppointmentsPage';
-import UserDashboard from '../pages/UserDashboard/UserDashboard';
+import DashboardPage from '../pages/DashboardPage/index';
 import ManageRemindersPage from '../pages/ManageRemindersPage/ManageRemindersPage';
 import ManageAdminsPage from '../pages/ManageAdminsPage/ManageAdminsPage';
 import ManageNonAdminsPage from '../pages/ManageNonAdminsPage/ManageNonAdminsPage';
@@ -69,7 +69,7 @@ export default function Routes() {
         exact
         component={PatientAppointmentPage}
       />
-      <ProtectedRoute path="/dashboard" exact component={UserDashboard} />
+      <ProtectedRoute path="/dashboard" exact component={DashboardPage} />
       <ProtectedRoute path="/settings" exact component={SettingsPage} />
       <ProtectedRoute
         path="/company/:name/schedule"
