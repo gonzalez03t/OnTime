@@ -8,7 +8,6 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../components/Calendar/Calendar';
-import NewCalendar from '../../components/Calendar/NewCalendar';
 import { useHistory } from 'react-router';
 import useToggle from '../../hooks/useToggle';
 import useStore from '../../store/store';
