@@ -8,6 +8,7 @@ import {
   Dropdown,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../components/Calendar/Calendar';
+import KendoReactCalendar from '../../components/Calendar/NewCalendar';
 import { getCompanyByName } from '../../api/company';
 import { getFilledSlots } from '../../api/appointment';
 import { useParams } from 'react-router';
@@ -93,7 +94,7 @@ export default function ScheduleAppointmentPage() {
       <Grid columns={2} centered>
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment">
-            <ApptCalendar
+            <KendoReactCalendar
               selected_employee={selected_employee}
               handleAppointments={handleFilledSlots}
               appointments={appointments}
@@ -123,3 +124,9 @@ export default function ScheduleAppointmentPage() {
     </Container>
   );
 }
+
+//<ApptCalendar
+//  selected_employee={selected_employee}
+//  handleAppointments={handleFilledSlots}
+//  appointments={appointments}
+///>

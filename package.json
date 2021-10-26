@@ -25,6 +25,10 @@
     "postinstall": "husky install"
   },
   "dependencies": {
+    "@progress/kendo-licensing": "^1.2.1",
+    "@progress/kendo-react-dateinputs": "^4.9.0",
+    "@progress/kendo-react-intl": "^4.9.0",
+    "@progress/kendo-theme-default": "^4.42.0",
     "concurrently": "^6.0.2"
   },
   "devDependencies": {

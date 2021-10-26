@@ -82,7 +82,6 @@ export default function UserDashboard() {
               handleAppointments={handleAppointments}
               appointments={appointments}
             />
-
             <Button
               onClick={handleNewAppointment}
               icon

@@ -14,7 +14,7 @@ export default function ListAlert() {
   let timer = setTimeout(() => {
     setAlert(
       <Message info>
-        <Message.Header>Was this what you wanted?</Message.Header>
+        <Message.Header>Please search again</Message.Header>
         <p>We did not found any company with that name</p>
       </Message>
     );

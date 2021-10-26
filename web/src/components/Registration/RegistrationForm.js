@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
+import { Container, Segment, Header, Button, Form, Select } from 'semantic-ui-react';
 import { register, registerUserAndCompany } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
-import { userFields, ownerCompanyFields } from './FormFields';
+import { userFields, ownerCompanyFields, countryOptions } from './FormFields';
 import clsx from 'clsx';
 
 // Pending:
-// Pass company data to api... (Connect to back end)
-// Fix errors
 // Make secondary address optional. (maybe next sprint)
 // If secondary address is true, then city, state, zip become required
 
@@ -34,6 +32,7 @@ export default function RegistrationForm({ formType }) {
     city: '',
     state: '',
     zipCode: '',
+    country: ''
   });
 
   function handleUserChange(_e, { name, value }) {
@@ -53,8 +52,10 @@ export default function RegistrationForm({ formType }) {
     on();
     let res;
 
+    console.log(userData);
+    console.log(companyData);
+
     if (formType === 'COMPANY_OWNER') {
-      // TODO: don't perform this after this issue is completed (https://github.com/medapt/ontime/issues/77)
 
       res = await registerUserAndCompany(userData, {
         companyName: companyData.companyName,
@@ -65,7 +66,7 @@ export default function RegistrationForm({ formType }) {
           city: companyData.city,
           stateProvince: companyData.state,
           postalCode: companyData.postalCode,
-          country: 'United States', // FIXME: create form element
+          country: companyData.country, 
         },
       });
     } else if (formType === 'EMPLOYEE') {
@@ -141,6 +142,32 @@ export default function RegistrationForm({ formType }) {
           ))}
         </Form.Group>
       ));
+
+      // Add country selector to list
+      ownerCompanyGroups.push(
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label>Country:</label>
+            <Form.Select
+              name="country"
+              placeholder="United States"
+              autoComplete="country"
+              type="country"
+              required="true"
+              options={countryOptions}
+              onChange={handleCompanyChange}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Would you like to add additional addresses?</label>
+            <Form.Select
+              placeholder="No"
+              required="true"
+              options={[{value: false, text: "No"}, {value: true, text: "Yes"} ]}
+            />
+          </Form.Field>
+      </Form.Group>
+      );
 
       formGroups.push(
         <Header
