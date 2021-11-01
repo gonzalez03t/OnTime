@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useHistory } from 'react-router';
 import { Header, Modal, Image, Button } from 'semantic-ui-react';
 import companyImage from '../../assets/company_placeholder.JPG';
 import { Link } from 'react-router-dom';
 
 export default function CompanyModal(props) {
+  const history = useHistory();
+
   const companyRoute = '/company/' + props.company.name;
-  const companySchedule = companyRoute + '/schedule';
+
+  const handleScheduleClick = () => {
+    props.closeModal(false);
+    history.push(companyRoute, { scheduling: true });
+  };
 
   return (
     <Modal
@@ -39,10 +46,10 @@ export default function CompanyModal(props) {
           content="Schedule an Appointment"
           labelPosition="right"
           icon="checkmark"
-          onClick={() => props.closeModal(false)}
+          onClick={handleScheduleClick}
           positive
-          as={Link}
-          to={companySchedule}
+          // as={Link}
+          // to={companySchedule}
         />
       </Modal.Actions>
     </Modal>

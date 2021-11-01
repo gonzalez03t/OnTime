@@ -1,66 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container } from 'semantic-ui-react';
-import { Calendar } from '@progress/kendo-react-dateinputs';
+import useToggle from '../../hooks/useToggle';
+import okResponse from '../../utils/okResponse';
 import './NewCalendar.css';
-
-const times = [
-  '08:00 - 10:00',
-  '10:00 - 12:00',
-  '12:00 - 14:00',
-  '14:00 - 16:00',
-  '16:00 - 18:00',
-  '18:00 - 20:00',
-];
-
-const getRandomNumInRange = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min);
-};
-
-const pickSlotTimes = (times) => {
-  // Get a random number that will indicate how many time slots we pick
-  const timesToPick = getRandomNumInRange(0, times.length);
-
-  // If the random picked is the maximum possible then return all times
-  if (timesToPick === times.length - 1) {
-    return times;
-  }
-
-  let timesPicked = [];
-
-  // Loop until we have picked specified number of times
-  while (timesToPick !== timesPicked.length - 1) {
-    // Get a new index and time
-    const index = getRandomNumInRange(0, times.length);
-    const selectedTime = times[index];
-    // If we already picked that time we continue
-    // as we don't want duplicated
-    if (timesPicked.includes(selectedTime)) continue;
-    // Keep the time
-    timesPicked.push(selectedTime);
-  }
-
-  // We need to sort the times, as they may not be in a correct order
-  return timesPicked.sort();
-};
+import { Button, Loader } from 'semantic-ui-react';
+import { getAvailableSlots } from '../../api/appointment';
+import clsx from 'clsx';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+import { Calendar, utils } from '@amir04lm26/react-modern-calendar-date-picker';
 
 export default function NewCalendar({
   selected_employee,
-  handleAppointments,
-  appointments,
+  selectedSlot,
+  onSelectSlot,
 }) {
-  console.log(selected_employee);
-  console.log(handleAppointments);
-  console.log(appointments);
-
+  const [loading, { on, off }] = useToggle(false);
   const [bookingDate, setBookingDate] = useState(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-  const [bookingTimes, setBookingTimes] = useState([]);
+  const [bookingDay, setBookingDay] = useState(null);
+  const [bookingTimes, setBookingTimes] = useState();
   const timeSlotCacheRef = useRef(new Map());
 
-  useEffect(() => {
-    // Bail out if there is no date selected
-    if (!bookingDate) return;
+  const fetchAvailableSlots = async (dateString) => {
+    const res = await getAvailableSlots(selected_employee.id, dateString);
 
+    if (okResponse(res)) {
+      return res.data.map((slot) => {
+        const start = new Date(slot.start);
+        const end = new Date(slot.end);
+        const slotString = `${start.toLocaleTimeString()} - ${end.toLocaleTimeString()}`;
+
+        return {
+          start,
+          end,
+          slotString,
+        };
+      });
+    }
+  };
+
+  const handleBookingChange = async () => {
     // Get time slots from cache
     let newBookingTimes = timeSlotCacheRef.current.get(
       bookingDate.toDateString()
@@ -68,49 +45,80 @@ export default function NewCalendar({
 
     // If we have no cached time slots then pick new ones
     if (!newBookingTimes) {
-      newBookingTimes = pickSlotTimes(times);
+      on();
+      const slots = await fetchAvailableSlots(bookingDate.toDateString());
+
+      if (slots) {
+        timeSlotCacheRef.current.set(bookingDate.toDateString(), slots);
+
+        setBookingTimes(slots);
+      } else {
+        alert('RUH ROH');
+      }
+      // newBookingTimes = pickSlotTimes(times);
       // Update cache with new time slots for the selected date
-      timeSlotCacheRef.current.set(bookingDate.toDateString(), newBookingTimes);
+      // timeSlotCacheRef.current.set(bookingDate.toDateString(), newBookingTimes);
+      off();
+    } else {
+      setBookingTimes(newBookingTimes);
     }
-
-    setBookingTimes(newBookingTimes);
-  }, [bookingDate]);
-
-  const onDateChange = (e) => {
-    setSelectedTimeSlot(null);
-    setBookingDate(e.value);
   };
 
+  useEffect(() => {
+    // Bail out if there is no date selected
+    if (!bookingDate) return;
+
+    handleBookingChange();
+  }, [bookingDate]);
+
+  const handleBookingDayChange = (day) => {
+    if (selected_employee && !loading) {
+      onSelectSlot(null);
+      setBookingDay(day);
+      // I will KILL javasript for indexing at 0 for months >:(
+      setBookingDate(new Date(day.year, day.month - 1, day.day));
+    }
+  };
+
+  console.log();
+
   return (
-    <Container>
-      <div className="k-my-8">
-        <div className="k-flex k-display-flex k-mb-4">
-          <Calendar
-            style="width:150px;"
-            min={new Date(2021, 9, 25)}
-            value={bookingDate}
-            onChange={onDateChange}
-          />
-          <div className="k-ml-4 k-display-flex k-flex-col">
-            {bookingTimes.map((time) => {
+    <div className="calendar-container">
+      <div
+        className="calendar-inner-container"
+        title={!selected_employee && 'Select an employee to get started'}
+      >
+        <Loader active={loading} />
+        <Calendar
+          calendarClassName={clsx(
+            { 'disabled-calendar': !selected_employee || loading },
+            'new-calendar'
+          )}
+          minimumDate={utils().getToday()}
+          value={bookingDay}
+          onChange={handleBookingDayChange}
+        />
+      </div>
+
+      {bookingTimes && (
+        <div className="booking-times-container">
+          <div className="booking-times">
+            {bookingTimes.map((slot) => {
               return (
-                <button
-                  key={time}
-                  className="k-button k-mb-4"
-                  onClick={(e) => setSelectedTimeSlot(time)}
+                <Button
+                  style={{ marginBottom: '0.5rem' }}
+                  size="small"
+                  primary={slot.slotString === selectedSlot?.slotString}
+                  key={slot.slotString}
+                  onClick={(e) => onSelectSlot(slot)}
                 >
-                  {time}
-                </button>
+                  {slot.slotString}
+                </Button>
               );
             })}
           </div>
         </div>
-        {bookingDate && selectedTimeSlot ? (
-          <div>
-            Selected slot: {bookingDate.toDateString()} at {selectedTimeSlot}
-          </div>
-        ) : null}
-      </div>
-    </Container>
+      )}
+    </div>
   );
 }
