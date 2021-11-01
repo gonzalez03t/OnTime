@@ -3,7 +3,7 @@ import { Container, Segment, Header, Form, Radio } from 'semantic-ui-react';
 import RegistrationForm from '../../components/Registration/RegistrationForm';
 
 export default function SignUpPage() {
-  const [formType, setFormType] = useState('NONE');
+  const [formType, setFormType] = useState('USER');
 
   function handleFormType(_e, { value }) {
     setFormType(value);

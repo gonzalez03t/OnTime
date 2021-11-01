@@ -19,12 +19,18 @@ export default async function register(req: Request, res: Response) {
     // TODO: change status?
     res.status(500).send('Unable to register account.');
   } else {
+    let dateDob;
+    if (typeof dob === 'string') {
+      dateDob = new Date(dob);
+    }
+
     const newUser = em.create(User, {
       firstName,
       lastName,
       email,
       phone,
-      dob,
+      // use dateDob unless it is undefined, which means dob was a Date
+      dob: dateDob ?? dob,
       password: await User.generateHash(password),
     });
 
