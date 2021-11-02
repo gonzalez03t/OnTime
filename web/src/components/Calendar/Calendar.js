@@ -3,8 +3,6 @@ import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import ViewApptModal from '../modals/ViewApptModal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import { getUserAppointments } from '../../api/appointment';
-import useToggle from '../../hooks/useToggle';
 import useAutoSizer from '../../hooks/useAutoSizer';
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -23,6 +21,7 @@ export default function ApptCalendar({
   // calendar settings
   const views = !selected_employee ? ['week', 'month'] : ['week'];
   const defaultView = !selected_employee ? Views.MONTH : Views.WEEK;
+  const selectable = !selected_employee ? true : false;
 
   function handleSelectEvent(newEvent) {
     setEvent(newEvent);
@@ -42,6 +41,8 @@ export default function ApptCalendar({
   return (
     <React.Fragment>
       <Calendar
+        selectable={selectable}
+        popup
         localizer={localizer}
         events={appointments}
         views={views}

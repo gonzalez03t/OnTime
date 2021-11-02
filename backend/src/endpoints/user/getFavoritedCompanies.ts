@@ -8,7 +8,7 @@ export default async function getFavoritedCompanies(
   req: Request,
   res: Response
 ) {
-  const user = await getSessionUserOrFail(req);
-
-  res.status(200).send(user.favoriteCompanies);
+  await getSessionUserOrFail(req, ['favoriteCompanies'])
+    .then((user) => res.status(200).send(user.favoriteCompanies))
+    .catch((err) => res.status(500).send(err));
 }

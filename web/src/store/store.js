@@ -49,7 +49,15 @@ const useStore = create(
         return get().isAuthenticated() && user?.type === 'COMPANY_OWNER';
       },
 
-      fullname: () => `${get().user['firstName']} ${get().user['lastName']}`,
+      getFullname() {
+        const user = get().user;
+
+        if (user) {
+          return `${user.firstName} ${user.lastName}`;
+        }
+
+        return null;
+      },
 
       getUserImage() {
         const user = get().user;

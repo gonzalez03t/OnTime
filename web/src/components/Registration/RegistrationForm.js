@@ -4,12 +4,11 @@ import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
 import { register, registerUserAndCompany } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
-import { userFields, ownerCompanyFields } from './FormFields';
-import clsx from 'clsx';
+import { userFields, ownerCompanyFields, countryOptions } from './FormFields';
+import { validateUserRegisterData } from '../../utils/formValidation';
+import okResponse from '../../utils/okResponse';
 
 // Pending:
-// Pass company data to api... (Connect to back end)
-// Fix errors
 // Make secondary address optional. (maybe next sprint)
 // If secondary address is true, then city, state, zip become required
 
@@ -21,6 +20,7 @@ export default function RegistrationForm({ formType }) {
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
+    dob: undefined,
     password: '',
     phone: '',
     email: '',
@@ -30,14 +30,11 @@ export default function RegistrationForm({ formType }) {
     companyName: '',
     companyPhone: '',
     streetAddress: '',
+    unit: '',
     city: '',
     state: '',
     zipCode: '',
-    secondaryAddress: '',
-    secCity: '',
-    secState: '',
-    secZipCode: '',
-    imageURL: '',
+    country: '',
   });
 
   function handleUserChange(_e, { name, value }) {
@@ -52,41 +49,65 @@ export default function RegistrationForm({ formType }) {
     });
   }
 
+  function goHome() {
+    off();
+    setTimeout(() => history.push('/login'), 500);
+  }
+
+  async function registerUser() {
+    const res = await register(userData);
+
+    if (okResponse(res)) {
+      goHome();
+    } else {
+      console.log(res);
+      alert('RUH ROH');
+    }
+  }
+
+  async function registerCompanyOwner() {
+    const res = await registerUserAndCompany(userData, {
+      companyName: companyData.companyName,
+      companyPhone: companyData.companyPhone,
+      address: {
+        street: companyData.streetAddress,
+        unit: companyData.unit,
+        city: companyData.city,
+        stateProvince: companyData.state,
+        postalCode: companyData.postalCode,
+        country: companyData.country,
+      },
+    });
+
+    if (okResponse(res)) {
+      goHome();
+    } else {
+      console.log(res);
+      alert('RUH ROH');
+    }
+  }
+
   // TODO: handle employee registration, I think the backend needs work to support this
   async function handleSubmit() {
     on();
-    let res;
 
-    if (formType === 'COMPANY_OWNER') {
-      // TODO: don't perform this after this issue is completed (https://github.com/medapt/ontime/issues/77)
-      res = await registerUserAndCompany(userData, {
-        ...companyData,
-        fullAddress: [
-          companyData.streetAddress,
-          companyData.city,
-          clsx(companyData.state, companyData.zipCode),
-        ].join(', '),
-      });
-    } else if (formType === 'EMPLOYEE') {
-      // TODO:
-    } else {
-      res = await register(userData);
+    const userDataErrors = validateUserRegisterData(userData);
+
+    console.log(userDataErrors);
+
+    if (userDataErrors?.length) {
+      off();
+      console.log(userDataErrors);
+      alert('TODO: tell user what went wrong');
+      return;
     }
 
-    off();
-
-    console.log(res);
-
-    if (res?.status === 201) {
-      alert('SUCCESS');
-
-      // TODO: send notification
-
-      // wait half a second then route to login
-      setTimeout(() => history.push('/login'), 500);
+    if (formType === 'COMPANY_OWNER') {
+      registerCompanyOwner();
+    } else if (formType === 'EMPLOYEE') {
+      alert('TODO: Im not made yet');
     } else {
-      // TODO: properly handle this situation
-      alert('RUH ROH');
+      registerUser();
     }
   }
 
@@ -140,6 +161,35 @@ export default function RegistrationForm({ formType }) {
           ))}
         </Form.Group>
       ));
+
+      // Add country selector to list
+      ownerCompanyGroups.push(
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label>Country:</label>
+            <Form.Select
+              name="country"
+              placeholder="United States"
+              autoComplete="country"
+              type="country"
+              required="true"
+              options={countryOptions}
+              onChange={handleCompanyChange}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Would you like to add additional addresses?</label>
+            <Form.Select
+              placeholder="No"
+              required="true"
+              options={[
+                { value: false, text: 'No' },
+                { value: true, text: 'Yes' },
+              ]}
+            />
+          </Form.Field>
+        </Form.Group>
+      );
 
       formGroups.push(
         <Header

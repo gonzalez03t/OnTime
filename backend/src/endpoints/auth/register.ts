@@ -8,7 +8,7 @@ import { User } from '../../entities/User';
  * the user must then log in to their new account to enter that flow.
  */
 export default async function register(req: Request, res: Response) {
-  const { firstName, lastName, email, password, phone } = req.body;
+  const { firstName, lastName, email, password, phone, dob } = req.body;
 
   const existingUser = await em.findOne(User, {
     email,
@@ -19,11 +19,18 @@ export default async function register(req: Request, res: Response) {
     // TODO: change status?
     res.status(500).send('Unable to register account.');
   } else {
+    let dateDob;
+    if (typeof dob === 'string') {
+      dateDob = new Date(dob);
+    }
+
     const newUser = em.create(User, {
       firstName,
       lastName,
       email,
       phone,
+      // use dateDob unless it is undefined, which means dob was a Date
+      dob: dateDob ?? dob,
       password: await User.generateHash(password),
     });
 

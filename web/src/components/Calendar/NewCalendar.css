@@ -1,0 +1,65 @@
+/* .k-calendar {
+  width: 60%;
+  height: 350px;
+  margin-left: 20px;
+  font-size: 15px;
+} */
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-inner-container {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.disabled-calendar
+  > .Calendar__sectionWrapper
+  > .Calendar__section
+  > .Calendar__weekRow
+  > * {
+  /* pointer-events: none; */
+  cursor: not-allowed !important;
+}
+
+.disabled-calendar
+  > .Calendar__sectionWrapper
+  > .Calendar__section
+  > .Calendar__weekRow
+  > *:hover {
+  background-color: transparent !important;
+}
+
+.booking-times {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-times-container {
+  max-height: 350px;
+  overflow-y: scroll;
+  padding: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .calendar-inner-container {
+    margin-top: 0rem;
+  }
+  .calendar-container {
+    margin-left: 2rem;
+
+    flex-direction: row;
+
+    align-items: flex-start;
+  }
+
+  .booking-times {
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: column;
+  }
+}

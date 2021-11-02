@@ -7,6 +7,7 @@ import ProfileImageUpload from '../../../components/ProfileImageUpload/ProfileIm
 import useStore from '../../../store/store';
 import okResponse from '../../../utils/okResponse';
 import useToggle from '../../../hooks/useToggle';
+import moment from 'moment';
 
 export default function UserInformationForm() {
   const { userImage, user, updateDetails } = useStore(
@@ -27,7 +28,8 @@ export default function UserInformationForm() {
       user.firstName === userDetails.firstName &&
       user.lastName === userDetails.lastName &&
       user.email === userDetails.email &&
-      user.phone === userDetails.phone
+      user.phone === userDetails.phone &&
+      user.dob === userDetails.dob
     );
   }
 
@@ -109,6 +111,14 @@ export default function UserInformationForm() {
             name="lastName"
             label="Last name"
             defaultValue={user.lastName}
+            onChange={handleChange}
+          />
+          <Form.Input
+            // width="10"
+            type="date"
+            name="dob"
+            label="Date of Birth"
+            defaultValue={moment(user.dob).format('YYYY-MM-DD')}
             onChange={handleChange}
           />
         </Form.Group>

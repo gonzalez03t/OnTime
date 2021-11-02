@@ -27,18 +27,21 @@ export async function destroySession(req: Request) {
   });
 }
 
-export function getSessionUser(req: Request) {
+export function getSessionUser(
+  req: Request,
+  relations?: string[]
+): Promise<User | null> {
   // @ts-ignore: bug but promise this works
   const { userId } = req.session;
 
-  return em.findOne(User, { id: userId });
+  return em.findOne(User, { id: userId }, relations);
 }
 
-export function getSessionUserOrFail(req: Request) {
+export function getSessionUserOrFail(req: Request, relations?: string[]) {
   // @ts-ignore: bug but promise this works
   const { userId } = req.session;
 
-  return em.findOneOrFail(User, { id: userId });
+  return em.findOneOrFail(User, { id: userId }, relations);
 }
 
 export async function getSessionUserAndCompany(req: Request) {

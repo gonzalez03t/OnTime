@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useRef, useState } from 'react';
+import { useParams, useLocation } from 'react-router';
+
 import { getCompanyByName } from '../../api/company';
-import EmployeeCard from '../../components/EmployeeCardList/EmployeeCard/EmployeeCard';
 import EmployeeList from '../../components/EmployeeCardList/EmployeeList';
 import GoogleMaps from '../../components/MapComponent/GoogleMaps';
 import Segment from '../../components/ui/Segment/Segment';
+import AppointmentScheduler from '../../components/Appointment/AppointmentScheduler';
+import scrollToComponent from 'react-scroll-to-component';
 
 import './CompanyProfile.css';
 
 export default function CompanyProfile() {
   const params = useParams();
+  const { state } = useLocation();
   const [company, setCompany] = useState(null);
+  const schedulingRef = useRef(null);
 
   useEffect(() => {
     async function fetchCompany(name) {
@@ -27,6 +31,16 @@ export default function CompanyProfile() {
       fetchCompany(params.name);
     }
   }, [params.name]);
+
+  useEffect(() => {
+    if (schedulingRef && state?.scheduling) {
+      scrollToComponent(schedulingRef.current, {
+        offset: 100,
+        align: 'top',
+        duration: 1500,
+      });
+    }
+  }, [schedulingRef.current, state]);
 
   function getCoverImageStyle() {
     let baseStyles = {
@@ -87,6 +101,26 @@ export default function CompanyProfile() {
 
         <Segment.Body>
           <EmployeeList employees={company?.employees} />
+        </Segment.Body>
+      </Segment>
+
+      <Segment>
+        {/* <Element name="scheduling" /> */}
+
+        <div ref={schedulingRef} id="scheduling" />
+
+        <Segment.Header>
+          <h3 className="title">Schedule an Appointment</h3>
+          <p className="subtitle">
+            Select an employee to see what works within their schedule
+          </p>
+        </Segment.Header>
+
+        <Segment.Body>
+          <AppointmentScheduler
+            company={company}
+            employees={company?.employees}
+          />
         </Segment.Body>
       </Segment>
 

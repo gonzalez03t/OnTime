@@ -6,27 +6,38 @@ import {
   Icon,
   Button,
   Segment,
+  Dropdown,
 } from 'semantic-ui-react';
-import ApptCalendar from '../../components/Calendar/Calendar';
+import ApptCalendar from '../../../components/Calendar/Calendar';
 import { useHistory } from 'react-router';
-import useToggle from '../../hooks/useToggle';
-import useStore from '../../store/store';
+import useToggle from '../../../hooks/useToggle';
+import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
-import { getUserAppointments } from '../../api/appointment';
-import './UserDashBoard.css';
+import ClientList from '../../../components/ClientList/ClientList';
+import { getUserAppointments } from '../../../api/appointment';
+import './EmployeeDashboardPage.css';
+import { Link } from 'react-router-dom';
 
-export default function UserDashboard() {
+export default function EmployeeDashboardPage() {
   const history = useHistory();
   const [loading, { on, off }] = useToggle(true);
   const [appointments, setAppointments] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [selected_client, setClient] = useState(true);
 
-  function handleNewAppointment() {
-    history.push('/company_search');
+  function handleSelectedClient(option, client) {
+    //TODO
+    setClient(client.value);
   }
 
-  const { user } = useStore(
+  function handleNewAppointment() {
+    //TODO
+  }
+
+  const { user, getFullname } = useStore(
     (state) => ({
       user: state.user,
+      getFullname: state.getFullname,
     }),
     shallow
   );
@@ -37,32 +48,47 @@ export default function UserDashboard() {
 
     const res = await getUserAppointments();
     const formatted_appointments = [];
+    const options = [];
+    const client_map = new Map();
 
     if (res && res.data) {
       const appointments = res.data;
 
       // they must have a specific format
       [...appointments]?.forEach((appointment) => {
-        const employee_name = `${appointment.employee?.firstName} ${appointment.employee?.lastName}`;
-        const client_name = `${appointment.client?.firstName} ${appointment.client?.lastName}`;
+        const curr_client = appointment.client;
+        const clientId = appointment.client?.id;
         const start_time = new Date(Date.parse(appointment.startsAt));
+
+        // list clients with no repetitions and add to dropdown options
+        if (!client_map.has(clientId)) {
+          client_map.set(clientId, curr_client);
+          options.push({
+            key: clientId,
+            value: { ...curr_client },
+            text: `${curr_client?.firstName} ${curr_client?.lastName}`,
+            start: start_time,
+          });
+        }
+
+        const client_name = `${appointment.client?.firstName} ${appointment.client?.lastName}`;
 
         const formatted_appointment = {
           _id: appointment._id,
-          title: `Appointment w/ ${
-            user.role == 'BASE' ? employee_name : client_name
-          }`,
-          employee: employee_name,
+          title: `Appointment w/ ${client_name}`,
+          employee: getFullname(),
           client: client_name,
           start: start_time,
           end: new Date(
             start_time.getTime() + appointment.duration * 60 * 1000
           ),
         };
-
         formatted_appointments.push(formatted_appointment);
       });
     }
+
+    options.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
+    setClients(options);
     setAppointments(formatted_appointments);
     off();
   }
@@ -71,7 +97,7 @@ export default function UserDashboard() {
     <Container style={{ marginTop: 20 }} fluid>
       <Header as="h1" textAlign="center">
         <Icon name="address book outline" />
-        <Header.Content>User Dashboard</Header.Content>
+        <Header.Content>Dashboard</Header.Content>
       </Header>
       <Grid columns={2} centered style={{ height: '100%' }}>
         <Grid.Column width={12} id="calendar-column">
@@ -90,14 +116,29 @@ export default function UserDashboard() {
               color="black"
               style={{ marginTop: 10 }}
               floated="right"
+              as={Link}
+              to="/company_search"
             >
               <Icon name="calendar plus" />
             </Button>
           </Segment>
         </Grid.Column>
-        <Grid.Column stretched width={4} id="segment-column">
-          <Segment className="reminders-segment">
-            <Header as="h3">Scheduled Reminders</Header>
+        <Grid.Column width={4} id="segment-column">
+          <h3>Client Search</h3>
+          <Dropdown
+            fluid
+            placeholder="Client Name"
+            search
+            selection
+            options={clients}
+            onChange={handleSelectedClient}
+          />
+          <Segment>
+            <h2>Client List</h2>
+            <ClientList
+              clients={clients}
+              handleSelectedClient={handleSelectedClient}
+            />
           </Segment>
         </Grid.Column>
       </Grid>

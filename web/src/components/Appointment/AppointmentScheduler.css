@@ -1,0 +1,15 @@
+.appointment-scheduler-container {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .appointment-scheduler-container {
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
+  }
+}

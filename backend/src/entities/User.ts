@@ -46,6 +46,9 @@ export class User extends BaseEntity {
   lastName!: string;
 
   @Property()
+  dob!: Date;
+
+  @Property()
   @Unique()
   email!: string;
 
@@ -136,6 +139,7 @@ export class User extends BaseEntity {
       role: this.role,
       imageKey: this.image?.getImageKey(),
       notificationPreference: this.notificationPreference,
+      dob: this.dob,
     };
   }
 

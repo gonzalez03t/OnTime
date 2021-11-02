@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
+import Address from '../../entities/Address';
 import { Company } from '../../entities/Company';
 import { getSessionUser } from '../../util/session';
 
@@ -12,9 +13,10 @@ export default async function registerCompany(req: Request, res: Response) {
   const user = await getSessionUser(req);
 
   if (user) {
-    const { name, imageUrl, fullAddress, subAddresses, phone } = req.body;
+    // const { name, imageUrl, address, subAddresses, phone } = req.body;
+    const { name, address: rawAddress, phone } = req.body;
 
-    if (!name || !fullAddress || !phone) {
+    if (!name || !rawAddress || !phone) {
       res
         .status(400)
         .send('Company name, address and phone number are required.');
@@ -25,14 +27,24 @@ export default async function registerCompany(req: Request, res: Response) {
           'You must cancel your scheduled appointments before converting to a company account.'
         );
     } else {
-      const company = new Company(
-        user,
-        name,
-        imageUrl,
-        fullAddress,
-        phone,
-        subAddresses
+      const { street, unit, city, stateProvince, postalCode, country } =
+        rawAddress;
+
+      const address = new Address(
+        street,
+        city,
+        stateProvince,
+        postalCode,
+        country,
+        unit
       );
+
+      const company = em.create(Company, {
+        createdBy: user,
+        name,
+        address,
+        phone,
+      });
 
       // update the user's company
       user.makeCompanyOwner(company);
