@@ -13,6 +13,7 @@ import { useHistory } from 'react-router';
 import useToggle from '../../../hooks/useToggle';
 import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
+import ClientList from '../../../components/ClientList/ClientList';
 import { getUserAppointments } from '../../../api/appointment';
 import './EmployeeDashboardPage.css';
 import { Link } from 'react-router-dom';
@@ -24,8 +25,9 @@ export default function EmployeeDashboardPage() {
   const [clients, setClients] = useState([]);
   const [selected_client, setClient] = useState(true);
 
-  function handleSelectedClient() {
+  function handleSelectedClient(option, client) {
     //TODO
+    setClient(client.value);
   }
 
   function handleNewAppointment() {
@@ -56,6 +58,7 @@ export default function EmployeeDashboardPage() {
       [...appointments]?.forEach((appointment) => {
         const curr_client = appointment.client;
         const clientId = appointment.client?.id;
+        const start_time = new Date(Date.parse(appointment.startsAt));
 
         // list clients with no repetitions and add to dropdown options
         if (!client_map.has(clientId)) {
@@ -64,11 +67,11 @@ export default function EmployeeDashboardPage() {
             key: clientId,
             value: { ...curr_client },
             text: `${curr_client?.firstName} ${curr_client?.lastName}`,
+            start: start_time,
           });
         }
 
         const client_name = `${appointment.client?.firstName} ${appointment.client?.lastName}`;
-        const start_time = new Date(Date.parse(appointment.startsAt));
 
         const formatted_appointment = {
           _id: appointment._id,
@@ -84,6 +87,7 @@ export default function EmployeeDashboardPage() {
       });
     }
 
+    options.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
     setClients(options);
     setAppointments(formatted_appointments);
     off();
@@ -131,6 +135,10 @@ export default function EmployeeDashboardPage() {
           />
           <Segment>
             <h2>Client List</h2>
+            <ClientList
+              clients={clients}
+              handleSelectedClient={handleSelectedClient}
+            />
           </Segment>
         </Grid.Column>
       </Grid>
