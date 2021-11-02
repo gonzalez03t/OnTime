@@ -11,5 +11,5 @@ export default async function deleteImage(req: Request, res: Response) {
     })
     .promise()
     .then(() => res.sendStatus(200))
-    .catch((err) => res.status(500).send(err));
+    .catch((err: any) => res.status(500).send(err));
 }
