@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Segment, Header, Button, Form, Select } from 'semantic-ui-react';
+import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
 import { register, registerUserAndCompany } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
 import { userFields, ownerCompanyFields, countryOptions } from './FormFields';
-import clsx from 'clsx';
+import { validateUserRegisterData } from '../../utils/formValidation';
+import okResponse from '../../utils/okResponse';
 
 // Pending:
 // Make secondary address optional. (maybe next sprint)
@@ -19,6 +20,7 @@ export default function RegistrationForm({ formType }) {
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
+    dob: undefined,
     password: '',
     phone: '',
     email: '',
@@ -32,7 +34,7 @@ export default function RegistrationForm({ formType }) {
     city: '',
     state: '',
     zipCode: '',
-    country: ''
+    country: '',
   });
 
   function handleUserChange(_e, { name, value }) {
@@ -47,48 +49,65 @@ export default function RegistrationForm({ formType }) {
     });
   }
 
+  function goHome() {
+    off();
+    setTimeout(() => history.push('/login'), 500);
+  }
+
+  async function registerUser() {
+    const res = await register(userData);
+
+    if (okResponse(res)) {
+      goHome();
+    } else {
+      console.log(res);
+      alert('RUH ROH');
+    }
+  }
+
+  async function registerCompanyOwner() {
+    const res = await registerUserAndCompany(userData, {
+      companyName: companyData.companyName,
+      companyPhone: companyData.companyPhone,
+      address: {
+        street: companyData.streetAddress,
+        unit: companyData.unit,
+        city: companyData.city,
+        stateProvince: companyData.state,
+        postalCode: companyData.postalCode,
+        country: companyData.country,
+      },
+    });
+
+    if (okResponse(res)) {
+      goHome();
+    } else {
+      console.log(res);
+      alert('RUH ROH');
+    }
+  }
+
   // TODO: handle employee registration, I think the backend needs work to support this
   async function handleSubmit() {
     on();
-    let res;
 
-    console.log(userData);
-    console.log(companyData);
+    const userDataErrors = validateUserRegisterData(userData);
 
-    if (formType === 'COMPANY_OWNER') {
+    console.log(userDataErrors);
 
-      res = await registerUserAndCompany(userData, {
-        companyName: companyData.companyName,
-        companyPhone: companyData.companyPhone,
-        address: {
-          street: companyData.streetAddress,
-          unit: companyData.unit,
-          city: companyData.city,
-          stateProvince: companyData.state,
-          postalCode: companyData.postalCode,
-          country: companyData.country, 
-        },
-      });
-    } else if (formType === 'EMPLOYEE') {
-      // TODO:
-    } else {
-      res = await register(userData);
+    if (userDataErrors?.length) {
+      off();
+      console.log(userDataErrors);
+      alert('TODO: tell user what went wrong');
+      return;
     }
 
-    off();
-
-    console.log(res);
-
-    if (res?.status === 201) {
-      alert('SUCCESS');
-
-      // TODO: send notification
-
-      // wait half a second then route to login
-      setTimeout(() => history.push('/login'), 500);
+    if (formType === 'COMPANY_OWNER') {
+      registerCompanyOwner();
+    } else if (formType === 'EMPLOYEE') {
+      alert('TODO: Im not made yet');
     } else {
-      // TODO: properly handle this situation
-      alert('RUH ROH');
+      registerUser();
     }
   }
 
@@ -163,10 +182,13 @@ export default function RegistrationForm({ formType }) {
             <Form.Select
               placeholder="No"
               required="true"
-              options={[{value: false, text: "No"}, {value: true, text: "Yes"} ]}
+              options={[
+                { value: false, text: 'No' },
+                { value: true, text: 'Yes' },
+              ]}
             />
           </Form.Field>
-      </Form.Group>
+        </Form.Group>
       );
 
       formGroups.push(

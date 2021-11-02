@@ -19,6 +19,13 @@ export const userFields = [
   ],
   [
     {
+      name: 'dob',
+      label: 'Date of Birth',
+      autoComplete: 'bday',
+      type: 'date',
+      required: true,
+    },
+    {
       name: 'password',
       label: 'Password:',
       placeholder: 'supersecurepassword',
@@ -110,8 +117,8 @@ export const ownerCompanyFields = [
       autoComplete: 'zip-code',
       type: 'zip-code',
       required: true,
-    }
-  ]
+    },
+  ],
 ];
 
 export const countryOptions = [
@@ -147,7 +154,11 @@ export const countryOptions = [
   { key: 'Chile', value: 'Chile', text: 'Chile' },
   { key: 'China', value: 'China', text: 'China' },
   { key: 'Colombia', value: 'Colombia', text: 'Colombia' },
-  { key: 'Congo (the Democratic Republic of the)', value: 'Congo (the Democratic Republic of the)', text: 'Congo (the Democratic Republic of the)' },
+  {
+    key: 'Congo (the Democratic Republic of the)',
+    value: 'Congo (the Democratic Republic of the)',
+    text: 'Congo (the Democratic Republic of the)',
+  },
   { key: 'Denmark', value: 'Denmark', text: 'Denmark' },
   { key: 'Ecuador', value: 'Ecuador', text: 'Ecuador' },
   { key: 'Egypt', value: 'Egypt', text: 'Egypt' },
@@ -162,12 +173,20 @@ export const countryOptions = [
   { key: 'Israel', value: 'Israel', text: 'Israel' },
   { key: 'Italy', value: 'Italy', text: 'Italy' },
   { key: 'Japan', value: 'Japan', text: 'Japan' },
-  { key: 'Korea (the Republic of)', value: 'Korea (the Republic of)', text: 'Korea (the Republic of)' },
+  {
+    key: 'Korea (the Republic of)',
+    value: 'Korea (the Republic of)',
+    text: 'Korea (the Republic of)',
+  },
   { key: 'Lithuania', value: 'Lithuania', text: 'Lithuania' },
   { key: 'Luxembourg', value: 'Luxembourg', text: 'Luxembourg' },
   { key: 'Maldives', value: 'Maldives', text: 'Maldives' },
   { key: 'Mexico', value: 'Mexico', text: 'Mexico' },
-  { key: 'Netherlands (the)', value: 'Netherlands (the)', text: 'Netherlands (the)' },
+  {
+    key: 'Netherlands (the)',
+    value: 'Netherlands (the)',
+    text: 'Netherlands (the)',
+  },
   { key: 'New Zealand', value: 'New Zealand', text: 'New Zealand' },
   { key: 'Norway', value: 'Norway', text: 'Norway' },
   { key: 'Oman', value: 'Oman', text: 'Oman' },
@@ -175,7 +194,11 @@ export const countryOptions = [
   { key: 'Panama', value: 'Panama', text: 'Panama' },
   { key: 'Poland', value: 'Poland', text: 'Poland' },
   { key: 'Romania', value: 'Romania', text: 'Romania' },
-  { key: 'Russian Federation (the)', value: 'Russian Federation (the)', text: 'Russian Federation (the)' },
+  {
+    key: 'Russian Federation (the)',
+    value: 'Russian Federation (the)',
+    text: 'Russian Federation (the)',
+  },
   { key: 'Saudi Arabia', value: 'Saudi Arabia', text: 'Saudi Arabia' },
   { key: 'Spain', value: 'Spain', text: 'Spain' },
   { key: 'Switzerland', value: 'Switzerland', text: 'Switzerland' },
@@ -188,5 +211,5 @@ export const countryOptions = [
   { key: 'Viet Nam', value: 'Viet Nam', text: 'Viet Nam' },
   { key: 'Western Sahara', value: 'Western Sahara', text: 'Western Sahara' },
   { key: 'Yemen', value: 'Yemen', text: 'Yemen' },
-  { key: 'Zambia', value: 'Zambia', text: 'Zambia' }
-]
+  { key: 'Zambia', value: 'Zambia', text: 'Zambia' },
+];
