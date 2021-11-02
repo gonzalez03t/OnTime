@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form } from 'semantic-ui-react';
 import shallow from 'zustand/shallow';
 import { updateUserProfile } from '../../../api/user';
-import ProfileImageUpload from '../../../components/ProfileImageUpload/ProfileImageUpload';
+import ProfileImageUpload from '../../../components/ImageUpload/ImageUpload';
 import useStore from '../../../store/store';
 import moment from 'moment';
 
@@ -61,7 +61,6 @@ export default function UserInformationForm() {
   }
 
   function handleValidImageUploaded(newImageSrc) {
-    console.log('in handler');
     setImageSrc(newImageSrc);
   }
 

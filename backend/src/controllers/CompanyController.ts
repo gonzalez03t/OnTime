@@ -2,7 +2,6 @@ import { Router } from 'express';
 import verifyCompany from '../endpoints/company/admin/verifyCompany';
 import verifyCompanyImage from '../endpoints/company/admin/verifyCompanyImage';
 import getCompanies from '../endpoints/company/getCompanies';
-import getCompany from '../endpoints/company/getCompany';
 import getEmployees from '../endpoints/company/getEmployees';
 import registerCompany from '../endpoints/company/registerCompany';
 import registerEmployee from '../endpoints/company/registerEmployee';
@@ -19,7 +18,7 @@ import requireSession from '../middleware/requireSession';
 const router = Router();
 
 router.get('/', getCompanies);
-router.get('/:name', getCompany);
+
 router.post('/new', requireBody, registerCompany);
 router.post('/employees', requireBody, requireSession, getEmployees);
 // router.post(

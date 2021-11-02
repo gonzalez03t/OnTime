@@ -8,8 +8,8 @@ const sessionConfig: SessionOptions = {
   cookie: {
     maxAge:
       process.env.NODE_ENV === 'production'
-        ? 1000 * 60 * 25 // 25 min for production
-        : 1000 * 60 * 60, // 1h for development
+        ? 1000 * 60 * 60 * 24 // 1 day for production
+        : 1000 * 60 * 60 * 2, // 2h for development
     secure: process.env.NODE_ENV === 'production',
   },
 };

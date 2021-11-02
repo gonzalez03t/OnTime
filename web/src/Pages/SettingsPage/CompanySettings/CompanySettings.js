@@ -3,9 +3,11 @@ import useStore from '../../../store/store';
 import { SettingsSectionHeader } from '../SettingsComponents';
 import NoCompanyMessage from './NoCompanyMessage';
 import './CompanySettings.css';
+import CompanyInfoSettings from './CompanyInfoSettings';
+import shallow from 'zustand/shallow';
 
 export default function CompanySettings() {
-  const isCompanyOwner = useStore((state) => state.isCompanyOwner);
+  const isCompanyOwner = useStore((state) => state.isCompanyOwner, shallow);
 
   return (
     <div className="settings-content__inner">
@@ -17,13 +19,7 @@ export default function CompanySettings() {
           />
         </div>
 
-        <div className="settings-form__body">
-          {isCompanyOwner() ? (
-            <div>TODO: load company info</div>
-          ) : (
-            <NoCompanyMessage />
-          )}
-        </div>
+        {isCompanyOwner() ? <CompanyInfoSettings /> : <NoCompanyMessage />}
       </div>
     </div>
   );

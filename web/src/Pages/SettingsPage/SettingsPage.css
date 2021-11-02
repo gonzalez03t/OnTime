@@ -10,6 +10,7 @@
 }
 
 .settings-content__inner {
+  position: relative;
   flex: 1 1 0%;
 }
 
