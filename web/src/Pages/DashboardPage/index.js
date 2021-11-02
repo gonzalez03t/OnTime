@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import useStore from '../../store/store';
 import ClientDashboardPage from './ClientDashboardPage/ClientDashboardPage';
@@ -17,11 +17,11 @@ export default function DashboardPage() {
   return (
     <Route
       render={(props) =>
-        user.role == 'BASE' ? (
+        user.role === 'BASE' ? (
           <ClientDashboardPage {...props} />
-        ) : user.role == 'EMPLOYEE' ? (
+        ) : user.role === 'EMPLOYEE' ? (
           <EmployeeDashboardPage {...props} />
-        ) : user.role == 'COMPANY_OWNER' ? (
+        ) : user.role === 'COMPANY_OWNER' ? (
           <CompanyDashboardPage {...props} />
         ) : (
           <AdminDashboardPage {...props} />

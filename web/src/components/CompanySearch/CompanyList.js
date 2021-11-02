@@ -6,8 +6,8 @@ import ListAlert from './ListAlert';
 export default function CompanyList(props) {
   const companyList = [];
 
-  if (props.list.length == 0) {
-    if (props.filter == '') {
+  if (props.list.length === 0) {
+    if (props.filter === '') {
       companyList.push(<div style={{ height: '50px' }}></div>);
     } else {
       companyList.push(<ListAlert />);
