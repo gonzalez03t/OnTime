@@ -46,7 +46,7 @@ const useStore = create(
       isCompanyOwner() {
         const user = get().user;
 
-        return get().isAuthenticated() && user?.type === 'COMPANY_OWNER';
+        return get().isAuthenticated() && user?.role === 'COMPANY_OWNER';
       },
 
       getFullname() {

@@ -3,7 +3,7 @@ import { Form } from 'semantic-ui-react';
 import shallow from 'zustand/shallow';
 import { updateUserProfile } from '../../../api/user';
 import { uploadImage, deleteImage } from '../../../api/image';
-import ProfileImageUpload from '../../../components/ProfileImageUpload/ProfileImageUpload';
+import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import useStore from '../../../store/store';
 import okResponse from '../../../utils/okResponse';
 import useToggle from '../../../hooks/useToggle';
@@ -95,7 +95,7 @@ export default function UserInformationForm() {
   return (
     <Form onSubmit={handleSave}>
       <div className="settings-form__body">
-        <ProfileImageUpload
+        <ImageUpload
           imageSrc={imageProperties?.fileContents ?? userImage}
           handleValidImageUploaded={handleValidImageUploaded}
         />
@@ -139,8 +139,6 @@ export default function UserInformationForm() {
             onChange={handleChange}
           />
         </Form.Group>
-
-        {/* <img src={getImageUrl('6165c11d32b3887119b85ae8-profile')} /> */}
       </div>
       <div className="settings-form__actions">
         <Form.Button primary loading={loading}>

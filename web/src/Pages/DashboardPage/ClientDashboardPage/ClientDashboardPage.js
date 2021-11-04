@@ -51,8 +51,8 @@ export default function ClientDashboardPage() {
         const formatted_appointment = {
           _id: appointment._id,
           title: `Appointment w/ ${employee_name}`,
-          employee: employee_name,
-          client: getFullname(),
+          employee: appointment.employee,
+          client: user,
           start: start_time,
           end: new Date(
             start_time.getTime() + appointment.duration * 60 * 1000
