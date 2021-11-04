@@ -4,8 +4,8 @@ import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import { countryOptions } from '../../../components/Registration/FormFields';
 
 export default function CompanyInfoForm({ company }) {
-  const [imageSrc, setImageSrc] = useState(null);
-  const [coverImageSrc, setCoverImageSrc] = useState(null);
+  const [imageProperties, setImageProperties] = useState(null);
+  const [coverImageProperties, setCoverImageProperties] = useState(null);
   const [companyDetails, setCompanyDetails] = useState(company);
 
   console.log(companyDetails);
@@ -33,11 +33,11 @@ export default function CompanyInfoForm({ company }) {
   }
 
   function handleValidProfileImageUploaded(newImageSrc) {
-    setImageSrc(newImageSrc);
+    setImageProperties(newImageSrc);
   }
 
   function handleValidCoverImageUploaded(newImageSrc) {
-    setCoverImageSrc(newImageSrc);
+    setCoverImageProperties(newImageSrc);
   }
 
   return (
@@ -45,13 +45,15 @@ export default function CompanyInfoForm({ company }) {
       <div className="settings-form__body">
         <ImageUpload
           type="profile"
-          imageSrc={imageSrc ?? companyDetails?.image}
+          imageSrc={imageProperties?.fileContents ?? companyDetails?.image}
           handleValidImageUploaded={handleValidProfileImageUploaded}
         />
 
         <ImageUpload
           type="cover"
-          imageSrc={coverImageSrc ?? companyDetails?.coverImage}
+          imageSrc={
+            coverImageProperties?.fileContents ?? companyDetails?.coverImage
+          }
           handleValidImageUploaded={handleValidCoverImageUploaded}
         />
 

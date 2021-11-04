@@ -159,6 +159,7 @@ export class User extends BaseEntity {
     return {
       ...this.getDetails(),
       company: this.company?.name,
+      companyAddress: this.company?.address.toString(),
     };
   }
 
