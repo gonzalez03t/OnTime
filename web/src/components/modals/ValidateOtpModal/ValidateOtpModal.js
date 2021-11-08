@@ -3,6 +3,7 @@ import OtpInput from 'react-otp-input';
 import { Button, Modal } from 'semantic-ui-react';
 import { generateNewOtp } from '../../../api/auth';
 import useToggle from '../../../hooks/useToggle';
+import useStore from '../../../store/store';
 import okResponse from '../../../utils/okResponse';
 
 import './ValidateOtpModal.css';
@@ -17,6 +18,8 @@ export default function ValidateOtpModal({
   const [loadingNewCode, loadingNewCodeToggles] = useToggle(false);
   const [otp, setOtp] = useState('');
 
+  const notify = useStore((state) => state.addNotification);
+
   async function handleValidateOtp() {
     loadingValidateToggles.on();
     const res = await validator(otp);
@@ -25,7 +28,7 @@ export default function ValidateOtpModal({
     if (res && res.status === 200) {
       onValidMatch();
     } else {
-      alert('INCORRECT');
+      notify('error', 'Incorrect');
     }
   }
 
@@ -34,10 +37,13 @@ export default function ValidateOtpModal({
     const res = await generateNewOtp();
 
     if (okResponse(res)) {
-      // TODO: notify user it worked
-      alert('TODO: alert using notifications it worked');
+      notify(
+        'info',
+        'If an account exists, please check your phone for an updated code'
+      );
     } else {
       // TODO: notify user there was a problem trying to complete request
+      notify('error', 'An error ocurred');
       console.log(res);
     }
     loadingNewCodeToggles.off();

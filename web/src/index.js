@@ -4,6 +4,7 @@ import App from './App';
 import axios from 'axios';
 
 import 'semantic-ui-css/semantic.min.css';
+import 'react-notifications/lib/notifications.css';
 import './index.css';
 
 axios.defaults.withCredentials = true;

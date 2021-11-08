@@ -14,6 +14,8 @@ export default function UserNotificationForm() {
     shallow
   );
 
+  const notify = useStore((state) => state.addNotification);
+
   const [notificationPreference, setNotificationPreference] =
     useState(currentPreference);
 
@@ -27,10 +29,13 @@ export default function UserNotificationForm() {
         updateNotificationPreference(notificationPreference);
       } else {
         console.log(res);
-        alert('RUH ROH');
+        notify(
+          'error',
+          'Failed to update notification preferences. Please try again later.'
+        );
       }
     } else {
-      alert('NO CHANGES');
+      notify('info', 'No changes to save.');
     }
   }
 

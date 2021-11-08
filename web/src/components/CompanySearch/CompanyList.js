@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, List, Image } from 'semantic-ui-react';
 import companyImage from '../../assets/company_placeholder.JPG';
 import ListAlert from './ListAlert';

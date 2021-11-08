@@ -16,6 +16,8 @@ export default function LoginPage() {
     setUserStatus: state.setUserStatus,
   }));
 
+  const notify = useStore((state) => state.addNotification);
+
   const [loading, { on, off }] = useToggle(false);
   const [open, openOtpTogglers] = useToggle(false);
 
@@ -48,9 +50,12 @@ export default function LoginPage() {
   function handleValidOtpMatch() {
     openOtpTogglers.off();
 
-    setUserStatus('authenticated');
+    notify('success', 'Logged in successfully');
 
-    history.push('/dashboard');
+    setTimeout(() => {
+      setUserStatus('authenticated');
+      history.push('/dashboard');
+    }, 500);
   }
 
   async function validator(code) {

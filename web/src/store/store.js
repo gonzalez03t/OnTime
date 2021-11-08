@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import SecureLS from 'secure-ls';
+import { NotificationManager } from 'react-notifications';
 import { getImageUrl } from '../api/image';
 
 // e.g. aes, des, etc
@@ -98,6 +99,15 @@ const useStore = create(
             status: newStatus,
           },
         });
+      },
+
+      /**
+       *
+       * @param {'info' | 'success' | 'warning' | 'error'} type
+       * @param {string} message
+       */
+      addNotification(type, message) {
+        NotificationManager[type](message);
       },
     }),
     {
