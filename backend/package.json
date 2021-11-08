@@ -11,6 +11,7 @@
   "dependencies": {
     "@mikro-orm/core": "^4.5.3",
     "@mikro-orm/mongodb": "^4.5.3",
+    "aws-sdk": "^2.1006.0",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^2.4.1",
     "cors": "^2.8.5",

@@ -2,6 +2,7 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import SecureLS from 'secure-ls';
 import { NotificationManager } from 'react-notifications';
+import { getImageUrl } from '../api/image';
 
 // e.g. aes, des, etc
 const ENCRYPTION_TYPE = process.env.REACT_APP_STORE_ENCRYPTION_TYPE;
@@ -62,7 +63,11 @@ const useStore = create(
       getUserImage() {
         const user = get().user;
 
-        return user?.imageUrl;
+        if (user && user.imageKey) {
+          return getImageUrl(user.imageKey);
+        } else {
+          return null;
+        }
       },
 
       getUserNotificationSetting() {

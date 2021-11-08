@@ -15,6 +15,8 @@ You will need to write an `.env` file in the format of the `.env.example` provid
   - Enable the following APIs: Geocoding, Maps, Places
   - Be sure to add a Billing account for your project, and restrict the API key you get to your localhost
     - Credentials -> Edit API Key -> Application Restrictions -> HTTP referrers (web sites) -> add the following items: localhost, localhost:3000, 127.0.0.1
+- AWS S3 Bucket Configs
+  - follow [this](https://www.youtube.com/watch?v=NZElg91l_ms) tutorial from 4:38 to 11:25
 - CORS Configuration
 - Security Constants (e.g. bcryptjs configs, encryption secrets, etc)
 

@@ -36,8 +36,8 @@ export default function ImageUploader({
 
       const file = acceptedFiles[0];
 
-      const imageSrc = await getUploadedImageContents(file);
-      setImageRefSrc(imageSrc);
+      const imageProperties = await getUploadedImageContents(file);
+      setImageRefSrc(imageProperties.fileContents);
 
       const model = await nsfwjs.load();
 
@@ -45,7 +45,7 @@ export default function ImageUploader({
       setImageRefSrc(null);
 
       if (isValid) {
-        onValidImageUploaded(imageSrc);
+        onValidImageUploaded(imageProperties);
       } else {
         notify('error', 'Please upload a more appropriate image');
       }

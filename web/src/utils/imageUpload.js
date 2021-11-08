@@ -35,13 +35,13 @@ function readImageFile(file) {
   return new Promise((resolve, reject) => {
     reader.onabort = () => reject('file reading was aborted');
     reader.onerror = () => reject('file reading has failed');
-    reader.onload = () => {
+    reader.onload = (e) => {
       // Do whatever you want with the file contents
       // console.log('in onload:', reader.result);
       resolve(reader.result);
     };
 
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
   });
 }
 
@@ -73,5 +73,5 @@ export async function classifyUploadedImage(imageRef, model) {
 
 export default async function getUploadedImageContents(file) {
   const fileContents = await readImageFile(file);
-  return 'data:image/png;base64,' + encode(new Uint8Array(fileContents));
+  return { fileContents, contentType: file.type };
 }

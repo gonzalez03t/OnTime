@@ -26,7 +26,6 @@ export default async function getUserAppointments(req: Request, res: Response) {
   }
 
   if (whereClause && relations.length > 1) {
-    console.log(relations);
     await em
       .find(Appointment, whereClause, relations)
       .then((appointments) =>
