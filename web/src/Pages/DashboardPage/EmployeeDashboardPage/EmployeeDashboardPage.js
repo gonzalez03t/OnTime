@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Header,
@@ -6,7 +6,7 @@ import {
   Icon,
   Button,
   Segment,
-  Dropdown,
+  Input,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
 import { useHistory } from 'react-router';
@@ -24,10 +24,16 @@ export default function EmployeeDashboardPage() {
   const [appointments, setAppointments] = useState([]);
   const [clients, setClients] = useState([]);
   const [selected_client, setClient] = useState(true);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [searchReturn, setSearchReturn] = useState([]);
 
-  function handleSelectedClient(option, client) {
+  function handleSelectedClient(client) {
     //TODO
     setClient(client.value);
+  }
+
+  function handleClientSearch(value) {
+    setSearchFilter(value);
   }
 
   function handleNewAppointment() {
@@ -89,9 +95,27 @@ export default function EmployeeDashboardPage() {
 
     options.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
     setClients(options);
+    setSearchReturn(clients);
     setAppointments(formatted_appointments);
     off();
   }
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSearchReturn(
+        clients.filter((val) => {
+          if (searchFilter === '') {
+            return val;
+          } else if (
+            val.text.toLowerCase().includes(searchFilter.toLowerCase())
+          ) {
+            return val;
+          }
+        })
+      );
+    }, 700);
+    return () => clearTimeout(timeoutId);
+  }, [searchFilter]);
 
   return (
     <Container style={{ marginTop: 20 }} fluid>
@@ -125,18 +149,17 @@ export default function EmployeeDashboardPage() {
         </Grid.Column>
         <Grid.Column width={4} id="segment-column">
           <h3>Client Search</h3>
-          <Dropdown
+          <Input
             fluid
             placeholder="Client Name"
-            search
-            selection
-            options={clients}
-            onChange={handleSelectedClient}
+            onChange={(e) => {
+              handleClientSearch(e.target.value);
+            }}
           />
           <Segment>
             <h2>Client List</h2>
             <ClientList
-              clients={clients}
+              clients={searchReturn}
               handleSelectedClient={handleSelectedClient}
             />
           </Segment>

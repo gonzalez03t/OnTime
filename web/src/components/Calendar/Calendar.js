@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Children } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import ViewApptModal from '../modals/ViewApptModal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -22,6 +22,16 @@ export default function ApptCalendar({
   const views = !selected_employee ? ['week', 'month'] : ['week'];
   const defaultView = !selected_employee ? Views.MONTH : Views.WEEK;
   const selectable = !selected_employee ? true : false;
+  const CURRENT_DATE = moment().subtract(1, 'days').toDate();
+
+  // styling for past days
+  const ColoredDateCellWrapper = ({ children, value }) =>
+    React.cloneElement(Children.only(children), {
+      style: {
+        ...children.style,
+        background: value <= CURRENT_DATE ? '#e6e6e6' : children.style,
+      },
+    });
 
   function handleSelectEvent(newEvent) {
     setEvent(newEvent);
@@ -50,6 +60,9 @@ export default function ApptCalendar({
         step={30}
         onSelectEvent={handleSelectEvent}
         style={{ height }}
+        components={{
+          dateCellWrapper: ColoredDateCellWrapper,
+        }}
       />
       <ViewApptModal open={open} appointment={event} onClose={handleClose} />
     </React.Fragment>

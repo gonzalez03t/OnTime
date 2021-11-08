@@ -7,7 +7,7 @@ export default function ClientList({ clients, handleSelectedClient }) {
     <List selection verticalAlign="middle">
       {clients?.slice(0, 10).map((client) => (
         <List.Item key={client.key} onClick={handleSelectedClient}>
-          <Image avatar src={companyImage} />
+          <Image avatar src={client.image || companyImage} />
           <List.Content>
             <List.Header as="a"> {client.text} </List.Header>
           </List.Content>
