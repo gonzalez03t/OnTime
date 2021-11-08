@@ -33,8 +33,8 @@ export default function ImageUploader({
 
       const file = acceptedFiles[0];
 
-      const imageSrc = await getUploadedImageContents(file);
-      setImageRefSrc(imageSrc);
+      const imageProperties = await getUploadedImageContents(file);
+      setImageRefSrc(imageProperties.fileContents);
 
       const model = await nsfwjs.load();
 
@@ -43,7 +43,7 @@ export default function ImageUploader({
 
       if (isValid) {
         alert('IMAGE PREDICTED TO BE APPROPRIATE');
-        onValidImageUploaded(imageSrc);
+        onValidImageUploaded(imageProperties);
       } else {
         alert('IMAGE PREDICTED TO BE INAPPROPRIATE');
       }

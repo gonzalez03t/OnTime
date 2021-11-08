@@ -77,8 +77,8 @@ export class Company extends BaseEntity {
     return {
       id: this.id,
       name: this.name,
-      image: this.image?.getImageUrl(),
-      coverPhoto: this.coverPhoto?.getImageUrl(),
+      imageKey: this.image?.getImageKey(),
+      coverImageKey: this.image?.getImageKey(),
       phone: this.phone,
       address: this.address,
       fullAddress: this.address.toString(),
