@@ -12,6 +12,7 @@ import { forgotPassword } from '../../api/auth';
 import { createForgotPasswordToken } from '../../api/token';
 import ValidateOtpModal from '../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../hooks/useToggle';
+import useStore from '../../store/store';
 import isWeakPassword from '../../utils/isWeakPassword';
 import okResponse from '../../utils/okResponse';
 import { SettingsSectionHeader } from '../SettingsPage/SettingsComponents';
@@ -37,6 +38,8 @@ export default function ForgotPassword() {
   const [passVisible, { toggle }] = useToggle(false);
   const [error, setError] = useState(initialError);
 
+  const notify = useStore((state) => state.addNotification);
+
   async function validator(code) {
     const { email, phone, password } = userInfo;
 
@@ -44,7 +47,8 @@ export default function ForgotPassword() {
   }
 
   function handleValidOtpMatch() {
-    alert('TODO: NOTIFY PASSWORD RESET');
+    notify('error', 'An error occurred');
+
     off();
 
     setTimeout(() => history.push('/login'));
@@ -78,7 +82,7 @@ export default function ForgotPassword() {
         message: 'The passwords must match',
       });
     } else if (isWeakPassword(password)) {
-      alert('TODO: handle WEAK password');
+      notify('warning', 'Please use a stronger password');
     } else {
       initOtpValidation();
     }

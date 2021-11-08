@@ -16,6 +16,8 @@ export default function UserInformationForm() {
     shallow
   );
 
+  const notify = useStore((state) => state.addNotification);
+
   const [imageSrc, setImageSrc] = useState(null);
   const [userDetails, setUserDetails] = useState(user);
 
@@ -31,7 +33,7 @@ export default function UserInformationForm() {
 
   async function handleSave(e) {
     if (isSame() && !imageSrc) {
-      alert('NO CHANGES');
+      notify('info', 'No changes were made.');
       return;
     }
 
@@ -47,10 +49,10 @@ export default function UserInformationForm() {
 
     if (res?.status === 200 && res.data) {
       updateDetails(res.data.user);
-      alert('PROFILE UPDATED');
+      notify('success', 'User details updated.');
     } else {
       console.log(res);
-      alert('RUH ROH');
+      notify('error', 'Failed to update user details.');
     }
   }
 

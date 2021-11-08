@@ -7,6 +7,7 @@ import './AppointmentScheduler.css';
 import { createUserAppointment } from '../../api/appointment';
 import okResponse from '../../utils/okResponse';
 import { useHistory } from 'react-router';
+import useStore from '../../store/store';
 
 export default function AppointmentScheduler({ company, employees }) {
   const history = useHistory();
@@ -14,6 +15,8 @@ export default function AppointmentScheduler({ company, employees }) {
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [selectedSlot, setSelectedSlot] = useState();
   const [reminders, setReminders] = useState();
+
+  const notify = useStore((state) => state.addNotification);
 
   const handleSelectEmployee = (_, { value }) => {
     setSelectedEmployee(value);
@@ -31,16 +34,13 @@ export default function AppointmentScheduler({ company, employees }) {
       companyId: company.id,
     };
 
-    // alert(JSON.stringify(payload, null, 2));
-
     const res = await createUserAppointment(payload);
 
     if (okResponse(res)) {
-      alert('TODO: notify success');
       history.push('/dashboard');
     } else {
       console.log(res);
-      alert('ruh roh!');
+      notify('error', 'An error occurred');
     }
   };
 

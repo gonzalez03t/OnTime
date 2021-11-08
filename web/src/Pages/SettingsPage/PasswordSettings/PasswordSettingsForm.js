@@ -4,6 +4,7 @@ import { createChangePasswordToken } from '../../../api/token';
 import { updateUserPassword } from '../../../api/user';
 import ValidateOtpModal from '../../../components/modals/ValidateOtpModal/ValidateOtpModal';
 import useToggle from '../../../hooks/useToggle';
+import useStore from '../../../store/store';
 import isWeakPassword from '../../../utils/isWeakPassword';
 import okResponse from '../../../utils/okResponse';
 
@@ -19,6 +20,8 @@ export default function PasswordSettingsForm() {
 
   const [passwords, setPasswords] = useState({});
   const [error, setError] = useState(initialError);
+
+  const notify = useStore((state) => state.addNotification);
 
   async function initOtpValidation() {
     const res = await createChangePasswordToken();
@@ -49,7 +52,7 @@ export default function PasswordSettingsForm() {
         message: 'The passwords must match',
       });
     } else if (isWeakPassword(password)) {
-      alert('TODO: handle WEAK password');
+      notify('warning', 'Please use a stronger password');
     } else {
       initOtpValidation();
     }
@@ -66,7 +69,7 @@ export default function PasswordSettingsForm() {
   }
 
   function handleValidMatch() {
-    alert('PASSWORD CHANGED');
+    notify('success', 'Password updated');
     off();
   }
 

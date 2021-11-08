@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import SecureLS from 'secure-ls';
+import { NotificationManager } from 'react-notifications';
 
 // e.g. aes, des, etc
 const ENCRYPTION_TYPE = process.env.REACT_APP_STORE_ENCRYPTION_TYPE;
@@ -93,6 +94,15 @@ const useStore = create(
             status: newStatus,
           },
         });
+      },
+
+      /**
+       *
+       * @param {'info' | 'success' | 'warning' | 'error'} type
+       * @param {string} message
+       */
+      addNotification(type, message) {
+        NotificationManager[type](message);
       },
     }),
     {

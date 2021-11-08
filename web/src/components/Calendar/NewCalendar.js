@@ -7,6 +7,7 @@ import { getAvailableSlots } from '../../api/appointment';
 import clsx from 'clsx';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Calendar, utils } from '@amir04lm26/react-modern-calendar-date-picker';
+import useStore from '../../store/store';
 
 export default function NewCalendar({
   selected_employee,
@@ -17,7 +18,10 @@ export default function NewCalendar({
   const [bookingDate, setBookingDate] = useState(null);
   const [bookingDay, setBookingDay] = useState(null);
   const [bookingTimes, setBookingTimes] = useState();
+
   const timeSlotCacheRef = useRef(new Map());
+
+  const notify = useStore((state) => state.addNotification);
 
   const fetchAvailableSlots = async (dateString) => {
     const res = await getAvailableSlots(selected_employee.id, dateString);
@@ -53,7 +57,7 @@ export default function NewCalendar({
 
         setBookingTimes(slots);
       } else {
-        alert('RUH ROH');
+        notify('error', 'An error occurred');
       }
       // newBookingTimes = pickSlotTimes(times);
       // Update cache with new time slots for the selected date

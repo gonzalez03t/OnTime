@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 import { userFields, ownerCompanyFields, countryOptions } from './FormFields';
 import { validateUserRegisterData } from '../../utils/formValidation';
 import okResponse from '../../utils/okResponse';
+import useStore from '../../store/store';
 
 // Pending:
 // Make secondary address optional. (maybe next sprint)
@@ -16,6 +17,8 @@ export default function RegistrationForm({ formType }) {
   const history = useHistory();
 
   const [loading, { on, off }] = useToggle(false);
+
+  const notify = useStore((state) => state.addNotification);
 
   const [userData, setUserData] = useState({
     firstName: '',
@@ -61,7 +64,7 @@ export default function RegistrationForm({ formType }) {
       goHome();
     } else {
       console.log(res);
-      alert('RUH ROH');
+      notify('error', 'An error occurred');
     }
   }
 
@@ -83,7 +86,7 @@ export default function RegistrationForm({ formType }) {
       goHome();
     } else {
       console.log(res);
-      alert('RUH ROH');
+      notify('error', 'An error occurred');
     }
   }
 
@@ -98,7 +101,7 @@ export default function RegistrationForm({ formType }) {
     if (userDataErrors?.length) {
       off();
       console.log(userDataErrors);
-      alert('TODO: tell user what went wrong');
+      notify('error', 'An error occurred');
       return;
     }
 

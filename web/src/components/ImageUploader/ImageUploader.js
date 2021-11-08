@@ -6,6 +6,7 @@ import useToggle from '../../hooks/useToggle';
 import getUploadedImageContents, {
   classifyUploadedImage,
 } from '../../utils/imageUpload';
+import useStore from '../../store/store';
 
 export default function ImageUploader({
   onValidImageUploaded,
@@ -15,6 +16,8 @@ export default function ImageUploader({
   const [loading, { on, off }] = useToggle(false);
 
   const imageRef = useRef(null);
+
+  const notify = useStore((state) => state.addNotification);
 
   function setImageRefSrc(src) {
     imageRef.current.src = src;
@@ -42,10 +45,9 @@ export default function ImageUploader({
       setImageRefSrc(null);
 
       if (isValid) {
-        alert('IMAGE PREDICTED TO BE APPROPRIATE');
         onValidImageUploaded(imageSrc);
       } else {
-        alert('IMAGE PREDICTED TO BE INAPPROPRIATE');
+        notify('error', 'Please upload a more appropriate image');
       }
 
       off();
