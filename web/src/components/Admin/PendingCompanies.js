@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { List, ListContent, ListItem } from 'semantic-ui-react';
-import { getPendingCompanies } from '../../api/company';
+import { Button, List, ListContent, ListItem } from 'semantic-ui-react';
+import { getPendingCompanies, verifyCompany } from '../../api/company';
+import useStore from '../../store/store';
 import okResponse from '../../utils/okResponse';
 
 export default function PendingCompanies() {
+  const notify = useStore((state) => state.addNotification);
   const [pendingCompanies, setPendingCompanies] = React.useState();
 
   useEffect(() => {
@@ -20,6 +22,34 @@ export default function PendingCompanies() {
       loadCompanies();
     }
   }, []);
+
+  const removeCompanyFromList = (id) => {
+    setPendingCompanies((prev) => prev.filter((company) => company.id !== id));
+  };
+
+  const approveCompany = async (companyId) => {
+    const res = await verifyCompany(companyId, 'VERIFIED');
+
+    if (okResponse(res)) {
+      removeCompanyFromList(companyId);
+      notify('success', 'Company approved successfully');
+    } else {
+      console.log(res);
+      notify('error', 'Error occurred while attempting to approve company');
+    }
+  };
+
+  const rejectCompany = async (companyId) => {
+    const res = await verifyCompany(companyId, 'DENIED');
+
+    if (okResponse(res)) {
+      removeCompanyFromList(companyId);
+      notify('success', 'Company approved successfully');
+    } else {
+      console.log(res);
+      notify('error', 'Error occurred while attempting to approve company');
+    }
+  };
 
   return (
     <div>
@@ -66,6 +96,16 @@ export default function PendingCompanies() {
               <List.Description>
                 Date Created: {company.createdAt} (TODO: format me)
               </List.Description>
+
+              <div style={{ padding: '1rem 0' }}>
+                <Button color="red" onClick={() => rejectCompany(company.id)}>
+                  Reject
+                </Button>
+
+                <Button primary onClick={() => approveCompany(company.id)}>
+                  Approve
+                </Button>
+              </div>
             </ListContent>
           </ListItem>
         ))}

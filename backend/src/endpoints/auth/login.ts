@@ -21,8 +21,6 @@ export default async function login(req: Request, res: Response) {
   } else {
     const user = await em.findOne(User, { email });
 
-    console.log(user);
-
     if (user && (await user.validatePassword(password))) {
       const { code, err } = await createLoginToken(user);
 

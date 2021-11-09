@@ -5,7 +5,7 @@ import { Company } from '../../../entities/Company';
 
 export default async function verifyCompany(req: Request, res: Response) {
   const { id } = req.params;
-  const { status } = req.params;
+  const { status } = req.body;
 
   if (!Object.keys(VerificationStatus).includes(status)) {
     res.status(400).send(`${status} is not a valid status`);
