@@ -10,6 +10,10 @@ export function getCompanyByName(name) {
   return axios.get(baseUrl + `?name=${name}`).catch((err) => err.response);
 }
 
+export function getPendingCompanies() {
+  return axios.get(baseUrl + '/pending').catch((err) => err.response);
+}
+
 export function getCompanyByOwnerId(id) {
   return axios.get(baseUrl + `?ownerId=${id}`).catch((err) => err.response);
 }

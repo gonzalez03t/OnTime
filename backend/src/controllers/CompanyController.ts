@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import getPendingCompanies from '../endpoints/company/admin/getPendingCompanies';
 import verifyCompany from '../endpoints/company/admin/verifyCompany';
 import verifyCompanyImage from '../endpoints/company/admin/verifyCompanyImage';
 import getCompanies from '../endpoints/company/getCompanies';
@@ -36,6 +37,8 @@ router.post(
   registerEmployee
 );
 
+// ADMIN
+router.get('/pending', adminRoute, getPendingCompanies);
 router.put('/:id/status', adminRoute, requireBody, verifyCompany);
 router.put('/:id/image/status', adminRoute, requireBody, verifyCompanyImage);
 

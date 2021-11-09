@@ -47,6 +47,12 @@ function readImageFile(file) {
 
 const NSFW_CLASSNAMES = ['Hentai', 'Porn', 'Sexy'];
 
+const NSFW_CLASSNAMES_MARGINS = {
+  Hentai: 0.1,
+  Porn: 0.1,
+  Sexy: 0.6,
+};
+
 export async function classifyUploadedImage(imageRef, model) {
   if (imageRef && model) {
     const predictions = await model.classify(imageRef.current);
@@ -60,11 +66,13 @@ export async function classifyUploadedImage(imageRef, model) {
     }
 
     for (const { className, probability } of predictions) {
-      if (NSFW_CLASSNAMES.includes(className) && probability > 0.25) {
-        return false;
+      if (NSFW_CLASSNAMES.includes(className)) {
+        const margin = NSFW_CLASSNAMES_MARGINS[className];
+        if (probability > margin) {
+          return false;
+        }
       }
     }
-
     return true;
   } else {
     return false;
