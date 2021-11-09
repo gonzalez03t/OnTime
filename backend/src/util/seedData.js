@@ -138,6 +138,7 @@ const companies = [
       postalCode: '07026',
       country: 'United States',
     },
+    verified: true,
   },
   {
     name: 'UF Neurosurgery',
@@ -151,6 +152,7 @@ const companies = [
       postalCode: '32209',
       country: 'United States',
     },
+    verified: true,
   },
   {
     name: 'Playcare Daycare',
@@ -164,6 +166,7 @@ const companies = [
       postalCode: '85719',
       country: 'United States',
     },
+    verified: false,
   },
   {
     name: 'Sail Away Nail Co.',
@@ -176,6 +179,7 @@ const companies = [
       postalCode: '85704',
       country: 'United States',
     },
+    verified: false,
   },
 ];
 

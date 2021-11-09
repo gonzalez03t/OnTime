@@ -89,6 +89,15 @@ export class Company extends BaseEntity {
     };
   }
 
+  // same as above, just includes the owner
+  getAdminDetails() {
+    return {
+      ...this.getDetails(),
+      owner: this.owner,
+      createdAt: this.createdAt,
+    };
+  }
+
   verifyCompany() {
     this.status = VerificationStatus.VERIFIED;
   }

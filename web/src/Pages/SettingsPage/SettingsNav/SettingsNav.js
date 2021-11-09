@@ -8,6 +8,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './SettingsNav.css';
 import COLORS from '../../../constants/colors';
+import useStore from '../../../store/store';
+import shallow from 'zustand/shallow';
 
 function SettingsNavItem({ children, active }) {
   return (
@@ -21,6 +23,8 @@ function SettingsNavItem({ children, active }) {
 }
 
 export default function SettingsNav({ tab, setTab }) {
+  const user = useStore((state) => state.user, shallow);
+
   function handleItemClick(e, { name }) {
     setTab(name);
   }
@@ -58,20 +62,22 @@ export default function SettingsNav({ tab, setTab }) {
           </SettingsNavItem>
         </Menu.Item>
 
-        <Menu.Item
-          name="company"
-          active={tab === 'company'}
-          onClick={handleItemClick}
-        >
-          <SettingsNavItem active={tab === 'company'}>
-            <FontAwesomeIcon
-              className="settings-nav__icon"
-              icon={faUsers}
-              size="lg"
-            />
-            <span>Company</span>
-          </SettingsNavItem>
-        </Menu.Item>
+        {user?.role !== 'ADMIN' && (
+          <Menu.Item
+            name="company"
+            active={tab === 'company'}
+            onClick={handleItemClick}
+          >
+            <SettingsNavItem active={tab === 'company'}>
+              <FontAwesomeIcon
+                className="settings-nav__icon"
+                icon={faUsers}
+                size="lg"
+              />
+              <span>Company</span>
+            </SettingsNavItem>
+          </Menu.Item>
+        )}
       </Menu>
     </div>
   );

@@ -40,7 +40,7 @@ export default async function registerCompany(req: Request, res: Response) {
       );
 
       const company = em.create(Company, {
-        createdBy: user,
+        owner: user,
         name,
         address,
         phone,

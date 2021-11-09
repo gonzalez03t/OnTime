@@ -55,7 +55,7 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
   for (let i = 0; i < seedData.companies.length; i++) {
     const c = seedData.companies[i];
 
-    const { name, address: rawAddress } = c;
+    const { name, address: rawAddress, verified } = c;
 
     const companyOwner = companyOwners[c.owner];
     const employees = c.employees.map((i) => employeeUsers[i]);
@@ -78,7 +78,9 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
       phone,
       owner: companyOwner,
       address,
-      status: VerificationStatus.VERIFIED,
+      status: verified
+        ? VerificationStatus.VERIFIED
+        : VerificationStatus.PENDING,
     });
 
     for (const empl of employees) {
@@ -100,7 +102,7 @@ async function generateAdmin() {
       lastName: 'admin',
       email: 'admin@ontime.com',
       dob: new Date('07/16/1997'),
-      password: await User.generateHash('admin'),
+      password: await User.generateHash('password'),
       phone: '09876542',
       role: UserRole.ADMIN,
     })
