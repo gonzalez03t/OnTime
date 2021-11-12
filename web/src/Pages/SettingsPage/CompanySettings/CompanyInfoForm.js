@@ -1,19 +1,81 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Form, Input, Select } from 'semantic-ui-react';
+import { deleteImage, getImageUrl, uploadImage } from '../../../api/image';
+import okResponse from '../../../utils/okResponse';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import { countryOptions } from '../../../components/Registration/FormFields';
+import { updateCompanyProfile } from '../../../api/company';
+import useStore from '../../../store/store';
+import useToggle from '../../../hooks/useToggle';
 
 export default function CompanyInfoForm({ company }) {
+  const notify = useStore((state) => state.addNotification);
+
+  const [loading, { on, off }] = useToggle(false);
   const [imageProperties, setImageProperties] = useState(null);
   const [coverImageProperties, setCoverImageProperties] = useState(null);
   const [companyDetails, setCompanyDetails] = useState(company);
 
-  console.log(companyDetails);
+  async function handleUploadImage(id, content, contentType) {
+    const s3UploadRes = await uploadImage(
+      id,
+      imageProperties.fileContents.split(',')[1],
+      imageProperties.contentType
+    );
 
-  function handleSave(e) {
+    if (okResponse(s3UploadRes) && s3UploadRes.data) {
+      return s3UploadRes.data.key;
+    } else {
+      notify('error', 'Error uploading image');
+    }
+  }
+
+  async function handleSave(e) {
     e.preventDefault();
 
-    alert('TODO: persist changes to DB');
+    on();
+
+    let profileS3Key, coverS3Key;
+    if (imageProperties) {
+      if (company.imageKey) {
+        console.log(await deleteImage(company.imageKey));
+      }
+
+      profileS3Key = await handleUploadImage(
+        `${company.id}-profile`,
+        imageProperties.fileContents,
+        imageProperties.contentType
+      );
+    }
+
+    if (coverImageProperties) {
+      if (company.coverImageKey) {
+        console.log(await deleteImage(company.coverImageKey));
+      }
+
+      coverS3Key = await handleUploadImage(
+        `${company.id}-cover`,
+        coverImageProperties.fileContents,
+        coverImageProperties.contentType
+      );
+    }
+
+    const res = await updateCompanyProfile(company.id, {
+      name: companyDetails.name,
+      phone: companyDetails.phone,
+      address: companyDetails.address,
+      profileS3Key,
+      coverS3Key,
+    });
+
+    if (okResponse(res)) {
+      notify('success', 'Company details updated');
+    } else {
+      console.log(res);
+      notify('error', 'Error updating company details');
+    }
+
+    off();
   }
 
   function handleChange(e, { name, value }) {
@@ -40,20 +102,34 @@ export default function CompanyInfoForm({ company }) {
     setCoverImageProperties(newImageSrc);
   }
 
+  const profileImage = useMemo(() => {
+    if (company.imageKey) {
+      return getImageUrl(company.imageKey);
+    } else {
+      return null;
+    }
+  }, [company.imageKey]);
+
+  const coverImage = useMemo(() => {
+    if (company.coverImageKey) {
+      return getImageUrl(company.coverImageKey);
+    } else {
+      return null;
+    }
+  }, [company.coverImageKey]);
+
   return (
     <Form onSubmit={handleSave}>
       <div className="settings-form__body">
         <ImageUpload
           type="profile"
-          imageSrc={imageProperties?.fileContents ?? companyDetails?.image}
+          imageSrc={imageProperties?.fileContents ?? profileImage}
           handleValidImageUploaded={handleValidProfileImageUploaded}
         />
 
         <ImageUpload
           type="cover"
-          imageSrc={
-            coverImageProperties?.fileContents ?? companyDetails?.coverImage
-          }
+          imageSrc={coverImageProperties?.fileContents ?? coverImage}
           handleValidImageUploaded={handleValidCoverImageUploaded}
         />
 
@@ -135,7 +211,9 @@ export default function CompanyInfoForm({ company }) {
         </Form.Group>
       </div>
       <div className="settings-form__actions">
-        <Form.Button primary>Save</Form.Button>
+        <Form.Button primary loading={loading}>
+          Save
+        </Form.Button>
       </div>
     </Form>
   );

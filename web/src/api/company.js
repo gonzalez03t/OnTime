@@ -18,6 +18,17 @@ export function getCompanyByOwnerId(id) {
   return axios.get(baseUrl + `?ownerId=${id}`).catch((err) => err.response);
 }
 
+/**
+ *
+ * @param {string} id
+ * @param {{ name: string | undefined, phone:string | undefined, profileS3Key: string | undefined, coverS3Key: string | undefined }} companyDetails
+ */
+export function updateCompanyProfile(id, companyDetails) {
+  return axios
+    .put(baseUrl + `/${id}/profile`, { companyDetails })
+    .catch((err) => err.response);
+}
+
 // ADMIN FUNCTIONS
 /**
  *

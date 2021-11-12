@@ -6,9 +6,11 @@ import getCompanies from '../endpoints/company/getCompanies';
 import getEmployees from '../endpoints/company/getEmployees';
 import registerCompany from '../endpoints/company/registerCompany';
 import registerEmployee from '../endpoints/company/registerEmployee';
+import updateCompanyProfile from '../endpoints/company/updateCompanyProfile';
 import adminRoute from '../middleware/adminRoute';
 import authenticatedRoute from '../middleware/authenticatedRoute';
 import companyAdminRoute from '../middleware/companyAdminRoute';
+import companyOwnerRoute from '../middleware/companyOwnerRoute';
 import requireBody from '../middleware/requireBody';
 import requireSession from '../middleware/requireSession';
 
@@ -35,6 +37,13 @@ router.post(
   authenticatedRoute,
   companyAdminRoute,
   registerEmployee
+);
+
+router.put(
+  '/:id/profile',
+  requireBody,
+  companyOwnerRoute,
+  updateCompanyProfile
 );
 
 // ADMIN
