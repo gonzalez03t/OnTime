@@ -32,6 +32,8 @@ export default function LoginPage() {
     if (res && res.data) {
       const { user, status } = res.data;
 
+      console.log(user);
+
       if (user && status === 'pending_otp_validation') {
         setUser({ ...user, status });
         openOtpTogglers.on();

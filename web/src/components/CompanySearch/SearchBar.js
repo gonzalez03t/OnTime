@@ -63,6 +63,7 @@ export default function SearchBar(props) {
         value={searchFilter}
       />
       <CompanyList
+        type="company"
         list={searchReturn}
         click={(company) => handleClick(company)}
         filter={searchFilter}

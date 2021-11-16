@@ -147,12 +147,27 @@ export class User extends BaseEntity {
    * This function is really the same as getDetails but with a few more fields,
    * used on login call and viewer call
    */
-  getLoginDetails() {
+  /*getLoginDetails() {
     return {
       ...this.getDetails(),
       role: this.role,
       notificationPreference: this.notificationPreference,
     };
+  }*/
+  getLoginDetails() {
+    if (this.isEmployee() || this.isCompanyOwner()) {
+      return {
+        ...this.getEmployeeDetails(),
+        role: this.role,
+        notificationPreference: this.notificationPreference,
+      };
+    } else {
+      return {
+        ...this.getDetails(),
+        role: this.role,
+        notificationPreference: this.notificationPreference,
+      };
+    }
   }
 
   getEmployeeDetails() {

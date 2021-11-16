@@ -25,7 +25,8 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "concurrently": "^6.0.2"
+    "concurrently": "^6.0.2",
+    "react-notifications": "^1.7.2"
   },
   "devDependencies": {
     "husky": "^7.0.2",

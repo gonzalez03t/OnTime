@@ -47,18 +47,17 @@
 
 @media (min-width: 1024px) {
   .calendar-inner-container {
-    margin-top: 0rem;
+    margin-top: 0.5rem;
   }
   .calendar-container {
-    margin-left: 2rem;
-
     flex-direction: row;
 
     align-items: flex-start;
   }
 
   .booking-times {
-    margin-top: 0rem;
+    margin-top: 0.5rem;
+    margin-left: 2rem;
     display: flex;
     flex-direction: column;
   }

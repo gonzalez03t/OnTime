@@ -19,7 +19,7 @@ export default async function login(req: Request, res: Response) {
   if (!email || !password) {
     res.status(400).send('Missing email and/or password');
   } else {
-    const user = await em.findOne(User, { email });
+    const user = await em.findOne(User, { email }, ['company']);
 
     if (user && (await user.validatePassword(password))) {
       const { code, err } = await createLoginToken(user);

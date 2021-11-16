@@ -16,6 +16,9 @@ import SignUpPage from '../pages/SignUpPage/SignUpPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import ContactUsPage from '../pages/ContactUsPage/ContactUsPage';
 import FourOhFourPage from '../pages/FourOhFourPage/FourOhFourPage';
+
+import AppointmentDetail from '../pages/AppointmentDetailPage/AppointmentDetailPage';
+
 import DashboardPage from '../pages/DashboardPage/index';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import CompanySearchPage from '../pages/CompanySearchPage/CompanySearchPage';
@@ -51,6 +54,7 @@ export default function Routes() {
       <Route path="/sign_up" component={SignUpPage} />
       <Route path="/contact_us" exact component={ContactUsPage} />
       <Route path="/company_search" exact component={CompanySearchPage} />
+      <Route path="/appointment_detail" exact component={AppointmentDetail} />
       <ProtectedRoute path="/dashboard" exact component={DashboardPage} />
       <ProtectedRoute path="/settings" exact component={SettingsPage} />
       <Route path="/company/:name" component={CompanyProfile} />

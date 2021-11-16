@@ -15,31 +15,13 @@ import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
 import ClientList from '../../../components/ClientList/ClientList';
 import { getUserAppointments } from '../../../api/appointment';
+import { getCompanyByName } from '../../../api/company';
 import './EmployeeDashboardPage.css';
 import { Link } from 'react-router-dom';
+import ClientProfileModal from '../../../components/modals/ClientProfileModal';
+import ScheduleAppointmentModal from '../../../components/modals/ScheduleAppointmentModal';
 
 export default function EmployeeDashboardPage() {
-  const history = useHistory();
-  const [loading, { on, off }] = useToggle(true);
-  const [appointments, setAppointments] = useState([]);
-  const [clients, setClients] = useState([]);
-  const [selected_client, setClient] = useState(true);
-  const [searchFilter, setSearchFilter] = useState('');
-  const [searchReturn, setSearchReturn] = useState([]);
-
-  function handleSelectedClient(client) {
-    //TODO
-    setClient(client.value);
-  }
-
-  function handleClientSearch(value) {
-    setSearchFilter(value);
-  }
-
-  function handleNewAppointment() {
-    //TODO
-  }
-
   const { user, getFullname } = useStore(
     (state) => ({
       user: state.user,
@@ -47,6 +29,52 @@ export default function EmployeeDashboardPage() {
     }),
     shallow
   );
+
+  const history = useHistory();
+  const [loading, { on, off }] = useToggle(true);
+  const [appointments, setAppointments] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [selected_client, setClient] = useState(true);
+  const [company, setCompany] = useState();
+  const [openModal, setOpenModal] = useState(false);
+  const [openScheduleApptModal, setOpenScheduleApptModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({});
+
+  useEffect(() => {
+    async function fetchCompany(name) {
+      const res = await getCompanyByName(name);
+      console.log(res);
+      if (res?.status === 200 && res?.data) {
+        setCompany(res.data.company);
+      }
+    }
+
+    if (!company) {
+      fetchCompany(user.company);
+    }
+  }, []);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [searchReturn, setSearchReturn] = useState([]);
+
+  function handleSelectedClient(client) {
+    //TODO
+    //setClient(client.value);
+  }
+
+  // Handle client click
+  const handleClick = (client) => {
+    setOpenModal(true);
+    setSelectedClient(client);
+  };
+  function handleClientSearch(value) {
+    setSearchFilter(value);
+  }
+
+  function handleNewAppointment() {
+    console.log('Creating new Appt.');
+    setOpenScheduleApptModal(true);
+    //setSelectedClient(client);
+  }
 
   // fetch user appointments from db
   async function handleAppointments() {
@@ -82,8 +110,8 @@ export default function EmployeeDashboardPage() {
         const formatted_appointment = {
           _id: appointment._id,
           title: `Appointment w/ ${client_name}`,
-          employee: getFullname(),
-          client: client_name,
+          employee: user,
+          client: appointment.client,
           start: start_time,
           end: new Date(
             start_time.getTime() + appointment.duration * 60 * 1000
@@ -140,8 +168,6 @@ export default function EmployeeDashboardPage() {
               color="black"
               style={{ marginTop: 10 }}
               floated="right"
-              as={Link}
-              to="/company_search"
             >
               <Icon name="calendar plus" />
             </Button>
@@ -159,12 +185,30 @@ export default function EmployeeDashboardPage() {
           <Segment>
             <h2>Client List</h2>
             <ClientList
+              //clients={clients}
+              click={(client) => handleClick(client)}
               clients={searchReturn}
               handleSelectedClient={handleSelectedClient}
             />
           </Segment>
         </Grid.Column>
       </Grid>
+
+      <ClientProfileModal
+        isOpen={openModal}
+        client={selectedClient}
+        openModal={(val) => setOpenModal(val)}
+        closeModal={(val) => setOpenModal(val)}
+      />
+
+      <ScheduleAppointmentModal
+        isOpen={openScheduleApptModal}
+        clients={clients}
+        user={user}
+        company={company}
+        openModal={(val) => setOpenScheduleApptModal(val)}
+        closeModal={(val) => setOpenScheduleApptModal(val)}
+      />
     </Container>
   );
 }

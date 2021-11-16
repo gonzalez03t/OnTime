@@ -20,6 +20,7 @@ export default function AppointmentScheduler({ company, employees }) {
 
   const handleSelectEmployee = (_, { value }) => {
     setSelectedEmployee(value);
+    console.log(selectedEmployee);
   };
 
   const handleSelectTimeSlot = (slot) => {

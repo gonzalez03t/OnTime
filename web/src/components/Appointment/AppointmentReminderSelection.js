@@ -45,7 +45,9 @@ export default function AppointmentReminderSelection({
           )}
         </div>
 
-        <Button onClick={createAppointment}>Create</Button>
+        <Button positive onClick={createAppointment}>
+          Schedule Appointment
+        </Button>
       </div>
     );
   } else {

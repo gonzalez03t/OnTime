@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Message, Icon } from 'semantic-ui-react';
 
-export default function ListAlert() {
+export default function ListAlert(props) {
   const [alert, setAlert] = useState(
     <Message icon>
       <Icon name="circle notched" loading />
@@ -15,7 +15,7 @@ export default function ListAlert() {
     setAlert(
       <Message info>
         <Message.Header>Please search again</Message.Header>
-        <p>We did not found any company with that name</p>
+        <p>We did not found any {props.type} with that name</p>
       </Message>
     );
   }, 1000);
