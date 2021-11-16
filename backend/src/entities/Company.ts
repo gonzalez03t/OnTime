@@ -6,6 +6,7 @@ import {
   ManyToMany,
   OneToOne,
   Property,
+  TimeType,
   Unique,
 } from '@mikro-orm/core';
 import { VerificationStatus } from '../../@types/enums';
@@ -42,6 +43,20 @@ export class Company extends BaseEntity {
 
   @Property()
   phone!: string;
+
+  // this property is used to customize some of the company profile scheduling section,
+  // such as 'Select a[n] {employeeTitle}. This was a requested addition
+  @Property()
+  employeeTitle: string = 'Employee';
+
+  @Property({ type: TimeType })
+  opensAt: string = '06:30:00';
+
+  @Property({ type: TimeType })
+  closesAt: string = '18:00:00';
+
+  @Property()
+  appointmentDuration: number = 60; // measured in MINUTES
 
   @Embedded(() => SubAddress, { array: true, nullable: true })
   subAddresses?: SubAddress[];

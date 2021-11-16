@@ -55,7 +55,7 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
   for (let i = 0; i < seedData.companies.length; i++) {
     const c = seedData.companies[i];
 
-    const { name, address: rawAddress, verified } = c;
+    const { name, address: rawAddress, verified, opensAt, closesAt } = c;
 
     const companyOwner = companyOwners[c.owner];
     const employees = c.employees.map((i) => employeeUsers[i]);
@@ -78,6 +78,8 @@ function generateCompanies(companyOwners: User[], employeeUsers: User[]) {
       phone,
       owner: companyOwner,
       address,
+      opensAt,
+      closesAt,
       status: verified
         ? VerificationStatus.VERIFIED
         : VerificationStatus.PENDING,
