@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Form, Input, Select } from 'semantic-ui-react';
-import { deleteImage, getImageUrl, uploadImage } from '../../../api/image';
+import { getImageUrl, uploadImage } from '../../../api/image';
 import okResponse from '../../../utils/okResponse';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import { countryOptions } from '../../../components/Registration/FormFields';
@@ -17,14 +17,10 @@ export default function CompanyInfoForm({ company }) {
   const [companyDetails, setCompanyDetails] = useState(company);
 
   async function handleUploadImage(id, content, contentType) {
-    const s3UploadRes = await uploadImage(
-      id,
-      imageProperties.fileContents.split(',')[1],
-      imageProperties.contentType
-    );
+    const s3UploadRes = await uploadImage(id, content, contentType);
 
-    if (okResponse(s3UploadRes) && s3UploadRes.data) {
-      return s3UploadRes.data.key;
+    if (okResponse(s3UploadRes) && s3UploadRes.data && s3UploadRes.data.Key) {
+      return s3UploadRes.data.Key;
     } else {
       notify('error', 'Error uploading image');
     }
@@ -35,27 +31,23 @@ export default function CompanyInfoForm({ company }) {
 
     on();
 
-    let profileS3Key, coverS3Key;
-    if (imageProperties) {
-      if (company.imageKey) {
-        console.log(await deleteImage(company.imageKey));
-      }
+    let profileS3Key;
+    let coverS3Key;
 
+    // so it turns out we DONT have to delete images before reuploading.
+    // if an object with the same key already exists, it will be overwritten.
+    if (imageProperties?.fileContents) {
       profileS3Key = await handleUploadImage(
         `${company.id}-profile`,
-        imageProperties.fileContents,
+        imageProperties.fileContents.split(',')[1],
         imageProperties.contentType
       );
     }
 
-    if (coverImageProperties) {
-      if (company.coverImageKey) {
-        console.log(await deleteImage(company.coverImageKey));
-      }
-
+    if (coverImageProperties?.fileContents) {
       coverS3Key = await handleUploadImage(
         `${company.id}-cover`,
-        coverImageProperties.fileContents,
+        coverImageProperties.fileContents.split(',')[1],
         coverImageProperties.contentType
       );
     }

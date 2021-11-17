@@ -78,7 +78,7 @@ export class Company extends BaseEntity {
       id: this.id,
       name: this.name,
       imageKey: this.image?.getImageKey(),
-      coverImageKey: this.image?.getImageKey(),
+      coverImageKey: this.coverPhoto?.getImageKey(),
       phone: this.phone,
       address: this.address,
       fullAddress: this.address.toString(),
@@ -114,10 +114,12 @@ export class Company extends BaseEntity {
     }
   }
 
-  setDetails(userDetails: any) {
-    if (!userDetails) return;
+  setDetails(companyDetails: any) {
+    if (!companyDetails) return;
 
-    const { name, phone, profileS3Key, coverS3Key } = userDetails;
+    const { name, phone, profileS3Key, coverS3Key } = companyDetails;
+
+    console.log(companyDetails);
 
     this.name = name ?? this.name;
     this.phone = phone ?? this.phone;

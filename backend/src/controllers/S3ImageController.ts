@@ -11,6 +11,6 @@ const router = Router();
 router.get('/:key', getImage);
 
 router.post('/', uploadImage);
-router.delete('/', deleteImage);
+router.delete('/:key', deleteImage);
 
 export const S3ImageController = router;

@@ -17,7 +17,7 @@ export function uploadImage(key, fileContents, type) {
  * @param {string} key string key of object in S3 bucket
  */
 export function deleteImage(key) {
-  return axios.delete(baseUrl, { key }).catch((err) => err.response);
+  return axios.delete(baseUrl + `/${key}`).catch((err) => err.response);
 }
 
 // not using axios, the <img> will make the GET request
