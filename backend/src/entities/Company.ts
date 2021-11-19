@@ -78,7 +78,7 @@ export class Company extends BaseEntity {
       id: this.id,
       name: this.name,
       imageKey: this.image?.getImageKey(),
-      coverImageKey: this.image?.getImageKey(),
+      coverImageKey: this.coverPhoto?.getImageKey(),
       phone: this.phone,
       address: this.address,
       fullAddress: this.address.toString(),
@@ -111,6 +111,33 @@ export class Company extends BaseEntity {
       this.verifyCompany();
     } else if (status === VerificationStatus.DENIED) {
       this.rejectCompany();
+    }
+  }
+
+  setDetails(companyDetails: any) {
+    if (!companyDetails) return;
+
+    const { name, phone, profileS3Key, coverS3Key } = companyDetails;
+
+    console.log(companyDetails);
+
+    this.name = name ?? this.name;
+    this.phone = phone ?? this.phone;
+
+    if (profileS3Key) {
+      if (this.image) {
+        this.image.setImageKey(profileS3Key);
+      } else {
+        this.image = new Image(profileS3Key);
+      }
+    }
+
+    if (coverS3Key) {
+      if (this.coverPhoto) {
+        this.coverPhoto.setImageKey(coverS3Key);
+      } else {
+        this.coverPhoto = new Image(coverS3Key);
+      }
     }
   }
 }

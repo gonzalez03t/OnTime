@@ -9,6 +9,7 @@ import AppointmentScheduler from '../../components/Appointment/AppointmentSchedu
 import scrollToComponent from 'react-scroll-to-component';
 
 import './CompanyProfile.css';
+import { getImageUrl } from '../../api/image';
 
 export default function CompanyProfile() {
   const params = useParams();
@@ -44,17 +45,21 @@ export default function CompanyProfile() {
 
   function getCoverImageStyle() {
     let baseStyles = {
-      minHeight: '12rem',
+      minHeight: '20rem',
       position: 'relative',
       marginBottom: '0.5rem',
     };
 
-    if (company?.image) {
+    if (company?.coverImageKey) {
+      return {
+        ...baseStyles,
+        backgroundImage: `url(${getImageUrl(company.coverImageKey)})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+      };
     } else {
       return { ...baseStyles, backgroundColor: '#D1D5DB' };
     }
-
-    return null;
   }
 
   return (
@@ -62,8 +67,12 @@ export default function CompanyProfile() {
       <Segment>
         <div style={getCoverImageStyle()}>
           <div className="company-logo__container">
-            {company?.logo ? (
-              <img src={company.logo} alt={`${company.name} Logo`} />
+            {company?.imageKey ? (
+              <img
+                src={getImageUrl(company.imageKey)}
+                alt={`${company.name} Logo`}
+                style={{ objectFit: 'cover' }}
+              />
             ) : (
               <svg
                 className="company-logo__placeholder"

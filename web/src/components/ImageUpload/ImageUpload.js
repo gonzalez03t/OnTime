@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Placeholder } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import ImageUploader from '../ImageUploader/ImageUploader';
 import './ImageUpload.css';
 

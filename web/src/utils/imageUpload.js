@@ -48,7 +48,7 @@ function readImageFile(file) {
 const NSFW_CLASSNAMES = ['Hentai', 'Porn', 'Sexy'];
 
 const NSFW_CLASSNAMES_MARGINS = {
-  Hentai: 0.1,
+  Hentai: 0.5,
   Porn: 0.1,
   Sexy: 0.6,
 };
