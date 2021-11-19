@@ -138,6 +138,8 @@ const companies = [
       postalCode: '07026',
       country: 'United States',
     },
+    opensAt: '06:30:00',
+    closesAt: '19:00:00',
     verified: true,
   },
   {
@@ -152,6 +154,8 @@ const companies = [
       postalCode: '32209',
       country: 'United States',
     },
+    opensAt: '06:30:00',
+    closesAt: '22:00:00',
     verified: true,
   },
   {
@@ -166,6 +170,8 @@ const companies = [
       postalCode: '85719',
       country: 'United States',
     },
+    opensAt: '08:00:00',
+    closesAt: '18:00:00',
     verified: false,
   },
   {
@@ -179,6 +185,8 @@ const companies = [
       postalCode: '85704',
       country: 'United States',
     },
+    opensAt: '07:00:00',
+    closesAt: '17:00:00',
     verified: false,
   },
 ];
