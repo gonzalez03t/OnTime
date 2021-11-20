@@ -17,3 +17,9 @@
 
   margin-bottom: 1rem;
 }
+
+.form-label-sub {
+  font-size: small;
+  color: #6b7280;
+  font-style: italic;
+}

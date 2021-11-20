@@ -58,6 +58,9 @@ export class Company extends BaseEntity {
   @Property()
   appointmentDuration: number = 60; // measured in MINUTES
 
+  @Property({ nullable: true })
+  maxBodyCount?: number;
+
   @Embedded(() => SubAddress, { array: true, nullable: true })
   subAddresses?: SubAddress[];
 
@@ -101,6 +104,8 @@ export class Company extends BaseEntity {
       employees: this.employees
         .getItems()
         .map((empl) => empl.getEmployeeDetails()),
+      employeeTitle: this.employeeTitle,
+      maxBodyCount: this.maxBodyCount,
     };
   }
 
@@ -134,8 +139,6 @@ export class Company extends BaseEntity {
 
     const { name, phone, profileS3Key, coverS3Key } = companyDetails;
 
-    console.log(companyDetails);
-
     this.name = name ?? this.name;
     this.phone = phone ?? this.phone;
 
@@ -154,5 +157,25 @@ export class Company extends BaseEntity {
         this.coverPhoto = new Image(coverS3Key);
       }
     }
+  }
+
+  setSettings(settings: any) {
+    if (!settings) return;
+
+    const { employeeTitle, opensAt, closesAt, appointmentDuration } = settings;
+    let maxBodyCount = settings.maxBodyCount;
+
+    // treat zero as 'resetting' this setting
+    if (maxBodyCount === 0) {
+      maxBodyCount = undefined;
+    }
+
+    // we allow undefined here
+    this.maxBodyCount = maxBodyCount;
+
+    this.employeeTitle = employeeTitle ?? this.employeeTitle;
+    this.opensAt = opensAt ?? this.opensAt;
+    this.closesAt = closesAt ?? this.closesAt;
+    this.appointmentDuration = appointmentDuration ?? this.appointmentDuration;
   }
 }

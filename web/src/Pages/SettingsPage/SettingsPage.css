@@ -35,6 +35,8 @@
   padding-left: 1.75rem;
   padding-right: 1.75rem;
   padding-bottom: 1.75rem;
+
+  min-height: 5rem;
 }
 
 .settings-form__actions {

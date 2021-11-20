@@ -7,6 +7,7 @@ import getEmployees from '../endpoints/company/getEmployees';
 import registerCompany from '../endpoints/company/registerCompany';
 import registerEmployee from '../endpoints/company/registerEmployee';
 import updateCompanyProfile from '../endpoints/company/updateCompanyProfile';
+import updateCompanySettings from '../endpoints/company/updateCompanySettings';
 import adminRoute from '../middleware/adminRoute';
 import authenticatedRoute from '../middleware/authenticatedRoute';
 import companyAdminRoute from '../middleware/companyAdminRoute';
@@ -44,6 +45,13 @@ router.put(
   requireBody,
   companyOwnerRoute,
   updateCompanyProfile
+);
+
+router.put(
+  '/:id/settings',
+  requireBody,
+  companyOwnerRoute,
+  updateCompanySettings
 );
 
 // ADMIN

@@ -29,6 +29,17 @@ export function updateCompanyProfile(id, companyDetails) {
     .catch((err) => err.response);
 }
 
+/**
+ *
+ * @param {string} id
+ * @param {{ maxBodyCount: number | undefined, employeeTitle:string | undefined, opensAt: string | undefined, closesAt: string | undefined }} companySettings
+ */
+export function updateCompanySettings(id, companySettings) {
+  return axios
+    .put(baseUrl + `/${id}/settings`, { companySettings })
+    .catch((err) => err.response);
+}
+
 // ADMIN FUNCTIONS
 /**
  *
