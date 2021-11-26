@@ -18,6 +18,18 @@ export function getCompanyByOwnerId(id) {
   return axios.get(baseUrl + `?ownerId=${id}`).catch((err) => err.response);
 }
 
+export function inviteEmployee(email) {
+  return axios
+    .post(baseUrl + `/employees/invite`, { email })
+    .catch((err) => err.response);
+}
+
+export function registerCompany(name, address, phone) {
+  return axios
+    .post(baseUrl + `/new`, { name, address, phone })
+    .catch((err) => err.response);
+}
+
 /**
  *
  * @param {string} id

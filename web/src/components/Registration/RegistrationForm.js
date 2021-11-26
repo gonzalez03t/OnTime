@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Segment, Header, Button, Form } from 'semantic-ui-react';
+import {
+  Container,
+  Segment,
+  Header,
+  Button,
+  Form,
+  Input,
+} from 'semantic-ui-react';
 import { register, registerUserAndCompany } from '../../api/auth';
 import useToggle from '../../hooks/useToggle';
 import { useHistory } from 'react-router';
@@ -38,6 +45,9 @@ export default function RegistrationForm({ formType }) {
     state: '',
     zipCode: '',
     country: '',
+    maxBodyCount: '',
+    employeeTitle: '',
+    appointmentDuration: '',
   });
 
   function handleUserChange(_e, { name, value }) {
@@ -80,6 +90,13 @@ export default function RegistrationForm({ formType }) {
         postalCode: companyData.postalCode,
         country: companyData.country,
       },
+      maxBodyCount: companyData.maxBodyCount
+        ? parseInt(companyData.maxBodyCount)
+        : undefined,
+      employeeTitle: companyData.employeeTitle,
+      appointmentDuration: companyData.appointmentDuration
+        ? parseInt(companyData.appointmentDuration)
+        : undefined,
     });
 
     if (okResponse(res)) {
@@ -190,6 +207,44 @@ export default function RegistrationForm({ formType }) {
                 { value: true, text: 'Yes' },
               ]}
             />
+          </Form.Field>
+        </Form.Group>
+      );
+
+      // add aditional features
+      ownerCompanyGroups.push(
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label htmlFor="maxBodyCount" style={{ margin: 0 }}>
+              Max Body Count
+            </label>
+            <p className="form-label-sub" style={{ margin: '0 0 0.25rem 0' }}>
+              The maximum number of clients that can be present at any given
+              time during working hours. Blank or 0 means there is no limit.
+            </p>
+            <Input name="maxBodyCount" onChange={handleCompanyChange} />
+          </Form.Field>
+
+          <Form.Field>
+            <label htmlFor="employeeTitle" style={{ margin: 0 }}>
+              Employee Title
+            </label>
+            <p className="form-label-sub" style={{ margin: '0 0 0.25rem 0' }}>
+              This is what will be displayed on the employee's profile when
+              client's make appointments
+            </p>
+            <Input name="employeeTitle" onChange={handleCompanyChange} />
+          </Form.Field>
+
+          <Form.Field>
+            <label htmlFor="appointmentDuration" style={{ margin: 0 }}>
+              Appointment Duration
+            </label>
+            <p className="form-label-sub" style={{ margin: '0 0 0.25rem 0' }}>
+              Employee's schedules will be divided into blocks of this length in
+              MINUTES. Default is 60 minutes.
+            </p>
+            <Input name="appointmentDuration" onChange={handleCompanyChange} />
           </Form.Field>
         </Form.Group>
       );

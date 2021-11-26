@@ -32,6 +32,12 @@ export function updateUserNotificationPreference(newPreference) {
     .catch((err) => err.response);
 }
 
+export function hasFutureAppointments() {
+  return axios
+    .get(baseUrl + '/hasFutureAppointments')
+    .catch((err) => err.response);
+}
+
 // ADMIN ROUTES
 /**
  *

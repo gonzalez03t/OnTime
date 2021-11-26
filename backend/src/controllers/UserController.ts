@@ -7,6 +7,7 @@ import getViewer from '../endpoints/user/getViewer';
 import updateNotificationPreference from '../endpoints/user/updateNotificationPreference';
 import updateUserPassword from '../endpoints/user/updateUserPassword';
 import updateUserProfile from '../endpoints/user/updateUserProfile';
+import hasFutureAppointments from '../endpoints/user/hasFutureAppointments';
 import adminRoute from '../middleware/adminRoute';
 import baseUserRoute from '../middleware/baseUserRoute';
 import requireBody from '../middleware/requireBody';
@@ -20,6 +21,7 @@ const router = Router();
 
 router.get('/viewer', getViewer);
 router.get('/favorites', baseUserRoute, getFavoritedCompanies);
+router.get('/hasFutureAppointments', baseUserRoute, hasFutureAppointments);
 
 router.post('/favorites', baseUserRoute, requireBody, favoriteCompany);
 

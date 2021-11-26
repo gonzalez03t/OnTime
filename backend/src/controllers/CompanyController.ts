@@ -14,6 +14,7 @@ import companyAdminRoute from '../middleware/companyAdminRoute';
 import companyOwnerRoute from '../middleware/companyOwnerRoute';
 import requireBody from '../middleware/requireBody';
 import requireSession from '../middleware/requireSession';
+import inviteEmployee from '../endpoints/company/inviteEmployee';
 
 /**
  * This controller handles all authentication functions.
@@ -25,13 +26,13 @@ router.get('/', getCompanies);
 
 router.post('/new', requireBody, registerCompany);
 router.post('/employees', requireBody, requireSession, getEmployees);
-// router.post(
-//   '/employees/invite',
-//   requireBody,
-//   authenticatedRoute,
-//   companyAdminRoute,
-//   inviteEmployee
-// );
+router.post(
+  '/employees/invite',
+  requireBody,
+  authenticatedRoute,
+  companyAdminRoute,
+  inviteEmployee
+);
 router.post(
   '/employees/new',
   requireBody,

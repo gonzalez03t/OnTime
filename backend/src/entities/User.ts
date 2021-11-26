@@ -182,6 +182,10 @@ export class User extends BaseEntity {
     return this.appointments.length > 0;
   }
 
+  hasFutureAppointments() {
+    return this.appointments.getItems().some((appt) => appt.isFuture());
+  }
+
   // ====== MUTATORS ====== //
 
   setDetails(userDetails: any) {

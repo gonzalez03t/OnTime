@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { em } from '../..';
 import Invitation from '../../entities/Invitation';
 import { getSessionUserOrFail } from '../../util/session';
 
@@ -14,7 +15,11 @@ export default async function inviteEmployee(req: Request, res: Response) {
     const invitation = new Invitation(email, user.company);
     await invitation
       .send()
-      .then(() => res.sendStatus(201))
+      .then(async () => {
+        em.persistAndFlush(invitation)
+          .then(() => res.sendStatus(200))
+          .catch((err) => res.status(500).send(err));
+      })
       .catch((err) => res.status(500).send(err));
   } else if (!email) {
     res

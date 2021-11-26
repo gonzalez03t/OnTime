@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import {
   Button,
@@ -45,6 +45,16 @@ export default function ScheduleAppointmentModal(props) {
     }, 700);
     return () => clearTimeout(timeoutId);
   }, [searchFilter]);
+
+  const filteredClients = useMemo(() => {
+    return props.clients.filter((val) => {
+      if (val.value.email.toLowerCase().includes(searchFilter.toLowerCase())) {
+        return val;
+      } else {
+        return null;
+      }
+    });
+  }, [searchFilter, props.client]);
 
   const handleSearchBarChange = (value) => {
     setSearchFilter(value);

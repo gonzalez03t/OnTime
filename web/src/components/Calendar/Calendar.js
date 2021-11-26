@@ -43,7 +43,6 @@ export default function ApptCalendar({
     setEvent(undefined);
   }
 
-  // empty dep array so it only runs this once on initial render
   useEffect(() => {
     handleAppointments();
   }, [selected_employee]);

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import useStore from '../../../store/store';
-import { SettingsSectionHeader } from '../SettingsComponents';
-import NoCompanyMessage from './NoCompanyMessage';
+import NoCompanyMessage from './NoCompanyMessage/NoCompanyMessage';
 import './CompanySettings.css';
 import CompanyFormWrapper from './CompanyFormWrapper';
+import { SettingsSectionHeader } from '../SettingsComponents';
 import CompanyInfoForm from './CompanyInfoForm';
 import shallow from 'zustand/shallow';
 import { getCompanyByOwnerId } from '../../../api/company';
 import okResponse from '../../../utils/okResponse';
 import CompanyFeaturesForm from './CompanyFeaturesForm';
+import EmployeeList from '../../../components/EmployeeList/EmployeeList';
 
 export default function CompanySettings() {
   const [company, setCompany] = useState();
@@ -63,6 +64,19 @@ export default function CompanySettings() {
             company={company}
             FormComponent={CompanyFeaturesForm}
           />
+        </div>
+      )}
+
+      {isCompanyOwner() && (
+        <div className="settings-content__segment">
+          <div className="settings-content__segment-body">
+            <SettingsSectionHeader
+              title="Employee List"
+              subtitle="Contact, add, and remove employees"
+            />
+          </div>
+
+          <EmployeeList company={company} />
         </div>
       )}
     </div>

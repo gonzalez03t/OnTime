@@ -30,6 +30,7 @@ export default class Invitation extends BaseEntity {
 
   async send() {
     // TODO: implement me, should email this.email
+    console.log(`Sending invitation to ${this.email} - ${this.code}`);
   }
 
   constructor(email: string, company: Company) {

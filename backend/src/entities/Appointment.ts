@@ -76,6 +76,10 @@ export class Appointment extends BaseEntity {
     return baseInfo;
   }
 
+  isFuture() {
+    return this.startsAt > new Date();
+  }
+
   /**
    * This will return a Date object that references the date/time a given
    * amount of time prior to the scheduled appointment. For now, I am just

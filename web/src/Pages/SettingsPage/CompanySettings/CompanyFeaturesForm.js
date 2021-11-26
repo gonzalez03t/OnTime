@@ -20,6 +20,9 @@ export default function CompanyFeaturesForm({ company }) {
         ? parseInt(newFeatures.maxBodyCount)
         : undefined,
       employeeTitle: newFeatures.employeeTitle,
+      appointmentDuration: newFeatures.appointmentDuration
+        ? parseInt(newFeatures.appointmentDuration)
+        : undefined,
     });
 
     off();
@@ -66,6 +69,21 @@ export default function CompanyFeaturesForm({ company }) {
             <Input
               name="employeeTitle"
               value={newFeatures?.employeeTitle}
+              onChange={handleChange}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label htmlFor="appointmentDuration" style={{ margin: 0 }}>
+              Appointment Duration
+            </label>
+            <p className="form-label-sub" style={{ margin: '0 0 0.25rem 0' }}>
+              Employee's schedules will be divided into blocks of this length in
+              MINUTES. Default is 60 minutes.
+            </p>
+            <Input
+              name="appointmentDuration"
+              value={newFeatures?.appointmentDuration}
               onChange={handleChange}
             />
           </Form.Field>
