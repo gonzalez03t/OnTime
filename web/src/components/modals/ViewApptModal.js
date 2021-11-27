@@ -3,11 +3,11 @@ import { Button, Modal, Header, Grid, Icon } from 'semantic-ui-react';
 import AppointmentEmployeeCard from '../Appointment/AppointmentEmployeeCard';
 import useStore from '../../store/store';
 import shallow from 'zustand/shallow';
-import ApptCancelationWarning from './ApptCancelationWarning';
+import ApptCancelationModal from './ApptCancelationModal';
 import { Link } from 'react-router-dom';
 
 export default function ViewApptModal({ open, appointment, onClose }) {
-  const [cancelationWarning, setCancelationWarning] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   let day = `${appointment?.start.toString().slice(0, 3)}, ${appointment?.start
     .toString()
@@ -24,12 +24,16 @@ export default function ViewApptModal({ open, appointment, onClose }) {
     shallow
   );
 
-  function handleCancelationWarningClose() {
-    console.log('calling handle cancelation warning close');
-    setCancelationWarning(false);
-  }
+  const openConfirmation = () => {
+    setShowConfirm(true);
+  };
 
-  if (role == 'EMPLOYEE') {
+  const closeConfirmation = () => {
+    onClose();
+    setShowConfirm(false);
+  };
+
+  if (role === 'EMPLOYEE') {
     return (
       <React.Fragment>
         <Modal open={open} size="small" onClose={onClose} closeIcon>
@@ -72,7 +76,7 @@ export default function ViewApptModal({ open, appointment, onClose }) {
             </Grid>
           </Modal.Content>
           <Modal.Actions large>
-            <Button primary onClick={() => setCancelationWarning(true)}>
+            <Button primary onClick={openConfirmation}>
               {' '}
               Cancel Appointment{' '}
             </Button>
@@ -89,18 +93,19 @@ export default function ViewApptModal({ open, appointment, onClose }) {
             </Button>
           </Modal.Actions>
         </Modal>
-        <ApptCancelationWarning
-          open={cancelationWarning}
-          onClose={handleCancelationWarningClose}
-          onCloseParent={onClose}
-          personFirstName={appointment?.client.firstName}
-          personLastName={appointment?.client.lastName}
+        <ApptCancelationModal
+          open={showConfirm}
+          onClose={closeConfirmation}
+          client={appointment?.client}
+          // personFirstName={appointment?.client.firstName}
+          // personLastName={appointment?.client.lastName}
+          appointmentId={appointment?.id}
           when={day}
           time={time}
         />
       </React.Fragment>
     );
-  } else if (role == 'BASE') {
+  } else if (role === 'BASE') {
     return (
       <React.Fragment>
         <Modal open={open} size="small" onClose={onClose} closeIcon>
@@ -157,7 +162,7 @@ export default function ViewApptModal({ open, appointment, onClose }) {
             </Grid>
           </Modal.Content>
           <Modal.Actions large>
-            <Button primary onClick={() => setCancelationWarning(true)}>
+            <Button primary onClick={openConfirmation}>
               {' '}
               Cancel Appointment{' '}
             </Button>
@@ -174,12 +179,13 @@ export default function ViewApptModal({ open, appointment, onClose }) {
             </Button>
           </Modal.Actions>
         </Modal>
-        <ApptCancelationWarning
-          open={cancelationWarning}
-          onClose={handleCancelationWarningClose}
-          onCloseParent={onClose}
-          personFirstName={appointment?.employee.firstName}
-          personLastName={appointment?.employee.lastName}
+        <ApptCancelationModal
+          open={showConfirm}
+          onClose={closeConfirmation}
+          employee={appointment?.employee}
+          appointmentId={appointment?.id}
+          // personFirstName={appointment?.employee.firstName}
+          // personLastName={appointment?.employee.lastName}
           when={day}
           time={time}
         />

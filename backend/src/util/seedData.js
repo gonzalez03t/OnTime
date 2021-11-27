@@ -200,7 +200,7 @@ const appointments = [
       {
         company: 0,
         employee: 0,
-        startsAt: getStartDate(0, 12, 30),
+        startsAt: getStartDate(1, 12, 30),
       },
       {
         company: 0,
@@ -212,28 +212,28 @@ const appointments = [
       {
         company: 1,
         employee: 5,
-        startsAt: getStartDate(0, 7, 45),
+        startsAt: getStartDate(1, 7, 45),
       },
 
       {
         company: 1,
         employee: 5,
-        startsAt: getStartDate(0, 10, 30),
+        startsAt: getStartDate(1, 10, 30),
       },
       {
         company: 1,
         employee: 5,
-        startsAt: getStartDate(0, 8, 45),
+        startsAt: getStartDate(1, 8, 45),
       },
       {
         company: 1,
         employee: 5,
-        startsAt: getStartDate(0, 15, 45),
+        startsAt: getStartDate(1, 15, 45),
       },
       {
         company: 1,
         employee: 5,
-        startsAt: getStartDate(0, 17, 0),
+        startsAt: getStartDate(1, 17, 0),
       },
       {
         company: 1,

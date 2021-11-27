@@ -1,7 +1,7 @@
 import { FilterQuery } from '@mikro-orm/core';
 import { Request, Response } from 'express';
 import { em } from '../..';
-import { Appointment } from '../../entities/Appointment';
+import { Appointment, AppointmentStatus } from '../../entities/Appointment';
 import { getSessionUser } from '../../util/session';
 
 /**
@@ -26,6 +26,11 @@ export default async function getUserAppointments(req: Request, res: Response) {
   }
 
   if (whereClause && relations.length > 1) {
+    whereClause = {
+      ...whereClause,
+      status: { $ne: AppointmentStatus.CANCELLED },
+    };
+
     await em
       .find(Appointment, whereClause, relations)
       .then((appointments) =>

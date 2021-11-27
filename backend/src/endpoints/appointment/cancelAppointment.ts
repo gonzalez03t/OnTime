@@ -39,14 +39,22 @@ export default async function cancelAppointment(req: Request, res: Response) {
     // employee can be the viewer, otherwise it will not be used
     let employee = clientId ? user : undefined;
 
-    let appointment = await fetchAppointment(client, appointmentId, employee);
+    let appointment: Appointment = await fetchAppointment(
+      client,
+      appointmentId,
+      employee
+    );
 
-    if (appointment) {
+    let isFuture = appointment.isFuture();
+
+    if (appointment && isFuture) {
       appointment.cancel();
       await em
         .persistAndFlush(appointment)
         .then(() => res.sendStatus(200))
         .catch((err) => res.status(500).send(err));
+    } else if (!isFuture) {
+      res.status(400).send('Appointment has already passed');
     } else {
       res.status(500).send('No appointment could be found.');
     }

@@ -49,7 +49,7 @@ export default function ClientDashboardPage() {
         const start_time = new Date(Date.parse(appointment.startsAt));
 
         const formatted_appointment = {
-          _id: appointment._id,
+          id: appointment.id,
           title: `Appointment w/ ${employee_name}`,
           employee: appointment.employee,
           client: user,
