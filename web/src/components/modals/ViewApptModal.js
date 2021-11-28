@@ -39,7 +39,7 @@ export default function ViewApptModal({
 
   const handleRescheduleClick = () => {
     onClose();
-    onRescheduleClick();
+    onRescheduleClick && onRescheduleClick();
   };
 
   if (role === 'EMPLOYEE') {

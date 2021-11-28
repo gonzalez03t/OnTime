@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Container,
   Header,
@@ -14,6 +14,7 @@ import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
 import './ClientDashboardPage.css';
 import { Link } from 'react-router-dom';
+import ScheduleAppointmentModal from '../../../components/modals/ScheduleAppointmentModal';
 
 export default function ClientDashboardPage() {
   const history = useHistory();
@@ -28,6 +29,34 @@ export default function ClientDashboardPage() {
     (state) => state,
     shallow
   );
+
+  // TODO: use these
+  const [openModal, setOpenModal] = useState(false);
+  const [openScheduleApptModal, setOpenScheduleApptModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState({});
+  const [selectedClient, setSelectedClient] = useState({});
+
+  function handleRescheduleClick() {
+    setOpenModal(false);
+    // setOpenScheduleApptModal(true);
+    alert('TODO');
+  }
+
+  function handleRescheduleClose() {
+    setOpenScheduleApptModal(false);
+    setSelectedAppointment({});
+    setSelectedClient({});
+  }
+
+  function handleAppointmentClick(appointment) {
+    if (appointment === null) {
+      setSelectedAppointment({});
+      setSelectedClient({});
+    } else {
+      setSelectedAppointment(appointment);
+      setSelectedClient(appointment?.client ?? {});
+    }
+  }
 
   useEffect(() => {
     if (appointments === null) {
@@ -67,6 +96,8 @@ export default function ClientDashboardPage() {
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment" style={{ height: '100%' }}>
             <ApptCalendar
+              onSelect={handleAppointmentClick}
+              onRescheduleClick={handleRescheduleClick}
               selected_employee={null}
               handleAppointments={fetchAppointments}
               appointments={formattedAppointments}
@@ -92,6 +123,19 @@ export default function ClientDashboardPage() {
           </Segment>
         </Grid.Column>
       </Grid>
+
+      {/* 
+      // TODO: reschedule for client modal goes here
+      <ScheduleAppointmentModal
+        prevAppointment={selectedAppointment}
+        isOpen={openScheduleApptModal}
+        clients={clients}
+        user={user}
+        selectedClient={selectedClient}
+        company={company}
+        openModal={(val) => setOpenScheduleApptModal(val)}
+        closeModal={handleRescheduleClose}
+      /> */}
     </Container>
   );
 }

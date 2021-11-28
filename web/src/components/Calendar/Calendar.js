@@ -36,7 +36,7 @@ export default function ApptCalendar({
     });
 
   function handleSelectEvent(newEvent) {
-    onSelect(newEvent);
+    onSelect && onSelect(newEvent);
     setEvent(newEvent);
     setOpen(true);
   }
