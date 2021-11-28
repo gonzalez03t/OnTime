@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Container,
   Header,
@@ -12,59 +12,50 @@ import { useHistory } from 'react-router';
 import useToggle from '../../../hooks/useToggle';
 import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
-import { getUserAppointments } from '../../../api/appointment';
 import './ClientDashboardPage.css';
 import { Link } from 'react-router-dom';
 
 export default function ClientDashboardPage() {
   const history = useHistory();
+  // TODO: use this
   const [loading, { on, off }] = useToggle(true);
-  const [appointments, setAppointments] = useState([]);
 
   function handleNewAppointment() {
     history.push('/company_search');
   }
 
-  const { user, getFullname } = useStore(
-    (state) => ({
-      user: state.user,
-      getFullname: state.getFullname,
-    }),
+  const { appointments, fetchAppointments, user } = useStore(
+    (state) => state,
     shallow
   );
 
-  // fetch user appointments from db
-  async function handleAppointments() {
-    on();
-
-    const res = await getUserAppointments();
-    const formatted_appointments = [];
-
-    if (res && res.data) {
-      const appointments = res.data;
-
-      // they must have a specific format
-      [...appointments]?.forEach((appointment) => {
-        const employee_name = `${appointment.employee?.firstName} ${appointment.employee?.lastName}`;
-        const start_time = new Date(Date.parse(appointment.startsAt));
-
-        const formatted_appointment = {
-          id: appointment.id,
-          title: `Appointment w/ ${employee_name}`,
-          employee: appointment.employee,
-          client: user,
-          start: start_time,
-          end: new Date(
-            start_time.getTime() + appointment.duration * 60 * 1000
-          ),
-        };
-
-        formatted_appointments.push(formatted_appointment);
-      });
+  useEffect(() => {
+    if (appointments === null) {
+      on();
+      fetchAppointments();
+      off();
     }
-    setAppointments(formatted_appointments);
-    off();
-  }
+  }, [appointments]);
+
+  const formattedAppointments = useMemo(() => {
+    if (!appointments) {
+      return [];
+    }
+
+    return appointments.map((appointment) => {
+      const employee_name = `${appointment.employee?.firstName} ${appointment.employee?.lastName}`;
+      const start_time = new Date(Date.parse(appointment.startsAt));
+
+      return {
+        id: appointment.id,
+        title: `Appointment w/ ${employee_name}`,
+        employee: appointment.employee,
+        client: user,
+        start: start_time,
+        end: new Date(start_time.getTime() + appointment.duration * 60 * 1000),
+      };
+    });
+  }, [appointments]);
 
   return (
     <Container style={{ marginTop: 20 }} fluid>
@@ -77,8 +68,8 @@ export default function ClientDashboardPage() {
           <Segment className="calendar-segment" style={{ height: '100%' }}>
             <ApptCalendar
               selected_employee={null}
-              handleAppointments={handleAppointments}
-              appointments={appointments}
+              handleAppointments={fetchAppointments}
+              appointments={formattedAppointments}
             />
             <Button
               onClick={handleNewAppointment}

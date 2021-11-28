@@ -17,8 +17,7 @@ export default function ApptCancelationModal({
   const [loading, { on, off }] = useToggle(false);
 
   const notify = useStore((state) => state.addNotification);
-
-  console.log(appointmentId);
+  const fetchAppointments = useStore((state) => state.fetchAppointments);
 
   async function handleCancelAppointment() {
     if (!appointmentId) return;
@@ -29,6 +28,7 @@ export default function ApptCancelationModal({
 
     if (okResponse(res)) {
       notify('success', 'Cancelled appointment');
+      await fetchAppointments();
     } else {
       console.log(res);
       notify('error', 'Failed to cancel appointment');

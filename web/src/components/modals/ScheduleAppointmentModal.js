@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
-import {
-  Button,
-  Modal,
-  Grid,
-  Input,
-  Header,
-  Icon,
-  Card,
-  Image,
-  GridColumn,
-} from 'semantic-ui-react';
+import { Button, Modal, Grid, Input, Header } from 'semantic-ui-react';
 import NewCalendar from '../Calendar/NewCalendar';
-import AppointmentReminderSelection from '../Appointment/AppointmentReminderSelection';
 import okResponse from '../../utils/okResponse';
-import { createUserAppointment } from '../../api/appointment';
+import {
+  createUserAppointment,
+  rescheduleAppointment,
+} from '../../api/appointment';
 import ClientList from '../ClientList/ClientList';
 import AppointmentEmployeeCard from '../Appointment/AppointmentEmployeeCard';
+import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
 
 export default function ScheduleAppointmentModal(props) {
   const history = useHistory();
+
+  const { user, fetchAppointments } = useStore((state) => state, shallow);
+  const notify = useStore((state) => state.addNotification);
 
   const [employee, setEmployee] = useState(props.user);
   const [selectedClient, setSelectedClient] = useState();
@@ -45,6 +42,12 @@ export default function ScheduleAppointmentModal(props) {
     }, 700);
     return () => clearTimeout(timeoutId);
   }, [searchFilter]);
+
+  useEffect(() => {
+    if (props.selectedClient && Object.keys(props.selectedClient).length > 0) {
+      setSearchFilter(props.selectedClient.email);
+    }
+  }, [props.selectedClient]);
 
   const filteredClients = useMemo(() => {
     return props.clients.filter((val) => {
@@ -84,6 +87,32 @@ export default function ScheduleAppointmentModal(props) {
     props.closeModal(false);
   }
 
+  // RESCHEDULE APPOINTMENT
+  const handleReschedule = async () => {
+    const payload = {
+      newDateTime: selectedSlot.start,
+      appointmentId: props.prevAppointment.id,
+      clientId:
+        user.role === 'EMPLOYEE' ? props.prevAppointment.client.id : undefined,
+    };
+
+    const res = await rescheduleAppointment(
+      payload.appointmentId,
+      payload.newDateTime,
+      payload.clientId
+    );
+
+    if (okResponse(res)) {
+      notify('success', 'Appointment rescheduled');
+      await fetchAppointments();
+      handleCancelScheduling();
+      history.push('/dashboard');
+    } else {
+      console.log(res);
+      notify('error', 'Failed to reschedule appointment');
+    }
+  };
+
   // CREATE APPOINTMENT
   const handleCreateAppointment = async () => {
     const payload = {
@@ -96,17 +125,26 @@ export default function ScheduleAppointmentModal(props) {
     const res = await createUserAppointment(payload);
 
     if (okResponse(res)) {
-      alert('TODO: notify success');
+      notify('success', 'Appointment created');
+      await fetchAppointments();
+      handleCancelScheduling();
       history.push('/dashboard');
     } else {
       console.log(res);
-      alert('ruh roh!');
+      notify('error', 'Failed to create appointment');
     }
+
     // Close modal after creating an appointment
     handleCancelScheduling();
   };
 
-  console.log(selectedClient);
+  const handleSubmit = () => {
+    if (props.prevAppointment) {
+      handleReschedule();
+    } else {
+      handleCreateAppointment();
+    }
+  };
 
   return (
     <Modal
@@ -133,7 +171,7 @@ export default function ScheduleAppointmentModal(props) {
               />
               <ClientList
                 type="user"
-                clients={searchReturn}
+                clients={filteredClients}
                 click={(client) => handleListClick(client)}
                 filter={searchFilter}
               />
@@ -166,7 +204,7 @@ export default function ScheduleAppointmentModal(props) {
       <Modal.Actions>
         <Button onClick={handleCancelScheduling}> Cancel </Button>
         {selectedSlot && (
-          <Button positive onClick={handleCreateAppointment}>
+          <Button positive onClick={handleSubmit}>
             {' '}
             Schedule Appointment{' '}
           </Button>

@@ -10,6 +10,8 @@ import useAutoSizer from '../../hooks/useAutoSizer';
 const localizer = momentLocalizer(moment);
 
 export default function ApptCalendar({
+  onSelect,
+  onRescheduleClick,
   selected_employee,
   handleAppointments,
   appointments,
@@ -34,6 +36,7 @@ export default function ApptCalendar({
     });
 
   function handleSelectEvent(newEvent) {
+    onSelect(newEvent);
     setEvent(newEvent);
     setOpen(true);
   }
@@ -63,7 +66,12 @@ export default function ApptCalendar({
           dateCellWrapper: ColoredDateCellWrapper,
         }}
       />
-      <ViewApptModal open={open} appointment={event} onClose={handleClose} />
+      <ViewApptModal
+        open={open}
+        appointment={event}
+        onClose={handleClose}
+        onRescheduleClick={onRescheduleClick}
+      />
     </React.Fragment>
   );
 }

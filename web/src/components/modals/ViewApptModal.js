@@ -6,7 +6,12 @@ import shallow from 'zustand/shallow';
 import ApptCancelationModal from './ApptCancelationModal';
 import { Link } from 'react-router-dom';
 
-export default function ViewApptModal({ open, appointment, onClose }) {
+export default function ViewApptModal({
+  open,
+  appointment,
+  onClose,
+  onRescheduleClick,
+}) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   let day = `${appointment?.start.toString().slice(0, 3)}, ${appointment?.start
@@ -16,10 +21,9 @@ export default function ViewApptModal({ open, appointment, onClose }) {
     .toString()
     .slice(16, 24)} ${appointment?.start.toString().slice(34, 57)}`;
 
-  const { role, state } = useStore(
+  const { role } = useStore(
     (state) => ({
       role: state.user?.role,
-      state: state,
     }),
     shallow
   );
@@ -31,6 +35,11 @@ export default function ViewApptModal({ open, appointment, onClose }) {
   const closeConfirmation = () => {
     onClose();
     setShowConfirm(false);
+  };
+
+  const handleRescheduleClick = () => {
+    onClose();
+    onRescheduleClick();
   };
 
   if (role === 'EMPLOYEE') {
@@ -80,10 +89,7 @@ export default function ViewApptModal({ open, appointment, onClose }) {
               {' '}
               Cancel Appointment{' '}
             </Button>
-            <Button
-              primary
-              onClick={() => alert('Reschedule appointment: TODO')}
-            >
+            <Button primary onClick={handleRescheduleClick}>
               {' '}
               Reschedule{' '}
             </Button>
@@ -166,10 +172,7 @@ export default function ViewApptModal({ open, appointment, onClose }) {
               {' '}
               Cancel Appointment{' '}
             </Button>
-            <Button
-              primary
-              onClick={() => alert('Reschedule appointment: TODO')}
-            >
+            <Button primary onClick={handleRescheduleClick}>
               {' '}
               Reschedule{' '}
             </Button>

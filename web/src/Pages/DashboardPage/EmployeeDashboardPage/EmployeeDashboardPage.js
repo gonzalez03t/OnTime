@@ -9,36 +9,29 @@ import {
   Input,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
-import { useHistory } from 'react-router';
-import useToggle from '../../../hooks/useToggle';
 import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
 import ClientList from '../../../components/ClientList/ClientList';
-import { getUserAppointments } from '../../../api/appointment';
 import { getCompanyByName } from '../../../api/company';
 import './EmployeeDashboardPage.css';
-import { Link } from 'react-router-dom';
 import ClientProfileModal from '../../../components/modals/ClientProfileModal';
 import ScheduleAppointmentModal from '../../../components/modals/ScheduleAppointmentModal';
 
 export default function EmployeeDashboardPage() {
-  const { user, getFullname } = useStore(
-    (state) => ({
-      user: state.user,
-      getFullname: state.getFullname,
-    }),
+  const { user, appointments, fetchAppointments } = useStore(
+    (state) => state,
     shallow
   );
 
-  const history = useHistory();
-  const [loading, { on, off }] = useToggle(true);
-  const [appointments, setAppointments] = useState([]);
   const [clients, setClients] = useState([]);
-  const [selected_client, setClient] = useState(true);
+  const [selectedAppointment, setSelectedAppointment] = useState({});
+  const [selectedClient, setSelectedClient] = useState({});
+
   const [company, setCompany] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [openScheduleApptModal, setOpenScheduleApptModal] = useState(false);
-  const [selectedClient, setSelectedClient] = useState({});
+
+  const [formattedAppointments, setFormattedAppointments] = useState([]);
 
   useEffect(() => {
     async function fetchCompany(name) {
@@ -53,6 +46,7 @@ export default function EmployeeDashboardPage() {
       fetchCompany(user.company);
     }
   }, []);
+
   const [searchFilter, setSearchFilter] = useState('');
   const [searchReturn, setSearchReturn] = useState([]);
 
@@ -70,26 +64,40 @@ export default function EmployeeDashboardPage() {
     setSearchFilter(value);
   }
 
-  function handleNewAppointment() {
-    console.log('Creating new Appt.');
+  function handleRescheduleClick() {
+    setOpenModal(false);
     setOpenScheduleApptModal(true);
-    //setSelectedClient(client);
+  }
+
+  function handleRescheduleClose() {
+    setOpenScheduleApptModal(false);
+    setSelectedAppointment({});
+    setSelectedClient({});
+  }
+
+  function handleAppointmentClick(appointment) {
+    if (appointment === null) {
+      setSelectedAppointment({});
+      setSelectedClient({});
+    } else {
+      setSelectedAppointment(appointment);
+      setSelectedClient(appointment?.client ?? {});
+    }
+  }
+
+  function handleNewAppointment() {
+    setOpenScheduleApptModal(true);
   }
 
   // fetch user appointments from db
   async function handleAppointments() {
-    on();
-
-    const res = await getUserAppointments();
-    const formatted_appointments = [];
+    const formatted = [];
     const options = [];
     const client_map = new Map();
 
-    if (res && res.data) {
-      const appointments = res.data;
-
+    if (appointments) {
       // they must have a specific format
-      [...appointments]?.forEach((appointment) => {
+      appointments.forEach((appointment) => {
         const curr_client = appointment.client;
         const clientId = appointment.client?.id;
         const start_time = new Date(Date.parse(appointment.startsAt));
@@ -117,16 +125,27 @@ export default function EmployeeDashboardPage() {
             start_time.getTime() + appointment.duration * 60 * 1000
           ),
         };
-        formatted_appointments.push(formatted_appointment);
+        formatted.push(formatted_appointment);
       });
     }
 
     options.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
+    setFormattedAppointments(formatted);
     setClients(options);
     setSearchReturn(clients);
-    setAppointments(formatted_appointments);
-    off();
   }
+
+  useEffect(() => {
+    async function init() {
+      await fetchAppointments();
+    }
+
+    if (!appointments) {
+      init().then(() => handleAppointments());
+    } else {
+      handleAppointments();
+    }
+  }, [appointments]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -155,9 +174,11 @@ export default function EmployeeDashboardPage() {
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment" style={{ height: '100%' }}>
             <ApptCalendar
+              onSelect={handleAppointmentClick}
+              onRescheduleClick={handleRescheduleClick}
               selected_employee={null}
-              handleAppointments={handleAppointments}
-              appointments={appointments}
+              handleAppointments={fetchAppointments}
+              appointments={formattedAppointments}
             />
 
             <Button
@@ -202,12 +223,14 @@ export default function EmployeeDashboardPage() {
       />
 
       <ScheduleAppointmentModal
+        prevAppointment={selectedAppointment}
         isOpen={openScheduleApptModal}
         clients={clients}
         user={user}
+        selectedClient={selectedClient}
         company={company}
         openModal={(val) => setOpenScheduleApptModal(val)}
-        closeModal={(val) => setOpenScheduleApptModal(val)}
+        closeModal={handleRescheduleClose}
       />
     </Container>
   );
