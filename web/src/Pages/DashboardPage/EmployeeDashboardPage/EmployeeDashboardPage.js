@@ -115,6 +115,8 @@ export default function EmployeeDashboardPage() {
 
         const client_name = `${appointment.client?.firstName} ${appointment.client?.lastName}`;
 
+        console.log(appointment);
+
         const formatted_appointment = {
           id: appointment.id,
           title: `Appointment w/ ${client_name}`,

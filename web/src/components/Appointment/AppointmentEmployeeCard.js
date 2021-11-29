@@ -9,10 +9,24 @@ export default function AppointmentEmployeeCard({
   email,
   phone,
   image,
+  size,
 }) {
+  let style = {};
+  let large = {
+    height: '130px',
+    width: '130px',
+  };
+  let Xlarge = {
+    height: '150px',
+    width: '150px',
+  };
+
+  if (size == 'large') style = large;
+  else if (size == 'Xlarge') style = Xlarge;
+
   return (
     <div className="apt-employee-card__container">
-      <div className="apt-employee-card__image-container">
+      <div className="apt-employee-card__image-container" style={style}>
         {image ? (
           <img src={image} alt={`${firstName} Profile`} />
         ) : (

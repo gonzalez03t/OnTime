@@ -56,3 +56,9 @@ export function cancelAppointment(appointmentId, clientId) {
     .post(baseUrl + '/cancel', { appointmentId, clientId })
     .catch((err) => err.response);
 }
+
+export function cancelUserAppointment(appointmentId) {
+  return axios
+    .post(baseUrl + '/cancel', { appointmentId })
+    .catch((err) => err.response);
+}

@@ -12,7 +12,7 @@ const libraries = ['places'];
 
 const mapContainerStyle = {
   width: '100%',
-  height: '60vh',
+  height: '500px',
 };
 
 // const center = {

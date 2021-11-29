@@ -3,16 +3,18 @@ import { Button, Modal, Header, Grid, Icon } from 'semantic-ui-react';
 import AppointmentEmployeeCard from '../Appointment/AppointmentEmployeeCard';
 import useStore from '../../store/store';
 import shallow from 'zustand/shallow';
-import ApptCancelationModal from './ApptCancelationModal';
+import ApptCancelationWarning from './ApptCancelationWarning';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
-export default function ViewApptModal({
-  open,
-  appointment,
-  onClose,
-  onRescheduleClick,
-}) {
-  const [showConfirm, setShowConfirm] = useState(false);
+export default function ViewApptModal({ open, appointment, onClose }) {
+  const [cancelationWarning, setCancelationWarning] = useState(false);
+  const history = useHistory();
+  const appointmentPageRoute = '/appointment_detail';
+
+  const handleMoreDetailsClick = () => {
+    history.push(appointmentPageRoute, { appointment });
+  };
 
   let day = `${appointment?.start.toString().slice(0, 3)}, ${appointment?.start
     .toString()
@@ -21,28 +23,19 @@ export default function ViewApptModal({
     .toString()
     .slice(16, 24)} ${appointment?.start.toString().slice(34, 57)}`;
 
-  const { role } = useStore(
+  const { role, state } = useStore(
     (state) => ({
       role: state.user?.role,
+      state: state,
     }),
     shallow
   );
 
-  const openConfirmation = () => {
-    setShowConfirm(true);
-  };
+  function handleCancelationWarningClose() {
+    setCancelationWarning(false);
+  }
 
-  const closeConfirmation = () => {
-    onClose();
-    setShowConfirm(false);
-  };
-
-  const handleRescheduleClick = () => {
-    onClose();
-    onRescheduleClick && onRescheduleClick();
-  };
-
-  if (role === 'EMPLOYEE') {
+  if (role == 'EMPLOYEE') {
     return (
       <React.Fragment>
         <Modal open={open} size="small" onClose={onClose} closeIcon>
@@ -85,11 +78,14 @@ export default function ViewApptModal({
             </Grid>
           </Modal.Content>
           <Modal.Actions large>
-            <Button primary onClick={openConfirmation}>
+            <Button primary onClick={() => setCancelationWarning(true)}>
               {' '}
               Cancel Appointment{' '}
             </Button>
-            <Button primary onClick={handleRescheduleClick}>
+            <Button
+              primary
+              onClick={() => alert('Reschedule appointment: TODO')}
+            >
               {' '}
               Reschedule{' '}
             </Button>
@@ -99,19 +95,18 @@ export default function ViewApptModal({
             </Button>
           </Modal.Actions>
         </Modal>
-        <ApptCancelationModal
-          open={showConfirm}
-          onClose={closeConfirmation}
-          client={appointment?.client}
-          // personFirstName={appointment?.client.firstName}
-          // personLastName={appointment?.client.lastName}
-          appointmentId={appointment?.id}
+        <ApptCancelationWarning
+          open={cancelationWarning}
+          onClose={handleCancelationWarningClose}
+          onCloseParent={onClose}
+          personFirstName={appointment?.client.firstName}
+          personLastName={appointment?.client.lastName}
           when={day}
           time={time}
         />
       </React.Fragment>
     );
-  } else if (role === 'BASE') {
+  } else if (role == 'BASE') {
     return (
       <React.Fragment>
         <Modal open={open} size="small" onClose={onClose} closeIcon>
@@ -168,30 +163,17 @@ export default function ViewApptModal({
             </Grid>
           </Modal.Content>
           <Modal.Actions large>
-            <Button primary onClick={openConfirmation}>
-              {' '}
-              Cancel Appointment{' '}
-            </Button>
-            <Button primary onClick={handleRescheduleClick}>
-              {' '}
-              Reschedule{' '}
-            </Button>
-            <Button positive as={Link} to="/appointment_detail">
+            <Button
+              positive
+              as={Link}
+              to={appointmentPageRoute}
+              onClick={() => handleMoreDetailsClick()}
+            >
               {' '}
               More Details{' '}
             </Button>
           </Modal.Actions>
         </Modal>
-        <ApptCancelationModal
-          open={showConfirm}
-          onClose={closeConfirmation}
-          employee={appointment?.employee}
-          appointmentId={appointment?.id}
-          // personFirstName={appointment?.employee.firstName}
-          // personLastName={appointment?.employee.lastName}
-          when={day}
-          time={time}
-        />
       </React.Fragment>
     );
   }
