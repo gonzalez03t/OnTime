@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Container,
   Header,
@@ -12,59 +12,79 @@ import { useHistory } from 'react-router';
 import useToggle from '../../../hooks/useToggle';
 import useStore from '../../../store/store';
 import shallow from 'zustand/shallow';
-import { getUserAppointments } from '../../../api/appointment';
 import './ClientDashboardPage.css';
 import { Link } from 'react-router-dom';
+import ScheduleAppointmentModal from '../../../components/modals/ScheduleAppointmentModal';
 
 export default function ClientDashboardPage() {
   const history = useHistory();
+  // TODO: use this
   const [loading, { on, off }] = useToggle(true);
-  const [appointments, setAppointments] = useState([]);
 
   function handleNewAppointment() {
     history.push('/company_search');
   }
 
-  const { user, getFullname } = useStore(
-    (state) => ({
-      user: state.user,
-      getFullname: state.getFullname,
-    }),
+  const { appointments, fetchAppointments, user } = useStore(
+    (state) => state,
     shallow
   );
 
-  // fetch user appointments from db
-  async function handleAppointments() {
-    on();
+  // TODO: use these
+  const [openModal, setOpenModal] = useState(false);
+  const [openScheduleApptModal, setOpenScheduleApptModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState({});
+  const [selectedClient, setSelectedClient] = useState({});
 
-    const res = await getUserAppointments();
-    const formatted_appointments = [];
-
-    if (res && res.data) {
-      const appointments = res.data;
-
-      // they must have a specific format
-      [...appointments]?.forEach((appointment) => {
-        const employee_name = `${appointment.employee?.firstName} ${appointment.employee?.lastName}`;
-        const start_time = new Date(Date.parse(appointment.startsAt));
-
-        const formatted_appointment = {
-          _id: appointment._id,
-          title: `Appointment w/ ${employee_name}`,
-          employee: appointment.employee,
-          client: user,
-          start: start_time,
-          end: new Date(
-            start_time.getTime() + appointment.duration * 60 * 1000
-          ),
-        };
-
-        formatted_appointments.push(formatted_appointment);
-      });
-    }
-    setAppointments(formatted_appointments);
-    off();
+  function handleRescheduleClick() {
+    setOpenModal(false);
+    // setOpenScheduleApptModal(true);
+    alert('TODO');
   }
+
+  function handleRescheduleClose() {
+    setOpenScheduleApptModal(false);
+    setSelectedAppointment({});
+    setSelectedClient({});
+  }
+
+  function handleAppointmentClick(appointment) {
+    if (appointment === null) {
+      setSelectedAppointment({});
+      setSelectedClient({});
+    } else {
+      setSelectedAppointment(appointment);
+      setSelectedClient(appointment?.client ?? {});
+    }
+  }
+
+  useEffect(() => {
+    if (appointments === null) {
+      on();
+      fetchAppointments();
+      off();
+    }
+  }, [appointments]);
+
+  const formattedAppointments = useMemo(() => {
+    if (!appointments) {
+      return [];
+    }
+
+    return appointments.map((appointment) => {
+      const employee_name = `${appointment.employee?.firstName} ${appointment.employee?.lastName}`;
+      const start_time = new Date(Date.parse(appointment.startsAt));
+
+      return {
+        id: appointment.id,
+        title: `Appointment w/ ${employee_name}`,
+        employee: appointment.employee,
+        client: user,
+        start: start_time,
+        end: new Date(start_time.getTime() + appointment.duration * 60 * 1000),
+      };
+    });
+  }, [appointments]);
 
   return (
     <Container style={{ marginTop: 20 }} fluid>
@@ -76,9 +96,11 @@ export default function ClientDashboardPage() {
         <Grid.Column width={12} id="calendar-column">
           <Segment className="calendar-segment" style={{ height: '100%' }}>
             <ApptCalendar
+              onSelect={handleAppointmentClick}
+              onRescheduleClick={handleRescheduleClick}
               selected_employee={null}
-              handleAppointments={handleAppointments}
-              appointments={appointments}
+              handleAppointments={fetchAppointments}
+              appointments={formattedAppointments}
             />
             <Button
               onClick={handleNewAppointment}
@@ -101,6 +123,19 @@ export default function ClientDashboardPage() {
           </Segment>
         </Grid.Column>
       </Grid>
+
+      {/* 
+      // TODO: reschedule for client modal goes here
+      <ScheduleAppointmentModal
+        prevAppointment={selectedAppointment}
+        isOpen={openScheduleApptModal}
+        clients={clients}
+        user={user}
+        selectedClient={selectedClient}
+        company={company}
+        openModal={(val) => setOpenScheduleApptModal(val)}
+        closeModal={handleRescheduleClose}
+      /> */}
     </Container>
   );
 }

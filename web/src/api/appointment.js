@@ -34,14 +34,25 @@ export function getAvailableSlots(employeeId, date) {
     .catch((err) => err.response);
 }
 
-export function rescheduleUserAppointment(appointmentId, newDateTime) {
+/**
+ *
+ * @param {string} appointmentId
+ * @param {Date} newDateTime
+ * @param {string | undefined} clientId
+ */
+export function rescheduleAppointment(appointmentId, newDateTime, clientId) {
   return axios
-    .post(baseUrl + '/reschedule', { appointmentId, newDateTime })
+    .post(baseUrl + '/reschedule', { appointmentId, newDateTime, clientId })
     .catch((err) => err.response);
 }
 
-export function cancelUserAppointment(appointmentId) {
+/**
+ *
+ * @param {string} appointmentId
+ * @param {string | undefined} clientId
+ */
+export function cancelAppointment(appointmentId, clientId) {
   return axios
-    .post(baseUrl + '/cancel', { appointmentId })
+    .post(baseUrl + '/cancel', { appointmentId, clientId })
     .catch((err) => err.response);
 }

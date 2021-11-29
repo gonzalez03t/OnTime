@@ -62,6 +62,7 @@ export class Appointment extends BaseEntity {
    */
   getDetails(employee = false) {
     let baseInfo = {
+      id: this.id,
       startsAt: this.startsAt,
       endsAt: this.getEndTime(),
       duration: this.duration,

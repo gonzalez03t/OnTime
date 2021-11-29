@@ -21,8 +21,4 @@ router.post('/new', requireBody, createAppointment);
 router.post('/cancel', requireBody, cancelAppointment);
 router.post('/reschedule', requireBody, rescheduleAppointment);
 
-// TODO: update appointment (create separate routes for reschedule, change status, etc)
-// router.post('/update', requireBody, updateAppointment);
-// router.post('/reschedule', rescheduleAppointment);
-
 export const AppointmentController = router;

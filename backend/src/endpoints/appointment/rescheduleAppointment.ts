@@ -1,7 +1,24 @@
 import { Request, Response } from 'express';
 import { em } from '../..';
 import { Appointment, AppointmentStatus } from '../../entities/Appointment';
+import { User } from '../../entities/User';
 import { getSessionUser } from '../../util/session';
+
+type UserOrId = User | string;
+
+async function fetchAppointment(client: UserOrId, id: string, employee?: User) {
+  let where = {
+    id,
+    client,
+    status: AppointmentStatus.PENDING,
+  } as any;
+
+  if (typeof client === 'string') {
+    where.employee = employee;
+  }
+
+  return em.findOne(Appointment, where, ['reminders']);
+}
 
 /**
  * This function will attempt to reschedule an appointment for the logged in user
@@ -12,28 +29,29 @@ export default async function rescheduleAppointment(
 ) {
   const user = await getSessionUser(req);
 
-  const { appointmentId, newDateTime } = req.body;
+  const { clientId, appointmentId, newDateTime } = req.body;
 
   if (!appointmentId || !newDateTime) {
     res
       .status(400)
       .send('You must specify an appointment and an updated date/time.');
   } else if (user) {
-    const appt = await em.findOne(
-      Appointment,
-      {
-        client: user,
-        id: appointmentId,
-        status: AppointmentStatus.PENDING,
-      },
-      ['reminders'] // load the reminders so it can be altered in reschedule
+    // client is either the viewer, or loaded from body param
+    let client = clientId ?? user;
+    // employee can be the viewer, otherwise it will not be used
+    let employee = clientId ? user : undefined;
+
+    const appointment: Appointment = await fetchAppointment(
+      client,
+      appointmentId,
+      employee
     );
 
-    if (appt) {
-      appt.reschedule(new Date(newDateTime));
+    if (appointment) {
+      appointment.reschedule(new Date(newDateTime));
 
       await em
-        .persistAndFlush(appt)
+        .persistAndFlush(appointment)
         .then(() => res.sendStatus(200))
         .catch((err) => res.status(500).send(err));
     } else {

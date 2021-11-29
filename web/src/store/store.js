@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware';
 import SecureLS from 'secure-ls';
 import { NotificationManager } from 'react-notifications';
 import { getImageUrl } from '../api/image';
+import { getUserAppointments } from '../api/appointment';
+import okResponse from '../utils/okResponse';
 
 // e.g. aes, des, etc
 const ENCRYPTION_TYPE = process.env.REACT_APP_STORE_ENCRYPTION_TYPE;
@@ -37,6 +39,7 @@ const useStore = create(
   persist(
     (set, get) => ({
       user: null,
+      appointments: null,
 
       isAuthenticated() {
         const user = get().user;
@@ -108,6 +111,16 @@ const useStore = create(
        */
       addNotification(type, message) {
         NotificationManager[type](message);
+      },
+
+      fetchAppointments: async () => {
+        const res = await getUserAppointments();
+
+        if (okResponse(res)) {
+          set({ appointments: res.data });
+        } else {
+          get().addNotification('error', 'Could not fetch appointments');
+        }
       },
     }),
     {
