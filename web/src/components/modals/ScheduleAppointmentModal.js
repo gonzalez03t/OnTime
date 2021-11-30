@@ -124,6 +124,7 @@ export default function ScheduleAppointmentModal(props) {
       startsAt: selectedSlot.start,
       wantsReminder: true,
       companyId: props.company.id,
+      clientId: selectedClient.value.id,
     };
 
     const res = await createUserAppointment(payload);
@@ -143,7 +144,7 @@ export default function ScheduleAppointmentModal(props) {
   };
 
   const handleSubmit = () => {
-    if (props.prevAppointment) {
+    if (Object.keys(props.prevAppointment).length > 0) {
       handleReschedule();
     } else {
       handleCreateAppointment();
