@@ -44,6 +44,7 @@ export default function ApptCalendar({
   function handleClose() {
     setOpen(false);
     setEvent(undefined);
+    onSelect?.(undefined);
   }
 
   useEffect(() => {

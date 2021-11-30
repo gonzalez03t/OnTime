@@ -11,6 +11,13 @@ import ClientList from '../ClientList/ClientList';
 import AppointmentEmployeeCard from '../Appointment/AppointmentEmployeeCard';
 import useStore from '../../store/store';
 import shallow from 'zustand/shallow';
+import { getImageUrl } from '../../api/image';
+
+function objIsEmpty(obj) {
+  if (!obj) return true;
+
+  return Object.keys(obj).length === 0;
+}
 
 export default function ScheduleAppointmentModal(props) {
   const history = useHistory();
@@ -24,25 +31,6 @@ export default function ScheduleAppointmentModal(props) {
   const [searchFilter, setSearchFilter] = useState('');
   const [searchReturn, setSearchReturn] = useState([]);
 
-  // CLIENT SEARCH BAR
-  // Filter client list
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setSearchReturn(
-        props.clients.filter((val) => {
-          if (searchFilter === '') {
-            return null;
-          } else if (
-            val.value.email?.toLowerCase().includes(searchFilter?.toLowerCase())
-          ) {
-            return val;
-          }
-        })
-      );
-    }, 700);
-    return () => clearTimeout(timeoutId);
-  }, [searchFilter]);
-
   useEffect(() => {
     if (props.selectedClient && Object.keys(props.selectedClient).length > 0) {
       setSearchFilter(props.selectedClient.email);
@@ -51,10 +39,8 @@ export default function ScheduleAppointmentModal(props) {
 
   const filteredClients = useMemo(() => {
     return props.clients.filter((val) => {
-      if (searchFilter === '') {
-        return null;
-      } else if (
-        val.value.email?.toLowerCase().includes(searchFilter?.toLowerCase())
+      if (
+        val?.value.email?.toLowerCase().includes(searchFilter?.toLowerCase())
       ) {
         return val;
       } else {
@@ -67,11 +53,6 @@ export default function ScheduleAppointmentModal(props) {
     setSearchFilter(value);
     setSelectedClient('');
   };
-
-  // Trim list to only three elements
-  if (searchReturn.length > 3) {
-    setSearchReturn(searchReturn.slice(0, 3));
-  }
 
   const handleListClick = (client) => {
     setSearchFilter(client.value.email);
@@ -144,7 +125,7 @@ export default function ScheduleAppointmentModal(props) {
   };
 
   const handleSubmit = () => {
-    if (Object.keys(props.prevAppointment).length > 0) {
+    if (!objIsEmpty(props.prevAppointment)) {
       handleReschedule();
     } else {
       handleCreateAppointment();
@@ -187,7 +168,9 @@ export default function ScheduleAppointmentModal(props) {
                   email={selectedClient.value.email}
                   phone={selectedClient.value.phone}
                   image={
-                    'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                    selectedClient?.value?.imageKey
+                      ? getImageUrl(selectedClient?.value?.imageKey)
+                      : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
                   } // PENDING: Pass employee image to Appointment Employee Card
                 />
               )}

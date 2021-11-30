@@ -66,14 +66,11 @@ export default function EmployeeDashboardPage() {
   }
 
   function handleRescheduleClick() {
-    setOpenModal(false);
     setOpenScheduleApptModal(true);
   }
 
   function handleRescheduleClose() {
     setOpenScheduleApptModal(false);
-    setSelectedAppointment({});
-    setSelectedClient({});
   }
 
   function handleAppointmentClick(appointment) {

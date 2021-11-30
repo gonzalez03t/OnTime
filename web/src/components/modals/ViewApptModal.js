@@ -6,6 +6,7 @@ import shallow from 'zustand/shallow';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import ApptCancelationModal from './ApptCancelationModal';
+import { getImageUrl } from '../../api/image';
 
 export default function ViewApptModal({
   open,
@@ -48,8 +49,8 @@ export default function ViewApptModal({
   };
 
   const handleRescheduleClick = () => {
-    onClose();
-    onRescheduleClick && onRescheduleClick();
+    // onClose();
+    onRescheduleClick?.();
   };
 
   if (role === 'EMPLOYEE') {
@@ -87,7 +88,9 @@ export default function ViewApptModal({
                     email={appointment?.client.email}
                     phone={appointment?.client.phone} // PENDING: Pass employee image to Appointment Employee Card
                     image={
-                      'https://d3n8a8pro7vhmx.cloudfront.net/themes/5f3bc4644764e86d9ee8849f/attachments/original/1589382138/login.png?1589382138'
+                      appointment?.client.imageKey
+                        ? getImageUrl(appointment?.client.imageKey)
+                        : 'https://d3n8a8pro7vhmx.cloudfront.net/themes/5f3bc4644764e86d9ee8849f/attachments/original/1589382138/login.png?1589382138'
                     }
                   />
                 </Grid.Column>
@@ -168,8 +171,10 @@ export default function ViewApptModal({
                     email={appointment?.employee.email}
                     phone={appointment?.employee.phone}
                     image={
-                      'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
-                    } // PENDING: Pass employee image to Appointment Employee Card
+                      appointment?.employee.imageKey
+                        ? getImageUrl(appointment?.employee.imageKey)
+                        : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                    }
                   />
                 </Grid.Column>
               </Grid.Row>

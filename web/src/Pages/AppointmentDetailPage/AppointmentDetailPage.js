@@ -15,6 +15,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import GoogleMapsRoute from '../../components/MapComponent/GoogleMapsRoute';
+import { getImageUrl } from '../../api/image';
 
 export default function PatientAppointment() {
   const [cancelationWarning, setCancelationWarning] = useState(false);
@@ -87,8 +88,10 @@ export default function PatientAppointment() {
                   email={appointment?.employee.email}
                   phone={appointment?.employee.phone}
                   image={
-                    'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
-                  } // PENDING: Pass employee image to Appointment Employee Card
+                    appointment?.employee.imageKey
+                      ? getImageUrl(appointment?.employee.imageKey)
+                      : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                  }
                 />
               </div>
 

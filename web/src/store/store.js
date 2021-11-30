@@ -114,12 +114,14 @@ const useStore = create(
       },
 
       fetchAppointments: async () => {
-        const res = await getUserAppointments();
+        if (get().isAuthenticated()) {
+          const res = await getUserAppointments();
 
-        if (okResponse(res)) {
-          set({ appointments: res.data });
-        } else {
-          get().addNotification('error', 'Could not fetch appointments');
+          if (okResponse(res)) {
+            set({ appointments: res.data });
+          } else {
+            get().addNotification('error', 'Could not fetch appointments');
+          }
         }
       },
     }),
