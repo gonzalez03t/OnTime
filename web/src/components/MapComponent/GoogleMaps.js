@@ -3,9 +3,6 @@ import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 import MapStyles from './MapStyles';
-import UFHealthLogoStyle from './UFHealthLogo.css';
-import SearchMapStyle from './SearchMap.css';
-import UFHealthLogo from '../../assets/ufhealth.png';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
 const libraries = ['places'];
@@ -14,11 +11,6 @@ const mapContainerStyle = {
   width: '100%',
   height: '500px',
 };
-
-// const center = {
-//   lat: 29.648657,
-//   lng: -82.343629,
-// };
 
 const options = {
   styles: MapStyles,
@@ -88,50 +80,8 @@ export default function GoogleMaps({ fullAddress, imageUrl }) {
         onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        {imageUrl && (
-          <div style={UFHealthLogoStyle}>
-            <h1>
-              <span role="img" aria-label="UF Health Logo">
-                <img
-                  className="uf-health-logo"
-                  src={imageUrl}
-                  alt="UF Health Logo"
-                />
-              </span>
-            </h1>
-          </div>
-        )}
-
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
     </div>
   );
 }
-
-function SearchMap() {
-  /*const {
-        ready, 
-        value, 
-        suggestions: { status, data },
-        setValue,
-        clearSugestion,
-    } = usePlacesAutocomplete({
-        requestOptions: {
-            location: { lat: () => 29.648657, lng: () => -82.343629 },
-            radious: 1000, // to look for parking in a 1000 meter radius
-        }
-    });*/
-
-  return (
-    <div className={SearchMapStyle}>
-      <h2>Search Bar</h2>
-    </div>
-  );
-}
-
-// PENDING:
-// Search for parking around appointment location coordinates. Need to pass clinic lat and lng as props.
-// Adding Google Places Search Bar
-// Adding Find Me functionality
-// Add marker icon
-// Info window

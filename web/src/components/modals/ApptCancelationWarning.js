@@ -4,6 +4,8 @@ import okResponse from '../../utils/okResponse';
 import { Button, Modal, Header, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { cancelUserAppointment } from '../../api/appointment';
+import useStore from '../../store/store';
+import shallow from 'zustand/shallow';
 
 export default function ApptCancelationModal({
   open,
@@ -18,15 +20,20 @@ export default function ApptCancelationModal({
   const history = useHistory();
   const [cancelationConfirmation, setCancelationConfirmation] = useState(false);
 
+  const { fetchAppointments } = useStore((state) => state, shallow);
+  const notify = useStore((state) => state.addNotification);
+
   const cancelAppointment = async () => {
     const res = await cancelUserAppointment(appointmentID);
 
     if (okResponse(res)) {
       displayConfirmation();
+      notify('success', 'Appointment Canceled');
+      await fetchAppointments();
       history.push('/dashboard');
     } else {
       console.log(res);
-      alert('ruh roh!');
+      notify('error', 'Failed to cancel appointment');
     }
   };
 

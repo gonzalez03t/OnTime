@@ -9,14 +9,12 @@ import {
   Container,
   Segment,
   Button,
-  Modal,
   Header,
   Grid,
   Icon,
-  Image,
   Divider,
 } from 'semantic-ui-react';
-import GoogleMaps from '../../components/MapComponent/GoogleMaps';
+import GoogleMapsRoute from '../../components/MapComponent/GoogleMapsRoute';
 
 export default function PatientAppointment() {
   const [cancelationWarning, setCancelationWarning] = useState(false);
@@ -45,8 +43,6 @@ export default function PatientAppointment() {
 
   function handleRescheduleClose() {
     setOpenRescheduleApptModal(false);
-    //setSelectedAppointment({});
-    //setSelectedClient({});
   }
 
   return (
@@ -139,13 +135,18 @@ export default function PatientAppointment() {
               </Header>
               <Divider style={{ paddingBottom: '10px' }} />
 
-              <GoogleMaps
-                fullAddress={
-                  appointment
-                    ? appointment?.employee.companyAddress
-                    : 'University of Florida'
-                }
-              />
+              {appointment && (
+                <GoogleMapsRoute
+                  //fullAddress={
+                  //  appointment
+                  //    ? appointment?.employee.companyAddress
+                  //    : 'University of Florida'
+
+                  //}
+                  fullAddress={appointment?.employee.companyAddress}
+                />
+              )}
+
               <Divider />
 
               <Grid columns={2} stackable>

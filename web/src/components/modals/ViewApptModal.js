@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import ApptCancelationModal from './ApptCancelationModal';
 
-const appointmentPageRoute = '/appointment_detail';
-
 export default function ViewApptModal({
   open,
   appointment,
@@ -17,10 +15,13 @@ export default function ViewApptModal({
 }) {
   const history = useHistory();
 
+  const { fetchAppointments } = useStore((state) => state, shallow);
+
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleMoreDetailsClick = () => {
-    history.push(appointmentPageRoute, { appointment });
+  const handleMoreDetailsClick = async () => {
+    await fetchAppointments();
+    history.push('/appointment_detail', { appointment });
   };
 
   let day = `${appointment?.start.toString().slice(0, 3)}, ${appointment?.start
@@ -112,8 +113,6 @@ export default function ViewApptModal({
           open={showConfirm}
           onClose={closeConfirmation}
           client={appointment?.client}
-          // personFirstName={appointment?.client.firstName}
-          // personLastName={appointment?.client.lastName}
           appointmentId={appointment?.id}
           when={day}
           time={time}
@@ -179,8 +178,8 @@ export default function ViewApptModal({
           <Modal.Actions large>
             <Button
               positive
-              as={Link}
-              to={appointmentPageRoute}
+              //as={Link}
+              //to={'/appointment_detail'}
               onClick={handleMoreDetailsClick}
             >
               {' '}
