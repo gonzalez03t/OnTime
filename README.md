@@ -64,6 +64,9 @@ For individual milestones, be sure to check out the README files in each of the 
 
 There is plenty of opportunity for additional features to be developed. A list of potential features include:
 
+- Enhanced admin operations
+- Onboarding paperwork for clients
+- Tracking a user’s navigation session when using in-app navigation for arrival-time estimations
 - Develop a way to embed the bulk of the scheduling UI as an iframe, so companies may integrate directly on their own website
 
 ## Known Issues

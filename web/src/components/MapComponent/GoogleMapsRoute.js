@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleMap, google, useLoadScript, DirectionsRenderer, Marker } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  useLoadScript,
+  DirectionsRenderer,
+} from '@react-google-maps/api';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 import MapStyles from './MapStyles';
@@ -29,7 +33,6 @@ export default function GoogleMaps({ fullAddress }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    
     if (isLoaded && fullAddress) {
       // Get latitude and longitude via utility functions
       getGeocode({ address: fullAddress })
@@ -43,28 +46,27 @@ export default function GoogleMaps({ fullAddress }) {
           process.env.NODE_ENV !== 'production' &&
             console.log('😱 Error: ', error);
         });
-    } 
-    
+    }
+
     let target;
     let places = [];
 
-    function getdestination (coords) {
+    function getdestination(coords) {
       console.log(coords);
       target = {
         latitude: coords.lat,
-        longitude: coords.lng
-      }
+        longitude: coords.lng,
+      };
       places.push(target);
     }
-    
+
     //places.push(target);
-    places.push({latitude: 25.8103146, longitude: -80.1751609});
-    places.push({latitude: 28.4813018,longitude: -81.4387899});
+    places.push({ latitude: 25.8103146, longitude: -80.1751609 });
+    places.push({ latitude: 28.4813018, longitude: -81.4387899 });
 
-
-    const waypoints = places.map(p => ({
+    const waypoints = places.map((p) => ({
       location: { lat: p.latitude, lng: p.longitude },
-      stopover: true
+      stopover: true,
     }));
     const origin = waypoints.shift().location;
     const destination = waypoints.pop().location;
@@ -76,10 +78,10 @@ export default function GoogleMaps({ fullAddress }) {
         origin: origin,
         destination: destination,
         travelMode: window.google.maps.TravelMode.DRIVING,
-        waypoints: waypoints
+        waypoints: waypoints,
       },
       (result, status) => {
-        console.log(result)
+        console.log(result);
         if (status === window.google.maps.DirectionsStatus.OK) {
           setDirections(result);
         } else {
@@ -89,9 +91,12 @@ export default function GoogleMaps({ fullAddress }) {
     );
   }, [isLoaded, fullAddress]);
 
-
   if (error) {
     return <h1>{error}</h1>;
+  }
+
+  if (!isLoaded) {
+    return null;
   }
 
   return (
@@ -104,7 +109,7 @@ export default function GoogleMaps({ fullAddress }) {
         //defaultCenter={new window.google.maps.LatLng(41.8507300, -87.6512600)}
       >
         {directions && <DirectionsRenderer directions={directions} />}
-    </GoogleMap>
-  </div>
+      </GoogleMap>
+    </div>
   );
 }
