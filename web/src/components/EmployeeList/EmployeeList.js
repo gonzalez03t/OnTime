@@ -2,10 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Image, List, Input, Button, Icon, Form } from 'semantic-ui-react';
 import EmployeeCard from './EmployeeCard';
 import companyImage from '../../assets/company_placeholder.JPG';
+import useStore from '../../store/store';
 import { inviteEmployee } from '../../api/company';
 import './EmployeeList.css';
 
 export default function EmployeeList({ company }) {
+  const notify = useStore((state) => state.addNotification);
   const [selectedEmployee, setSelectedEmployee] = useState();
   const [searchFilter, setSearchFilter] = useState('');
   const [openInvite, setOpenInvite] = useState(false);
@@ -25,11 +27,16 @@ export default function EmployeeList({ company }) {
     setInviteEmail(value);
   }
 
-  function handleInvite(e) {
+  async function handleInvite(e) {
     e.preventDefault();
-    const res = inviteEmployee(inviteEmail);
-    setInviteEmail(null);
-    setOpenInvite(false);
+    const res = await inviteEmployee(inviteEmail);
+    if (res && res.status === 200) {
+      notify('success', 'Invitation Sent');
+      setInviteEmail(null);
+      setOpenInvite(false);
+    } else {
+      notify('error', 'Error');
+    }
   }
 
   function handleEmployeeSearch(value) {

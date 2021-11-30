@@ -14,6 +14,7 @@ import companyAdminRoute from '../middleware/companyAdminRoute';
 import companyOwnerRoute from '../middleware/companyOwnerRoute';
 import requireBody from '../middleware/requireBody';
 import requireSession from '../middleware/requireSession';
+import removeEmployee from '../endpoints/company/removeEmployee';
 import inviteEmployee from '../endpoints/company/inviteEmployee';
 
 /**
@@ -30,7 +31,7 @@ router.post(
   '/employees/invite',
   requireBody,
   authenticatedRoute,
-  companyAdminRoute,
+  companyOwnerRoute,
   inviteEmployee
 );
 router.post(
@@ -39,6 +40,14 @@ router.post(
   authenticatedRoute,
   companyAdminRoute,
   registerEmployee
+);
+
+router.post(
+  '/employees/remove',
+  requireBody,
+  authenticatedRoute,
+  companyOwnerRoute,
+  removeEmployee
 );
 
 router.put(

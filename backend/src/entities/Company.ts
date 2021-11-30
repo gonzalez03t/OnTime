@@ -75,6 +75,13 @@ export class Company extends BaseEntity {
     user.makeCompanyEmployee(this);
   }
 
+  removeEmployee(user: User) {
+    if (this.employees.contains(user)) {
+      this.employees.remove(user);
+      user.makeBaseUser();
+    }
+  }
+
   isVerified() {
     return this.status === VerificationStatus.VERIFIED;
   }

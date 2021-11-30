@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Card, Image, Icon, Button } from 'semantic-ui-react';
+import { removeEmployee } from '../../api/company';
+import useStore from '../../store/store';
+import { useHistory } from 'react-router';
+import useToggle from '../../hooks/useToggle';
+import RemoveEmployeeModal from '../modals/RemoveEmployeeModal';
 
 export default function EmployeeCard({ employee }) {
-  function removeEmployee() {
-    alert('TODO');
+  const history = useHistory();
+  const notify = useStore((state) => state.addNotification);
+  const [loading, { on, off }] = useToggle(false);
+  const [open, setOpen] = useState(false);
+
+  async function handleRemove() {
+    on();
+    const res = await removeEmployee(employee.id);
+    if (res && res.status === 201) {
+      off();
+      notify('info', 'Employee Removed');
+      history.push('/');
+    } else {
+      notify('error', 'Error');
+    }
+    off();
   }
+
+  function handleModal() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
   return (
     <Grid columns={2} stackable>
       <Grid.Column floated="right" width={4} id="avatar-column">
@@ -70,7 +98,14 @@ export default function EmployeeCard({ employee }) {
           </Grid.Row>
           <Grid.Row style={{ paddingBottom: '6px' }}>
             <Grid.Column floated="right" width={8}>
-              <Button negative onClick={removeEmployee}>
+              <RemoveEmployeeModal
+                open={open}
+                onClose={handleClose}
+                handleRemove={handleRemove}
+                loading={loading}
+                employee={employee}
+              />
+              <Button negative onClick={handleModal}>
                 Remove
               </Button>
             </Grid.Column>

@@ -18,6 +18,10 @@ export function getCompanyByOwnerId(id) {
   return axios.get(baseUrl + `?ownerId=${id}`).catch((err) => err.response);
 }
 
+export function removeEmployee(employeeId) {
+  return axios.post(baseUrl + '/employees/remove', { employeeId });
+}
+
 export function inviteEmployee(email) {
   return axios
     .post(baseUrl + `/employees/invite`, { email })
