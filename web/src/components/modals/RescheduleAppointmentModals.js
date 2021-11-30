@@ -7,6 +7,7 @@ import { rescheduleAppointment } from '../../api/appointment';
 import AppointmentEmployeeCard from '../Appointment/AppointmentEmployeeCard';
 import useStore from '../../store/store';
 import shallow from 'zustand/shallow';
+import { getImageUrl } from '../../api/image';
 
 export default function RescheduleAppointmentModal(props) {
   const history = useHistory();
@@ -75,8 +76,10 @@ export default function RescheduleAppointmentModal(props) {
                 email={props.appointment?.employee.email}
                 phone={props.appointment?.employee.phone}
                 image={
-                  'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
-                } // PENDING: Pass employee image to Appointment Employee Card
+                  props.appointment?.employee.imageKey
+                    ? getImageUrl(props.appointment?.employee.imageKey)
+                    : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                }
                 size={'large'}
               />
             </Grid.Column>

@@ -71,24 +71,26 @@ export default function GoogleMaps({ fullAddress }) {
     const origin = waypoints.shift().location;
     const destination = waypoints.pop().location;
 
-    const directionsService = new window.google.maps.DirectionsService();
+    if (isLoaded) {
+      const directionsService = new window.google.maps.DirectionsService();
 
-    directionsService.route(
-      {
-        origin: origin,
-        destination: destination,
-        travelMode: window.google.maps.TravelMode.DRIVING,
-        waypoints: waypoints,
-      },
-      (result, status) => {
-        console.log(result);
-        if (status === window.google.maps.DirectionsStatus.OK) {
-          setDirections(result);
-        } else {
-          setError(result);
+      directionsService.route(
+        {
+          origin: origin,
+          destination: destination,
+          travelMode: window.google.maps.TravelMode.DRIVING,
+          waypoints: waypoints,
+        },
+        (result, status) => {
+          console.log(result);
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            setDirections(result);
+          } else {
+            setError(result);
+          }
         }
-      }
-    );
+      );
+    }
   }, [isLoaded, fullAddress]);
 
   if (error) {

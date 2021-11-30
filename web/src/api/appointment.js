@@ -11,6 +11,7 @@ export function createUserAppointment({
   startsAt,
   wantsReminder,
   companyId,
+  clientId,
 }) {
   return axios
     .post(baseUrl + '/new', {
@@ -18,6 +19,7 @@ export function createUserAppointment({
       startsAt,
       wantsReminder,
       companyId,
+      clientId,
     })
     .catch((err) => err.response);
 }
