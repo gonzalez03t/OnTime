@@ -33,7 +33,7 @@ export default function ScheduleAppointmentModal(props) {
           if (searchFilter === '') {
             return null;
           } else if (
-            val.value.email.toLowerCase().includes(searchFilter.toLowerCase())
+            val.value.email?.toLowerCase().includes(searchFilter?.toLowerCase())
           ) {
             return val;
           }
@@ -51,7 +51,11 @@ export default function ScheduleAppointmentModal(props) {
 
   const filteredClients = useMemo(() => {
     return props.clients.filter((val) => {
-      if (val.value.email.toLowerCase().includes(searchFilter.toLowerCase())) {
+      if (searchFilter === '') {
+        return null;
+      } else if (
+        val.value.email?.toLowerCase().includes(searchFilter?.toLowerCase())
+      ) {
         return val;
       } else {
         return null;

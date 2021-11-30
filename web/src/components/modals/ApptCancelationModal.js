@@ -29,6 +29,7 @@ export default function ApptCancelationModal({
     if (okResponse(res)) {
       notify('success', 'Cancelled appointment');
       await fetchAppointments();
+      onClose();
     } else {
       console.log(res);
       notify('error', 'Failed to cancel appointment');

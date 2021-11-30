@@ -60,6 +60,7 @@ export default function EmployeeDashboardPage() {
     setOpenModal(true);
     setSelectedClient(client);
   };
+
   function handleClientSearch(value) {
     setSearchFilter(value);
   }
@@ -114,8 +115,6 @@ export default function EmployeeDashboardPage() {
         }
 
         const client_name = `${appointment.client?.firstName} ${appointment.client?.lastName}`;
-
-        console.log(appointment);
 
         const formatted_appointment = {
           id: appointment.id,
