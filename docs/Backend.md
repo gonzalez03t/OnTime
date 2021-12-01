@@ -376,17 +376,17 @@ Base URL: `/api/companies`
 
 Base URL: `/api/appointments`
 
-| Path                                | `/`                                                     |
-| :---------------------------------- | :------------------------------------------------------ |
-| <b>Description</b>                  | Retrieves a list of all appointments for logged in user |
-| <b>Method </b>                      | ![Get Request](./assets/get.png)                        |
-| <b>Body Parameters</b>              |                                                         |
-| <b>Response object</b>              |                                                         |
-| `[{ _id, startsAt, employee, ...}]` | Success Type: Appointment[] (JSON)                      |
-|                                     | Failure Type: JSON (Mikro Error) OR plain-text string   |
-| <b>Response Status</b>              |                                                         |
-| `200`                               | Sucessful response                                      |
-| `500`                               | Server Error                                            |
+| Path                               | `/`                                                     |
+| :--------------------------------- | :------------------------------------------------------ |
+| <b>Description</b>                 | Retrieves a list of all appointments for logged in user |
+| <b>Method </b>                     | ![Get Request](./assets/get.png)                        |
+| <b>Body Parameters</b>             |                                                         |
+| <b>Response object</b>             |                                                         |
+| `[{ id, startsAt, employee, ...}]` | Success Type: Appointment[] (JSON)                      |
+|                                    | Failure Type: JSON (Mikro Error) OR plain-text string   |
+| <b>Response Status</b>             |                                                         |
+| `200`                              | Sucessful response                                      |
+| `500`                              | Server Error                                            |
 
 <br/>
 <br/>
@@ -410,27 +410,101 @@ Base URL: `/api/appointments`
 <br/>
 <br/>
 
-| Path                              | `/new`                                                                |
-| :-------------------------------- | :-------------------------------------------------------------------- |
-| <b>Description</b>                | Create a new appointment                                              |
-| <b>Method </b>                    | ![Post Request](./assets/post.png)                                    |
-| <b>Body Parameters</b>            |                                                                       |
-| `employeeEmail`                   | Required: yes                                                         |
-|                                   | Type: string                                                          |
-|                                   | Description: the email of the employee the appointment is with        |
-| `startsAt`                        | Required: yes                                                         |
-|                                   | Type: string                                                          |
-|                                   | Description: the date/time of the appointment                         |
-| `wantsReminder`                   | Required: no                                                          |
-|                                   | Type: boolean                                                         |
-|                                   | Description: indication of if the client wants a twilio reminder sent |
-| <b>Response object</b>            |                                                                       |
-| `{ _id, startsAt, employee, ...}` | Success Type: Appointment (JSON)                                      |
-|                                   | Failure Type: JSON (Mikro Error) OR plain-text string                 |
-| <b>Response Status</b>            |                                                                       |
-| `200`                             | Sucessful response                                                    |
-| `400`                             | Missing body parameters                                               |
-| `500`                             | Server Error                                                          |
+| Path                   | `/available`                                                         |
+| :--------------------- | :------------------------------------------------------------------- |
+| <b>Description</b>     | Retrieves a list of available slots                                  |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                                   |
+| <b>Body Parameters</b> |                                                                      |
+| `date`                 | Required: yes                                                        |
+|                        | Type: Date                                                           |
+|                        | Description: Looks for appointments scheduled on this date           |
+| `employeeId`           | Required: yes                                                        |
+|                        | Type: string                                                         |
+|                        | Description: The ID of the employee to schedule the appointment with |
+| <b>Response object</b> |                                                                      |
+| `[{start, end}]`       | Success Type: Partial<Appointment>[] (JSON)                          |
+|                        | Failure Type: JSON (Mikro Error) OR plain-text string                |
+| <b>Response Status</b> |                                                                      |
+| `200`                  | Sucessful response                                                   |
+| `400`                  | Bad Request                                                          |
+| `401`                  | No Auth                                                              |
+| `500`                  | Server Error                                                         |
+
+<br/>
+<br/>
+
+| Path                             | `/new`                                                                |
+| :------------------------------- | :-------------------------------------------------------------------- |
+| <b>Description</b>               | Create a new appointment                                              |
+| <b>Method </b>                   | ![Post Request](./assets/post.png)                                    |
+| <b>Body Parameters</b>           |                                                                       |
+| `employeeEmail`                  | Required: yes                                                         |
+|                                  | Type: string                                                          |
+|                                  | Description: the email of the employee the appointment is with        |
+| `startsAt`                       | Required: yes                                                         |
+|                                  | Type: string                                                          |
+|                                  | Description: the date/time of the appointment                         |
+| `wantsReminder`                  | Required: no                                                          |
+|                                  | Type: boolean                                                         |
+|                                  | Description: indication of if the client wants a twilio reminder sent |
+| `companyId`                      | Required: yes                                                         |
+|                                  | Type: string                                                          |
+|                                  | Description: ID of the company                                        |
+| `clientId`                       | Required: yes, if session user is employee                            |
+|                                  | Type: string                                                          |
+|                                  | Description: ID of the user who is the client                         |
+| <b>Response object</b>           |                                                                       |
+| `{ id, startsAt, employee, ...}` | Success Type: Appointment (JSON)                                      |
+|                                  | Failure Type: JSON (Mikro Error) OR plain-text string                 |
+| <b>Response Status</b>           |                                                                       |
+| `200`                            | Sucessful response                                                    |
+| `400`                            | Missing body parameters                                               |
+| `500`                            | Server Error                                                          |
+
+<br/>
+<br/>
+
+| Path                   | `/cancel`                                        |
+| :--------------------- | :----------------------------------------------- |
+| <b>Description</b>     | Cancel an appointment                            |
+| <b>Method </b>         | ![Post Request](./assets/post.png)               |
+| <b>Body Parameters</b> |                                                  |
+| `clientId`             | Required: yes, if session user is employee       |
+|                        | Type: string                                     |
+|                        | Description: ID of the user who is the client    |
+| `appointmentId`        | Required: yes                                    |
+|                        | Type: string                                     |
+|                        | Description: The ID of the appointment to cancel |
+| <b>Response object</b> |                                                  |
+| <b>Response Status</b> |                                                  |
+| `200`                  | Sucessful response                               |
+| `400`                  | Bad Request / Past Appointment                   |
+| `401`                  | No Auth                                          |
+| `500`                  | Server Error                                     |
+
+<br />
+<br/>
+
+| Path                   | `/reschedule`                                        |
+| :--------------------- | :--------------------------------------------------- |
+| <b>Description</b>     | Reschedules an appointment                           |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                   |
+| <b>Body Parameters</b> |                                                      |
+| `newDateTime`          | Required: yes                                        |
+|                        | Type: Date                                           |
+|                        | Description: New date for appointment                |
+| `clientId`             | Required: yes, if session user is employee           |
+|                        | Type: string                                         |
+|                        | Description: ID of the user who is the client        |
+| `appointmentId`        | Required: yes                                        |
+|                        | Type: string                                         |
+|                        | Description: The ID of the appointment to reschedule |
+| <b>Response object</b> |                                                      |
+| <b>Response Status</b> |                                                      |
+| `200`                  | Sucessful response                                   |
+| `400`                  | Bad Request                                          |
+| `401`                  | No Auth                                              |
+| `500`                  | Server Error                                         |
 
 <br />
 
