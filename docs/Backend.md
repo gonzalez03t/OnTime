@@ -527,6 +527,158 @@ Base URL: `/api/users`
 <br/>
 <br/>
 
+| Path                   | `/favorites`                                       |
+| :--------------------- | :------------------------------------------------- |
+| <b>Description</b>     | Returns the favorited companies for logged in user |
+| <b>Method </b>         | ![Get Request](./assets/get.png)                   |
+| <b>Body Parameters</b> |                                                    |
+| <b>Response object</b> |                                                    |
+|                        | Success Type: Company[] (JSON)                     |
+|                        | Failure Type: JSON (Mikro Error)                   |
+| <b>Response Status</b> |                                                    |
+| `200`                  | Sucessful GET                                      |
+| `500`                  | Server Error                                       |
+
+<br/>
+<br/>
+
+| Path                   | `/hasFutureAppointments`                                   |
+| :--------------------- | :--------------------------------------------------------- |
+| <b>Description</b>     | Returns whether or not the user has appointments scheduled |
+| <b>Method </b>         | ![Get Request](./assets/get.png)                           |
+| <b>Body Parameters</b> |                                                            |
+| <b>Response object</b> |                                                            |
+|                        | Success Type: boolean                                      |
+| <b>Response Status</b> |                                                            |
+| `200`                  | Sucessful GET                                              |
+| `500`                  | Server Error                                               |
+
+<br/>
+<br/>
+
+| Path                   | `/favorites`                       |
+| :--------------------- | :--------------------------------- |
+| <b>Description</b>     | Toggle favorite company            |
+| <b>Method </b>         | ![Post Request](./assets/post.png) |
+| <b>Body Parameters</b> |                                    |
+| `companyId`            | Required: yes                      |
+|                        | Type: string                       |
+|                        | Description: the ID of the company |
+| <b>Response object</b> |                                    |
+| <b>Response Status</b> |                                    |
+| `201`                  | Sucessful Update                   |
+| `500`                  | Server Error                       |
+
+<br/>
+<br/>
+
+| Path                   | `/settings/profile`                                       |
+| :--------------------- | :-------------------------------------------------------- |
+| <b>Description</b>     | Update user profile details                               |
+| <b>Method </b>         | ![Put Request](./assets/put.png)                          |
+| <b>Body Parameters</b> |                                                           |
+| `userDetails`          | Required: yes                                             |
+|                        | Type: JSON `{ firstName, lastName, email, phone, s3Key }` |
+|                        | Description: The user details to update                   |
+| <b>Response object</b> |                                                           |
+| <b>Response Status</b> |                                                           |
+| `201`                  | Sucessful Update                                          |
+| `500`                  | Server Error                                              |
+
+<br/>
+<br/>
+
+| Path                   | `/settings/notifications`                     |
+| :--------------------- | :-------------------------------------------- |
+| <b>Description</b>     | Update user notification settings             |
+| <b>Method </b>         | ![Put Request](./assets/put.png)              |
+| <b>Body Parameters</b> |                                               |
+| `newPreference`        | Required: yes                                 |
+|                        | Type: Enum (NotificationPreference) - string  |
+|                        | Description: The user notification preference |
+| <b>Response object</b> |                                               |
+| <b>Response Status</b> |                                               |
+| `200`                  | Sucessful Update                              |
+| `500`                  | Server Error                                  |
+
+<br/>
+<br/>
+
+| Path                   | `/settings/password`                                |
+| :--------------------- | :-------------------------------------------------- |
+| <b>Description</b>     | Update user password                                |
+| <b>Method </b>         | ![Put Request](./assets/put.png)                    |
+| <b>Body Parameters</b> |                                                     |
+| `tokenType`            | Required: yes                                       |
+|                        | Type: string                                        |
+|                        | Description: the type of token                      |
+| `code`                 | Required: yes                                       |
+|                        | Type: string                                        |
+|                        | Description: the code the user entered in otp modal |
+| `email`                | Required: yes                                       |
+|                        | Type: string                                        |
+|                        | Description: the email of the user                  |
+| `phone`                | Required: yes                                       |
+|                        | Type: string                                        |
+|                        | Description: the phone number of the user           |
+| `password`             | Required: yes                                       |
+|                        | Type: string                                        |
+|                        | Description: the new password                       |
+| <b>Response object</b> |                                                     |
+| <b>Response Status</b> |                                                     |
+| `200`                  | Sucessful Update                                    |
+| `400`                  | Bad Request / Invalid Token / Missing Params        |
+| `403`                  | Invalid code                                        |
+| `500`                  | Server Error                                        |
+
+<br/>
+<br/>
+
+| Path                    | `/:id/role`                            |
+| :---------------------- | :------------------------------------- |
+| <b>Description</b>      | Set user role                          |
+| <b>Method </b>          | ![Put Request](./assets/put.png)       |
+| <b>Query Parameters</b> |                                        |
+| `id`                    | Required: yes                          |
+|                         | Type: string                           |
+|                         | Description: The id of the user        |
+| <b>Body Parameters</b>  |                                        |
+| `role`                  | Required: yes                          |
+|                         | Type: Enum (UserRole) - string         |
+|                         | Description: the new role for the user |
+| <b>Response object</b>  |                                        |
+| <b>Response Status</b>  |                                        |
+| `200`                   | Sucessful Update                       |
+| `400`                   | Bad Request                            |
+| `401`                   | No Auth                                |
+| `403`                   | Not Admin                              |
+| `500`                   | Server Error                           |
+
+<br/>
+<br/>
+
+| Path                    | `/:id/image/status`                       |
+| :---------------------- | :---------------------------------------- |
+| <b>Description</b>      | Sets the user's image status              |
+| <b>Method </b>          | ![Put Request](./assets/put.png)          |
+| <b>Query Parameters</b> |                                           |
+| `id`                    | Required: yes                             |
+|                         | Type: string                              |
+|                         | Description: The id of the user           |
+| <b>Body Parameters</b>  |                                           |
+| `status`                | Required: yes                             |
+|                         | Type: Enum (VerificationStatus) - string  |
+|                         | Description: The new status for the image |
+| <b>Response object</b>  |                                           |
+| <b>Response Status</b>  |                                           |
+| `200`                   | Sucessful Update                          |
+| `400`                   | Bad Request                               |
+| `401`                   | No Auth                                   |
+| `403`                   | Not Admin                                 |
+| `500`                   | Server Error                              |
+
+<br/>
+
 ### ReminderController
 
 Base URL: `/api/reminders`
