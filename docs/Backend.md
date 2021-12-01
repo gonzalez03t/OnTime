@@ -683,16 +683,118 @@ Base URL: `/api/users`
 
 Base URL: `/api/reminders`
 
-TODO
+| Path                                  | `/`                                  |
+| :------------------------------------ | :----------------------------------- |
+| <b>Description</b>                    | Get all reminders for logged in user |
+| <b>Method </b>                        | ![Get Request](./assets/get.png)     |
+| <b>Body Parameters</b>                |                                      |
+| <b>Response object</b>                |                                      |
+| `{id,firstName,lastName,email,phone}` | Success Type: Reminder[] (JSON)      |
+|                                       | Failure Type: JSON (Mikro Error)     |
+| <b>Response Status</b>                |                                      |
+| `200`                                 | Sucessful Update                     |
+| `400`                                 | Bad Request                          |
+| `401`                                 | No Auth                              |
+| `500`                                 | Server Error                         |
+
+<br/>
 
 ### S3ImageController
 
 Base URL: `/api/s3/images`
 
-TODO
+| Path                    | `/:key`                                            |
+| :---------------------- | :------------------------------------------------- |
+| <b>Description</b>      | Get image by S3 Key                                |
+| <b>Method </b>          | ![Get Request](./assets/get.png)                   |
+| <b>Query Parameters</b> |                                                    |
+| `key`                   | Required: yes                                      |
+|                         | Type: string                                       |
+|                         | Description: The key of the image in the S3 Bucket |
+| <b>Body Parameters</b>  |                                                    |
+| <b>Response object</b>  |                                                    |
+|                         | Success Type: Read Stream piped into res           |
+| <b>Response Status</b>  |                                                    |
+| `200`                   | Sucessful Update                                   |
+| `400`                   | Missing key                                        |
+| `500`                   | Server Error                                       |
+
+<br/>
+<br/>
+
+| Path                   | `/`                                                                      |
+| :--------------------- | :----------------------------------------------------------------------- |
+| <b>Description</b>     | Upload new image to S3 bucket                                            |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                                       |
+| <b>Body Parameters</b> |                                                                          |
+| `key`                  | Required: yes                                                            |
+|                        | Type: string                                                             |
+|                        | Description: The key of the image in the S3 Bucket                       |
+| `fileContents`         | Required: yes                                                            |
+|                        | Type: string buffer (image data, will be encoded base64 on server)       |
+|                        | Description: The key of the image in the S3 Bucket                       |
+| `type`                 | Required: yes                                                            |
+|                        | Type: string                                                             |
+|                        | Description: A standard MIME type describing the format of the contents. |
+| <b>Response object</b> |                                                                          |
+|                        | Success Type: Read Stream piped into res                                 |
+| <b>Response Status</b> |                                                                          |
+| `200`                  | Sucessful Update                                                         |
+| `400`                  | Missing key                                                              |
+| `500`                  | Server Error                                                             |
+
+<br/>
+<br/>
+
+| Path                    | `/:key`                                            |
+| :---------------------- | :------------------------------------------------- |
+| <b>Description</b>      | Delete image by S3 Key                             |
+| <b>Method </b>          | ![Delete Request](./assets/delete.png)             |
+| <b>Query Parameters</b> |                                                    |
+| `key`                   | Required: yes                                      |
+|                         | Type: string                                       |
+|                         | Description: The key of the image in the S3 Bucket |
+| <b>Body Parameters</b>  |                                                    |
+| <b>Response object</b>  |                                                    |
+| <b>Response Status</b>  |                                                    |
+| `200`                   | Sucessful Delete                                   |
+| `400`                   | Missing key                                        |
+| `500`                   | Server Error                                       |
+
+<br/>
 
 ### TokenController
 
 Base URL: `/api/tokens`
 
-TODO
+| Path                    | `/password/change`                                 |
+| :---------------------- | :------------------------------------------------- |
+| <b>Description</b>      | Create token to change password (existing session) |
+| <b>Method </b>          | ![Post Request](./assets/post.png)                 |
+| <b>Query Parameters</b> |                                                    |
+| <b>Body Parameters</b>  |                                                    |
+| <b>Response object</b>  |                                                    |
+| <b>Response Status</b>  |                                                    |
+| `201`                   | Sucessful Creation                                 |
+| `403`                   | No Auth                                            |
+| `500`                   | Server Error                                       |
+
+<br/>
+<br/>
+
+| Path                    | `/password/forgot`                                     |
+| :---------------------- | :----------------------------------------------------- |
+| <b>Description</b>      | Create token to change forgotten password (no session) |
+| <b>Method </b>          | ![Post Request](./assets/post.png)                     |
+| <b>Query Parameters</b> |                                                        |
+| <b>Body Parameters</b>  |                                                        |
+| `email`                 | Required: yes                                          |
+|                         | Type: string                                           |
+|                         | Description: The email of the user                     |
+| `phone`                 | Required: yes                                          |
+|                         | Type: string                                           |
+|                         | Description: The phone number for the user             |
+| <b>Response object</b>  |                                                        |
+| <b>Response Status</b>  |                                                        |
+| `200`                   | Successful Creation                                    |
+| `500`                   | Server Error                                           |

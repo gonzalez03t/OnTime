@@ -4,8 +4,6 @@ import s3, { s3Config } from '../../config/s3';
 export default async function deleteImage(req: Request, res: Response) {
   const { key } = req.params;
 
-  console.log(key);
-
   if (!key) {
     res.status(400).send('Missing key');
   } else {
