@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "dsznajder.es7-react-js-snippets",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "vincaslt.highlight-matching-tag",
+    "ms-vsliveshare.vsliveshare",
+    "gruntfuggly.todo-tree",
+    "formulahendry.auto-rename-tag",
+    "mikestead.dotenv",
+    "esbenp.prettier-vscode"
+  ]
+}

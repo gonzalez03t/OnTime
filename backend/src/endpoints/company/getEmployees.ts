@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { em } from '../..';
 import { Company } from '../../entities/Company';
 
+// TODO: this should be refactored as a get request with a query param instead
 /**
  * This endpoint will retrieve all users associated with a company (employees)
  */
