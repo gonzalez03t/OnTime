@@ -3,6 +3,8 @@
 This documentation should provide you with everything you need to get started with OnTime, and is broken up into the following:
 
 - [Configuration](./Configuration.md)
+- [Backend](./Backend.md)
+- [Frontend](./Frontend.md)
 - [Future Work](./FutureWork.md)
 
 ## Major, Functional Features

@@ -175,13 +175,6 @@ Base URL: `/api/auth`
 
 Base URL: `/api/companies`
 
-TODO:
-employees/invite
-employees/new
-employees/remove
-:id/profile
-:id/settings
-
 | Path                   | `/`                                                   |
 | :--------------------- | :---------------------------------------------------- |
 | <b>Description</b>     | Retrieves a list of all companies                     |
@@ -215,6 +208,7 @@ employees/remove
 | <b>Response object</b> |                                                                                   |
 | <b>Response Status</b> |                                                                                   |
 | `200`                  | Sucessful response                                                                |
+| `400`                  | Bad Request                                                                       |
 | `500`                  | Server Error                                                                      |
 
 <br/>
@@ -233,14 +227,105 @@ employees/remove
 |                        | Failure Type: JSON (Mikro Error) OR plain-text string |
 | <b>Response Status</b> |                                                       |
 | `200`                  | Sucessful response                                    |
+| `400`                  | Bad Request                                           |
 | `500`                  | Server Error                                          |
+
+<br/>
+<br/>
+
+| Path                   | `/employees/invite`                                         |
+| :--------------------- | :---------------------------------------------------------- |
+| <b>Description</b>     | Invite new employee by email                                |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                          |
+| <b>Body Parameters</b> |                                                             |
+| `email`                | Required: yes                                               |
+|                        | Type: string                                                |
+|                        | Description: The email of the user to invite as an employee |
+| <b>Response object</b> |                                                             |
+| <b>Response Status</b> |                                                             |
+| `200`                  | Sucessful response                                          |
+| `400`                  | Bad Request                                                 |
+| `401`                  | Not a company owner                                         |
+| `500`                  | Server Error                                                |
+
+<br/>
+<br/>
+
+| Path                   | `/employees/new`                                       |
+| :--------------------- | :----------------------------------------------------- |
+| <b>Description</b>     | Create new user that is employee for logged in company |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                     |
+| <b>Body Parameters</b> | **See `api/register`**                                 |
+| <b>Response object</b> |                                                        |
+| <b>Response Status</b> |                                                        |
+| `201`                  | Sucessful response                                     |
+| `400`                  | Bad Request                                            |
+| `401`                  | Not a company owner/admin                              |
+| `500`                  | Server Error / Existing Account                        |
+
+<br/>
+<br/>
+
+| Path                   | `/employees/remove`                                      |
+| :--------------------- | :------------------------------------------------------- |
+| <b>Description</b>     | Remove user as employee, set role to base                |
+| <b>Method </b>         | ![Post Request](./assets/post.png)                       |
+| <b>Body Parameters</b> |                                                          |
+| `employeeId`           | Required: yes                                            |
+|                        | Type: string                                             |
+|                        | Description: The id of the user to remove as an employee |
+| <b>Response object</b> |                                                          |
+| <b>Response Status</b> |                                                          |
+| `201`                  | Sucessful response                                       |
+| `400`                  | Bad Request                                              |
+| `401`                  | Not a company owner/admin                                |
+| `500`                  | Server Error / No Account Found                          |
+
+<br/>
+<br/>
+
+| Path                    | `:id/profile`                      |
+| :---------------------- | :--------------------------------- |
+| <b>Description</b>      | Get Company details by ID          |
+| <b>Method </b>          | ![Get Request](./assets/get.png)   |
+| <b>Body Parameters</b>  |                                    |
+| <b>Query Parameters</b> |                                    |
+| `id`                    | Required: yes                      |
+|                         | Type: string                       |
+|                         | Description: The id of the company |
+| <b>Response object</b>  |                                    |
+| <b>Response Status</b>  |                                    |
+| `201`                   | Sucessful response                 |
+| `400`                   | Bad Request                        |
+| `500`                   | Server Error                       |
+
+<br/>
+<br/>
+
+| Path                    | `:id/settings`                                                                        |
+| :---------------------- | :------------------------------------------------------------------------------------ |
+| <b>Description</b>      | Update company settings by ID                                                         |
+| <b>Method </b>          | ![Put Request](./assets/put.png)                                                      |
+| <b>Body Parameters</b>  |                                                                                       |
+| `companySettings`       | Required: yes                                                                         |
+|                         | type: JSON `{ employeeTitle, opensAt, closesAt, appointmentDuration, maxBodyCount } ` |
+| <b>Query Parameters</b> |                                                                                       |
+| `id`                    | Required: yes                                                                         |
+|                         | Type: string                                                                          |
+|                         | Description: The id of the company                                                    |
+| <b>Response object</b>  |                                                                                       |
+| <b>Response Status</b>  |                                                                                       |
+| `201`                   | Sucessful response                                                                    |
+| `400`                   | Bad Request                                                                           |
+| `401`                   | Not a company owner/admin                                                             |
+| `500`                   | Server Error                                                                          |
 
 <br/>
 <br/>
 
 | Path                   | `/pending`                                            |
 | :--------------------- | :---------------------------------------------------- |
-| <b>Description</b>     | Retrieves a list of all companies                     |
+| <b>Description</b>     | Retrieves a list of all non-verified companies        |
 | <b>Method </b>         | ![Get Request](./assets/get.png)                      |
 | <b>Body Parameters</b> |                                                       |
 | <b>Response object</b> |                                                       |
@@ -251,6 +336,40 @@ employees/remove
 | `500`                  | Server Error                                          |
 
 <br/>
+<br/>
+
+| Path                    | `/:id/status`                            |
+| :---------------------- | :--------------------------------------- |
+| <b>Description</b>      | Sets the VerificationStatus of a company |
+| <b>Method </b>          | ![Put Request](./assets/put.png)         |
+| <b>Body Parameters</b>  |                                          |
+| <b>Query Parameters</b> |                                          |
+| `id`                    | Required: yes                            |
+|                         | Type: string                             |
+|                         | Description: The id of the company       |
+| <b>Response object</b>  |                                          |
+| <b>Response Status</b>  |                                          |
+| `200`                   | Sucessful response                       |
+| `400`                   | Bad Request                              |
+| `500`                   | Server Error                             |
+
+<br/>
+<br/>
+
+| Path                    | `/:id/image/status`                            |
+| :---------------------- | :--------------------------------------------- |
+| <b>Description</b>      | Sets the VerificationStatus of a company image |
+| <b>Method </b>          | ![Put Request](./assets/put.png)               |
+| <b>Body Parameters</b>  |                                                |
+| <b>Query Parameters</b> |                                                |
+| `id`                    | Required: yes                                  |
+|                         | Type: string                                   |
+|                         | Description: The id of the company             |
+| <b>Response object</b>  |                                                |
+| <b>Response Status</b>  |                                                |
+| `200`                   | Sucessful response                             |
+| `500`                   | Server Error                                   |
+
 <br/>
 
 ### AppointmentController
