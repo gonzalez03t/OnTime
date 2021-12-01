@@ -6,6 +6,8 @@ This is the documentation for the backend. It is written in TypeScript, and uses
 
 While the frontend is written in React + JavaScript, the backend is written in TypeScript. The backend is responsible for the database, authentication, scheduling, etc. If you are unfamiliar with TypeScript, I **highly** recommend you read the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/basic-types.html) before continuing. There are not many complicated type usages in this application, however having a basic understanding of the type system is a must.
 
+Note: The `tsconfig.json` for the backend is rather strict, and is configured this way to prevent bugs and type errors. If you have unused variables, it will not compile to JS, for example. If you are unfamiliar with `tsconfig.json` options, I recommend you read the corresponding [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) before continuing.
+
 ## CronJob
 
 The cronjob is used to find reminders that need SMS sending, and then send the SMS. It is located in `src/util/schedule.ts`. It is scheduled to run every minute, and will send a reminder SMS to the user if the user has a reminder set for a time within 30 seconds behind and 1 minute ahead.
@@ -36,6 +38,10 @@ Be sure to wait until the seed finishes, and then set the parameter to true agai
 ## Utilities
 
 There are a range of utilities that are used throughout the application. They are located in the `src/util` folder. `jwt.ts` is not used anymore, but is kept for reference.
+
+## Middlewares
+
+There are a range of middlewares that are used throughout the application controllers. They are located in the `src/middleware` folder. Most are used for authentication controls, and are named according to their permissions allowed (e.g. `adminRoute.ts` will return a failure status if the session user is not an admin).
 
 ## Controllers
 

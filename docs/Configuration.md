@@ -21,3 +21,20 @@ You will need to write two `.env` files for this project. For both, refer to the
   - follow [this](https://www.youtube.com/watch?v=NZElg91l_ms) tutorial from 4:38 to 11:25
 - CORS Configuration
 - Security Constants (e.g. bcryptjs configs, encryption secrets, etc)
+
+In general, you will want to use the `.env.example` files as a starting point. You can then add your own values to the `.env` file, and it is recommended to share certain variables with your team (although not all variables should be shared). As a starting point, try sharing the following key/values in your root `.env` file:
+
+```
+FRONTEND_URL=http://localhost:3000
+
+BCRYPT_SALT=12
+
+OTP_ALGORITHM=SHA-512
+OTP_EXIRE_IN_MIN=5
+INVITE_EXIRE_IN_DAYS=5
+
+USE_TWILIO=
+LOOK_FOR_REMINDERS=
+```
+
+While these same values shouldn't be used in production, but they will make getting started with development easier.
