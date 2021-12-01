@@ -2,9 +2,13 @@
 
 This is the documentation for the backend. It is written in TypeScript, and uses Express and MikroORM.
 
+## Background
+
+While the frontend is written in React + JavaScript, the backend is written in TypeScript. The backend is responsible for the database, authentication, scheduling, etc. If you are unfamiliar with TypeScript, I **highly** recommend you read the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/basic-types.html) before continuing. There are not many complicated type usages in this application, however having a basic understanding of the type system is a must.
+
 ## CronJob
 
-TODO: write me
+The cronjob is used to find reminders that need SMS sending, and then send the SMS. It is located in `src/util/schedule.ts`. It is scheduled to run every minute, and will send a reminder SMS to the user if the user has a reminder set for a time within 30 seconds behind and 1 minute ahead.
 
 ## Database Entities
 
@@ -15,6 +19,23 @@ Note: It is highly recommeded to review the official [MikroORM documentation](ht
 ## Database Connection
 
 MikroORM handles the database connection, configured in the `src/mikro-orm.config.ts` file. The ORM gets initialized in the `src/index.ts` file, and the [Entity Manager](https://mikro-orm.io/docs/entity-manager) is assigned and exported for use throughout the application (see the line `export let em: EntityManager<IDatabaseDriver<Connection>>;`).
+
+## Database Seed
+
+We have developed a seed script that will create the database, and populate it with some data. This is located in `src/util/seed.ts` and `src/util/seedData.js`. If you wish to run the seed, go to the `src/index.ts` file and remove the `true` value in the seed function call:
+
+```ts
+if (!PRODUCTION) {
+  // await seed(true); // the seed will be skipped when uncommented
+  await seed(); // The seed will run
+}
+```
+
+Be sure to wait until the seed finishes, and then set the parameter to true again (otherwise the seed will run each time you save a file in the backend directory).
+
+## Utilities
+
+There are a range of utilities that are used throughout the application. They are located in the `src/util` folder. `jwt.ts` is not used anymore, but is kept for reference.
 
 ## Controllers
 
