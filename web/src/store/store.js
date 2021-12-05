@@ -69,7 +69,7 @@ const useStore = create(
         if (user && user.imageKey) {
           return getImageUrl(user.imageKey);
         } else {
-          return null;
+          return "/User1.PNG";
         }
       },
 

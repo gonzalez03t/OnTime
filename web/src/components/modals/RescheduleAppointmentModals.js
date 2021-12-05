@@ -78,7 +78,7 @@ export default function RescheduleAppointmentModal(props) {
                 image={
                   props.appointment?.employee.imageKey
                     ? getImageUrl(props.appointment?.employee.imageKey)
-                    : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                    : "/User1.PNG"
                 }
                 size={'large'}
               />

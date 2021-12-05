@@ -31,18 +31,17 @@ export default function GoogleMaps({ fullAddress }) {
 
   const [directions, setDirections] = useState(null);
   const [error, setError] = useState(null);
-  const {originLat, originLon, err} = usePosition();
-  
-  useEffect(() => {
+  const { originLat, originLon, err } = usePosition();
 
+  useEffect(() => {
     if (isLoaded) {
       const directionsService = new window.google.maps.DirectionsService();
 
       directionsService.route(
         {
-          origin: "Weston, FL", // Pass usePosition dinamically
+          origin: 'Weston, FL', // Pass usePosition dinamically
           destination: fullAddress,
-          travelMode: window.google.maps.TravelMode.DRIVING
+          travelMode: window.google.maps.TravelMode.DRIVING,
         },
         (result, status) => {
           console.log(result);
@@ -60,7 +59,7 @@ export default function GoogleMaps({ fullAddress }) {
     return <h1>{error}</h1>;
   }
 
-  console.log(isLoaded)
+  console.log(isLoaded);
 
   if (!isLoaded) {
     return null;
@@ -70,7 +69,7 @@ export default function GoogleMaps({ fullAddress }) {
     <div className="GoogleMaps">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={15}
+        //zoom={12}
         //center={marker}
         options={options}
         //defaultCenter={new window.google.maps.LatLng(41.8507300, -87.6512600)}

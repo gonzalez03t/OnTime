@@ -18,7 +18,7 @@ export default function ClientApptModal(props) {
               <Grid.Column floated="left" width={8}>
                 <Card>
                   <Image
-                    src="https://react.semantic-ui.com/images/avatar/large/daniel.jpg"
+                    src="/User1.PNG"
                     wrapped
                     ui={false}
                   />

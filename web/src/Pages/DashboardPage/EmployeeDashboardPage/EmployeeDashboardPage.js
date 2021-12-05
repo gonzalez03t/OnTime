@@ -7,6 +7,7 @@ import {
   Button,
   Segment,
   Input,
+  Image
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
 import useStore from '../../../store/store';
@@ -115,7 +116,7 @@ export default function EmployeeDashboardPage() {
 
         const formatted_appointment = {
           id: appointment.id,
-          title: `Appointment w/ ${client_name}`,
+          title: `${client_name}`,
           employee: user,
           client: appointment.client,
           start: start_time,
@@ -164,8 +165,8 @@ export default function EmployeeDashboardPage() {
 
   return (
     <Container style={{ marginTop: 20 }} fluid>
-      <Header as="h1" textAlign="center">
-        <Icon name="address book outline" />
+      <Header as="h1" textAlign="left">
+        <Image src='/User1.PNG' size='big' />
         <Header.Content>Dashboard</Header.Content>
       </Header>
       <Grid columns={2} centered style={{ height: '100%' }}>

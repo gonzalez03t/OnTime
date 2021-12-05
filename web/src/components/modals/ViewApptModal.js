@@ -92,7 +92,7 @@ export default function ViewApptModal({
                     image={
                       appointment?.client.imageKey
                         ? getImageUrl(appointment?.client.imageKey)
-                        : 'https://d3n8a8pro7vhmx.cloudfront.net/themes/5f3bc4644764e86d9ee8849f/attachments/original/1589382138/login.png?1589382138'
+                        : "/User1.PNG"
                     }
                   />
                 </Grid.Column>
@@ -156,15 +156,18 @@ export default function ViewApptModal({
                   </p>
                   <p>
                     {' '}
-                    <Icon name="globe" size="small" /> {appointment?.employee.companyAddress}{' '}
+                    <Icon name="globe" size="small" />{' '}
+                    {appointment?.employee.companyAddress}{' '}
                   </p>{' '}
-                  <a 
-                    target="_blank" 
-                    href={"https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=" + appointment?.employee.companyAddress + "&travelmode=driving"}
+                  <a
+                    target="_blank"
+                    href={
+                      'https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=' +
+                      appointment?.employee.companyAddress +
+                      '&travelmode=driving'
+                    }
                   >
-                    <Button
-                      positive
-                    >
+                    <Button positive>
                       {' '}
                       <Icon name="location arrow" size="small" /> Navigate
                     </Button>
@@ -179,7 +182,7 @@ export default function ViewApptModal({
                     image={
                       appointment?.employee.imageKey
                         ? getImageUrl(appointment?.employee.imageKey)
-                        : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                        : "/User1.PNG"
                     }
                   />
                 </Grid.Column>

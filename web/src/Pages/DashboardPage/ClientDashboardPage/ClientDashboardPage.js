@@ -6,6 +6,7 @@ import {
   Icon,
   Button,
   Segment,
+  Image
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
 import { useHistory } from 'react-router';
@@ -77,7 +78,7 @@ export default function ClientDashboardPage() {
 
       return {
         id: appointment.id,
-        title: `Appointment w/ ${employee_name}`,
+        title: `${employee_name}`,
         employee: appointment.employee,
         client: user,
         start: start_time,
@@ -89,7 +90,7 @@ export default function ClientDashboardPage() {
   return (
     <Container style={{ marginTop: 20 }} fluid>
       <Header as="h1" textAlign="center">
-        <Icon name="address book outline" />
+        <Image src='/User1.PNG' size='big' />
         <Header.Content>Dashboard</Header.Content>
       </Header>
       <Grid columns={2} centered style={{ height: '100%' }}>

@@ -170,7 +170,7 @@ export default function ScheduleAppointmentModal(props) {
                   image={
                     selectedClient?.value?.imageKey
                       ? getImageUrl(selectedClient?.value?.imageKey)
-                      : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                      : "/User1.PNG"
                   } // PENDING: Pass employee image to Appointment Employee Card
                 />
               )}

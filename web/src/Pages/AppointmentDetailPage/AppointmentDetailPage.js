@@ -92,7 +92,7 @@ export default function PatientAppointment() {
                   image={
                     appointment?.employee.imageKey
                       ? getImageUrl(appointment?.employee.imageKey)
-                      : 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
+                      : "/User1.PNG"
                   }
                 />
               </div>
@@ -165,10 +165,14 @@ export default function PatientAppointment() {
                       : 'University of Florida'}
                   </Grid.Column>
                   <Grid.Column width={5}>
-                    <a 
-                      target="_blank" 
-                      href={"https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=" + appointment?.employee.companyAddress + "&travelmode=driving"}
-                      >
+                    <a
+                      target="_blank"
+                      href={
+                        'https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=' +
+                        appointment?.employee.companyAddress +
+                        '&travelmode=driving'
+                      }
+                    >
                       <Button
                         style={{ marginTop: '20px' }}
                         positive
