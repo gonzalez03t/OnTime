@@ -2,32 +2,20 @@
 
 OnTime is a tool for scheduling and managing appointments, similar to Calendly. Companies may register their businesses to manage appointments, users register to make/manage their own appointments to the businesses.
 
-## Configuration
+## Documentation
 
-You will need to write an `.env` file in the format of the `.env.example` provided at the project root, as well as `web/.env`. This will include things like:
+All documentation is available in the `docs` directory of this repository, for a quick start on what is available for reviewing, please see the [README.md](./docs/README.md) in that directory.
 
-- Mongo Connection Credentials
-  - https://docs.atlas.mongodb.com/getting-started/
-- Twilio API Configs (Keys, SID, Phone Numbers, etc)
-  - https://www.twilio.com/docs/sms/quickstart/node#sign-up-for-twilio-and-get-a-twilio-phone-number
-- Google Maps API Configs
-  - https://developers.google.com/maps/documentation/javascript/get-api-key
-  - Enable the following APIs: Geocoding, Maps, Places
-  - Be sure to add a Billing account for your project, and restrict the API key you get to your localhost
-    - Credentials -> Edit API Key -> Application Restrictions -> HTTP referrers (web sites) -> add the following items: localhost, localhost:3000, 127.0.0.1
-- AWS S3 Bucket Configs
-  - follow [this](https://www.youtube.com/watch?v=NZElg91l_ms) tutorial from 4:38 to 11:25
-- CORS Configuration
-- Security Constants (e.g. bcryptjs configs, encryption secrets, etc)
+## Getting Started
 
-## Installation and Startup
-
-Use Yarn to install the project dependencies:
+First, you will need to clone the repository and then install the dependencies using Yarn:
 
 ```bash
-$ yarn
-$ yarn install:all
+$ yarn # install root level dependencies
+$ yarn install:all # install frontend and backend specific dependencies
 ```
+
+You will now need to configure your environment before you can run anything, so be sure to review everything in the [Configuration](./docs/Configuration.md) section available in the `docs` directory.
 
 To run the server and react application at once, run the following:
 
@@ -48,26 +36,6 @@ To run the frontend:
 ```bash
 $ yarn start:web
 ```
-
-## Overview of Functional Features
-
-For individual milestones, be sure to check out the README files in each of the subfolders in the project root (backend, web and mobile). These will outline more specific completed features.
-
-- Session-based authentication for secure user interactions with the software
-- Multifactor authentication, using OTP over SMS
-  - One-way hashing of OTP codes and user passwords
-- Role-based access control to restrict users of varying privleges
-  - Base, Employee, Company Admin/Owner, and Admin roles
-- Automated SMS appointment reminders
-
-## Future Work
-
-There is plenty of opportunity for additional features to be developed. A list of potential features include:
-
-- Enhanced admin operations
-- Onboarding paperwork for clients
-- Tracking a user’s navigation session when using in-app navigation for arrival-time estimations
-- Develop a way to embed the bulk of the scheduling UI as an iframe, so companies may integrate directly on their own website
 
 ## Known Issues
 
