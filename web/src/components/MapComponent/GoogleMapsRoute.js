@@ -5,9 +5,9 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api';
 import { getGeocode, getLatLng } from 'use-places-autocomplete';
+import { usePosition } from 'use-position';
 
 import MapStyles from './MapStyles';
-import { Dimmer, Loader } from 'semantic-ui-react';
 
 const libraries = ['places'];
 
@@ -31,55 +31,18 @@ export default function GoogleMaps({ fullAddress }) {
 
   const [directions, setDirections] = useState(null);
   const [error, setError] = useState(null);
-
+  const {originLat, originLon, err} = usePosition();
+  
   useEffect(() => {
-    if (isLoaded && fullAddress) {
-      // Get latitude and longitude via utility functions
-      getGeocode({ address: fullAddress })
-        .then((results) => getLatLng(results[0]))
-        .then((coords) => {
-          getdestination(coords);
-          process.env.NODE_ENV !== 'production' &&
-            console.log('📍 Coordinates: ', coords);
-        })
-        .catch((error) => {
-          process.env.NODE_ENV !== 'production' &&
-            console.log('😱 Error: ', error);
-        });
-    }
-
-    let target;
-    let places = [];
-
-    function getdestination(coords) {
-      console.log(coords);
-      target = {
-        latitude: coords.lat,
-        longitude: coords.lng,
-      };
-      places.push(target);
-    }
-
-    //places.push(target);
-    places.push({ latitude: 25.8103146, longitude: -80.1751609 });
-    places.push({ latitude: 28.4813018, longitude: -81.4387899 });
-
-    const waypoints = places.map((p) => ({
-      location: { lat: p.latitude, lng: p.longitude },
-      stopover: true,
-    }));
-    const origin = waypoints.shift().location;
-    const destination = waypoints.pop().location;
 
     if (isLoaded) {
       const directionsService = new window.google.maps.DirectionsService();
 
       directionsService.route(
         {
-          origin: origin,
-          destination: destination,
-          travelMode: window.google.maps.TravelMode.DRIVING,
-          waypoints: waypoints,
+          origin: "Weston, FL", // Pass usePosition dinamically
+          destination: fullAddress,
+          travelMode: window.google.maps.TravelMode.DRIVING
         },
         (result, status) => {
           console.log(result);
@@ -96,6 +59,8 @@ export default function GoogleMaps({ fullAddress }) {
   if (error) {
     return <h1>{error}</h1>;
   }
+
+  console.log(isLoaded)
 
   if (!isLoaded) {
     return null;

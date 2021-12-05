@@ -16,6 +16,8 @@ export default function ViewApptModal({
 }) {
   const history = useHistory();
 
+  console.log(appointment);
+
   const { fetchAppointments } = useStore((state) => state, shallow);
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -154,15 +156,19 @@ export default function ViewApptModal({
                   </p>
                   <p>
                     {' '}
-                    <Icon name="globe" size="small" /> Address: (Pending){' '}
+                    <Icon name="globe" size="small" /> {appointment?.employee.companyAddress}{' '}
                   </p>{' '}
-                  <Button
-                    positive
-                    onClick={() => alert('Navigation Page: TODO')}
+                  <a 
+                    target="_blank" 
+                    href={"https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=" + appointment?.employee.companyAddress + "&travelmode=driving"}
                   >
-                    {' '}
-                    <Icon name="location arrow" size="small" /> Navigate
-                  </Button>
+                    <Button
+                      positive
+                    >
+                      {' '}
+                      <Icon name="location arrow" size="small" /> Navigate
+                    </Button>
+                  </a>
                 </Grid.Column>
                 <Grid.Column floated="right" width={6}>
                   <AppointmentEmployeeCard

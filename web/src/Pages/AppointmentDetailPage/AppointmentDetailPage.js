@@ -46,6 +46,8 @@ export default function PatientAppointment() {
     setOpenRescheduleApptModal(false);
   }
 
+  console.log(appointment);
+
   return (
     <Container style={{ marginTop: 100 }}>
       <Segment style={{ padding: '15px' }}>
@@ -163,15 +165,19 @@ export default function PatientAppointment() {
                       : 'University of Florida'}
                   </Grid.Column>
                   <Grid.Column width={5}>
-                    <Button
-                      style={{ marginTop: '20px' }}
-                      positive
-                      floated="right"
-                      onClick={() => alert('Navigation Page: TODO')}
-                    >
-                      {' '}
-                      <Icon name="location arrow" size="small" /> Navigate
-                    </Button>
+                    <a 
+                      target="_blank" 
+                      href={"https://www.google.com/maps/dir/?api=1&origin=Weston+FL&destination=" + appointment?.employee.companyAddress + "&travelmode=driving"}
+                      >
+                      <Button
+                        style={{ marginTop: '20px' }}
+                        positive
+                        floated="right"
+                      >
+                        {' '}
+                        <Icon name="location arrow" size="small" /> Navigate
+                      </Button>
+                    </a>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
