@@ -7,7 +7,7 @@ import {
   Button,
   Segment,
   Input,
-  Image
+  Image,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
 import useStore from '../../../store/store';
@@ -166,7 +166,7 @@ export default function EmployeeDashboardPage() {
   return (
     <Container style={{ marginTop: 20 }} fluid>
       <Header as="h1" textAlign="left">
-        <Image src='/User1.PNG' size='big' />
+        <Image src="/User1.PNG" size="big" />
         <Header.Content>Dashboard</Header.Content>
       </Header>
       <Grid columns={2} centered style={{ height: '100%' }}>

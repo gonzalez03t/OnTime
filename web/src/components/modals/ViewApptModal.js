@@ -92,7 +92,7 @@ export default function ViewApptModal({
                     image={
                       appointment?.client.imageKey
                         ? getImageUrl(appointment?.client.imageKey)
-                        : "/User1.PNG"
+                        : '/User1.PNG'
                     }
                   />
                 </Grid.Column>
@@ -182,7 +182,7 @@ export default function ViewApptModal({
                     image={
                       appointment?.employee.imageKey
                         ? getImageUrl(appointment?.employee.imageKey)
-                        : "/User1.PNG"
+                        : '/User1.PNG'
                     }
                   />
                 </Grid.Column>

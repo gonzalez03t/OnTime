@@ -92,7 +92,7 @@ export default function PatientAppointment() {
                   image={
                     appointment?.employee.imageKey
                       ? getImageUrl(appointment?.employee.imageKey)
-                      : "/User1.PNG"
+                      : '/User1.PNG'
                   }
                 />
               </div>

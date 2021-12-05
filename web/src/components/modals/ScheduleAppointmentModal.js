@@ -170,7 +170,7 @@ export default function ScheduleAppointmentModal(props) {
                   image={
                     selectedClient?.value?.imageKey
                       ? getImageUrl(selectedClient?.value?.imageKey)
-                      : "/User1.PNG"
+                      : '/User1.PNG'
                   } // PENDING: Pass employee image to Appointment Employee Card
                 />
               )}

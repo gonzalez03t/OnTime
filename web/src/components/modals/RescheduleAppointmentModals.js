@@ -78,7 +78,7 @@ export default function RescheduleAppointmentModal(props) {
                 image={
                   props.appointment?.employee.imageKey
                     ? getImageUrl(props.appointment?.employee.imageKey)
-                    : "/User1.PNG"
+                    : '/User1.PNG'
                 }
                 size={'large'}
               />

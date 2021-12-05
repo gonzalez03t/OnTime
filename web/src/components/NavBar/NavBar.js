@@ -50,7 +50,7 @@ export default function NavBar() {
         {/* LEFT */}
         <div className="nav__left-container">
           <Link to="/">
-            <img className="nav__icon" src={navIcon} alt="OnTime Logo" /> 
+            <img className="nav__icon" src={navIcon} alt="OnTime Logo" />
           </Link>
 
           <div className="nav__links">

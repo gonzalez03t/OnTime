@@ -17,11 +17,7 @@ export default function ClientApptModal(props) {
             <Grid.Row style={{ paddingTop: '12px' }}>
               <Grid.Column floated="left" width={8}>
                 <Card>
-                  <Image
-                    src="/User1.PNG"
-                    wrapped
-                    ui={false}
-                  />
+                  <Image src="/User1.PNG" wrapped ui={false} />
                 </Card>
               </Grid.Column>
               <Grid.Column style={{ paddingLeft: '0px' }}>

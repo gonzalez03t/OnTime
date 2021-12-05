@@ -30,7 +30,7 @@ export default function AppointmentEmployeeCard({
         {image ? (
           <img src={image} alt={`${firstName} Profile`} />
         ) : (
-          <img src={"/User1.PNG"} alt={`${firstName} Profile`} />
+          <img src={'/User1.PNG'} alt={`${firstName} Profile`} />
         )}
       </div>
 

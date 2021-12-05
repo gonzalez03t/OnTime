@@ -6,7 +6,7 @@ import {
   Icon,
   Button,
   Segment,
-  Image
+  Image,
 } from 'semantic-ui-react';
 import ApptCalendar from '../../../components/Calendar/Calendar';
 import { useHistory } from 'react-router';
@@ -90,7 +90,7 @@ export default function ClientDashboardPage() {
   return (
     <Container style={{ marginTop: 20 }} fluid>
       <Header as="h1" textAlign="center">
-        <Image src='/User1.PNG' size='big' />
+        <Image src="/User1.PNG" size="big" />
         <Header.Content>Dashboard</Header.Content>
       </Header>
       <Grid columns={2} centered style={{ height: '100%' }}>
