@@ -24,11 +24,12 @@ export default function Home() {
               simple web-based application.
             </p>
             <p style={{ marginBottom: 30 }}>
-              The application’s main features are a self-scheduling appointment system 
-              which includes creating new appointments, rescheduling existing appointments, 
-              and canceling existing appointments. In addition, OnTime provides an appointment 
-              reminder and notifications system, appointment navigation support, 
-              and HIPAA-compliant security. 
+              The application’s main features are a self-scheduling appointment
+              system which includes creating new appointments, rescheduling
+              existing appointments, and canceling existing appointments. In
+              addition, OnTime provides an appointment reminder and
+              notifications system, appointment navigation support, and
+              HIPAA-compliant security.
             </p>
             <Button primary size="big" floated="left" as={Link} to="/login">
               Get Started
@@ -48,7 +49,7 @@ export default function Home() {
         </Grid.Column>
         <Grid.Row width={16}>
           <Grid.Column width={4}>
-            <Card style={{ width: '95%' }}  color='blue'>
+            <Card style={{ width: '95%' }} color="blue">
               <Image src="/apt.jpg" wrapped ui={false} />
               <Card.Content>
                 <Card.Description>
@@ -59,7 +60,7 @@ export default function Home() {
           </Grid.Column>
 
           <Grid.Column width={4}>
-            <Card style={{ width: '95%' }}  color='blue'>
+            <Card style={{ width: '95%' }} color="blue">
               <Image src="/reminder.jpg" wrapped ui={false} />
               <Card.Content>
                 <Card.Description>
@@ -70,7 +71,7 @@ export default function Home() {
           </Grid.Column>
 
           <Grid.Column width={4}>
-            <Card style={{ width: '95%' }}  color='blue'>
+            <Card style={{ width: '95%' }} color="blue">
               <Image src="/nav.jpg" wrapped ui={false} />
               <Card.Content>
                 <Card.Description>
@@ -81,7 +82,7 @@ export default function Home() {
           </Grid.Column>
 
           <Grid.Column width={4}>
-            <Card style={{ width: '95%' }}  color='blue'>
+            <Card style={{ width: '95%' }} color="blue">
               <Image src="/hipa.jpg" wrapped ui={false} />
               <Card.Content>
                 <Card.Description>

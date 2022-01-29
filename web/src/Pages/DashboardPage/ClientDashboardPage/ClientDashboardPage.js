@@ -89,7 +89,7 @@ export default function ClientDashboardPage() {
 
   return (
     <Container style={{ marginTop: 20 }} fluid>
-      <Header as="h1" textAlign="center">
+      <Header as="h1" textAlign="left">
         <Image src="/User1.PNG" size="big" />
         <Header.Content>Dashboard</Header.Content>
       </Header>
