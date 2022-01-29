@@ -1,0 +1,2 @@
+# OnTime
+OnTime is an appointment scheduling and reminders system designed to be used by multiple business types such as health clinics, beauty salons, and a wide range of other appointment-based businesses and institutions. The application's main features are a self-scheduling appointment tool which includes creating new appointments and canceling or rescheduling existing ones, appointment reminders, HIPPA compliant security, and navigation support.
