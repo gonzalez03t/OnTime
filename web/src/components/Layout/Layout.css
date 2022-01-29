@@ -1,0 +1,51 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 32rem;
+
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 1.5rem;
+
+  /* FIXME: not real calculation. should be 100vh - TOTAL HEIGHT OF NAV */
+  min-height: calc(100vh - 4.5rem);
+  width: 100%;
+
+  flex: 1 1 0%;
+}
+
+/* 'sm': '640px', */
+@media (min-width: 640px) {
+  .app-main {
+    max-width: 42rem;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* 'md': '768px', */
+@media (min-width: 768px) {
+  .app-main {
+    max-width: 48rem;
+  }
+}
+
+/* 'lg': '1024px', */
+@media (min-width: 1024px) {
+  .app-main {
+    max-width: 64rem;
+  }
+}
+
+/* 'xl': '1280px', */
+@media (min-width: 1280px) {
+  .app-main {
+    max-width: 92rem;
+  }
+}

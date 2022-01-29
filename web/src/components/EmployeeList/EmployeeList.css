@@ -1,0 +1,15 @@
+.employee-list-container {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .employee-list-container {
+    flex-direction: row;
+    justify-content: start;
+    align-items: top;
+  }
+}

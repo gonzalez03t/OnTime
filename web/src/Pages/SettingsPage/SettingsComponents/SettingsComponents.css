@@ -1,0 +1,33 @@
+.section-header > .settings-section__title {
+  /* override semantic */
+  line-height: 1.5rem !important;
+  margin: 0 !important;
+
+  font-weight: 500;
+  color: #111827;
+}
+
+.section-header > .settings-section__subtitle {
+  margin-top: 0.25rem;
+  font-size: small;
+  color: #6b7280;
+}
+
+.section-subheader > .settings-section__title {
+  /* override semantic */
+  line-height: 1.5rem !important;
+  margin: 0 !important;
+
+  font-weight: 500;
+  color: #111827;
+
+  font-size: medium;
+}
+
+.section-subheader > .settings-section__subtitle {
+  margin-top: 0.25rem;
+  font-size: small;
+  color: #6b7280;
+
+  margin-bottom: 0.75rem;
+}

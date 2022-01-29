@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin-bottom: 2rem;
+}
+
+.user-dropdown-image__container {
+  display: inline-block;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 2rem;
+  width: 2rem;
+}
+
+.user-dropdown-image__placeholder {
+  height: 100%;
+  width: 100%;
+  color: #d1d5db;
+}
